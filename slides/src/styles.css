@@ -176,6 +176,9 @@ h1, h2, h3, p, ul { margin: 0; }
 }
 .chip .prompt { color: var(--aurora); }
 .chip.block { display: flex; white-space: normal; line-height: 1.45; }
+.chip.code { display: block; white-space: pre; margin: 0; line-height: 1.5; }
+.chip.code .hl { color: var(--aurora); }
+.bullets code { font-family: var(--mono); font-size: 0.85em; color: var(--aurora); }
 
 .box {
   position: absolute;

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Box, Arrow, ArrowDefs, Chip, Logo, ArgoLogo, ease } from '../ui.jsx'
+import { Box, Arrow, ArrowDefs, Chip, Code, Logo, ArgoLogo, ease } from '../ui.jsx'
 
 // All illustrations live in an 820x600 canvas on the right-hand column.
 
@@ -8,15 +8,17 @@ export function CreateCluster() {
     <>
       <svg width={820} height={600} style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
         <ArrowDefs />
-        <Arrow from={[280, 160]} to={[500, 160]} label="~2 min" delay={1.2} />
+        <Arrow from={[280, 150]} to={[480, 150]} label="terraform apply" delay={1.2} labelSize={22} />
       </svg>
-      <Box x={0} y={100} w={280} h={120} title="laptop" sub="civo CLI" delay={0.7} />
-      <Box x={500} y={70} w={320} h={180} title="JKT1" sub="k3s, 2 x g4s.kube.medium (2 vCPU / 4 GB)" accent delay={1.5} />
-      <Chip block delay={2.0} style={{ position: 'absolute', left: 0, top: 330, width: 820, fontSize: 25 }}>
-        civo kubernetes create kcd-jakarta --region JKT1 --nodes 2 --size g4s.kube.medium --applications metrics-server
-      </Chip>
-      <motion.div className="muted" style={{ position: 'absolute', left: 0, top: 520, fontSize: 26 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.6 }}>
-        Fired early. It returns in seconds; the cluster is ready while we talk.
+      <Box x={0} y={90} w={280} h={120} title="laptop" sub="Terraform, civo provider" delay={0.7} />
+      <Box x={480} y={60} w={340} h={180} title="JKT1" sub="firewall + k3s cluster, 2 x g4s.kube.medium, metrics-server" accent delay={1.5} />
+      <Code delay={2.0} style={{ position: 'absolute', left: 0, top: 300, width: 820, fontSize: 23 }}>
+        {'resource "civo_kubernetes_cluster" "demo" {\n  pools { size = "g4s.kube.medium"  node_count = 2 }\n  '}
+        <span className="hl">{'lifecycle { ignore_changes = [pools[0].node_count] }'}</span>
+        {'\n}'}
+      </Code>
+      <motion.div className="muted" style={{ position: 'absolute', left: 0, top: 500, fontSize: 26 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.6 }}>
+        plan on stage; apply runs in the background while we talk, step 2 picks it up.
       </motion.div>
     </>
   )
@@ -221,7 +223,7 @@ function Stat({ x, y, big, label, delay }) {
 
 export function WhatWeBuilt() {
   const built = [
-    'Cluster in JKT1 in one command',
+    'A Kubernetes cluster in JKT1 from Terraform',
     'Argo CD, git as the single source of truth',
     'App with a public Civo load balancer',
     'Release by commit, drift reverted',

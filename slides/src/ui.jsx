@@ -119,6 +119,14 @@ export function Chip({ children, delay = 0.8, block = false, style }) {
   )
 }
 
+export function Code({ children, delay = 0.8, style }) {
+  return (
+    <motion.pre className="chip block code" variants={fadeUp} initial="hidden" animate="show" custom={delay} style={style}>
+      {children}
+    </motion.pre>
+  )
+}
+
 // Absolutely positioned diagram box inside a relative canvas.
 export function Box({ x, y, w, h, title, sub, delay = 0, accent, dashed, ghost, children, style, titleStyle, subStyle }) {
   return (

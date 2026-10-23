@@ -9,14 +9,17 @@ import StepSlide from './StepSlide.jsx'
 import { CreateCluster, Connect, ArgoCd, TheApp, GitOpsInPractice, Autoscaling, WhatWeBuilt } from './illustrations.jsx'
 
 // Key points come from the Makefile stepN targets and the run.sh "say" lines.
+// eslint-disable-next-line react/jsx-key
 const Step1 = () => (
   <StepSlide
     n={1}
-    title="A cluster in Jakarta"
+    title="Create a cluster in Jakarta"
     points={[
-      'JKT1 launched yesterday, operated by Arupa Cloud Nusantara',
-      'Same platform, tooling and prices as every other Civo region',
-      'One command, about two minutes to a working cluster',
+      'Terraform: a firewall and a k3s cluster, two nodes, metrics-server from the marketplace',
+      'terraform plan on stage, apply runs in the background while we talk',
+      <>
+        <code>{'lifecycle { ignore_changes = [pools[0].node_count] }'}</code>: the autoscaler owns the node count
+      </>,
     ]}
     illustration={<CreateCluster />}
   />

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Slide, Eyebrow, Title, Box, Arrow, ArrowDefs, ease } from '../ui.jsx'
+import { Slide, Eyebrow, Title, Box, Arrow, ArrowDefs, Logo, ArgoLogo, ease } from '../ui.jsx'
 
 // Canvas coordinates are stage pixels (1920x1080). The diagram builds itself
 // up in the order the demo does: cluster, git, app, load balancer, scaling.
@@ -38,26 +38,35 @@ export default function ArchitectureSlide() {
       <div style={{ position: 'absolute', inset: 0 }}>
         <svg width={1920} height={1080} style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
           <ArrowDefs />
-          <Arrow from={[360, 390]} to={[640, 390]} label="civo kubernetes create" delay={t.cluster} labelOffset={[0, -14]} labelSize={20} />
+          <Arrow from={[360, 390]} to={[640, 390]} label="Terraform (civo provider)" delay={t.cluster} labelOffset={[0, -14]} labelSize={20} />
           <Arrow from={[360, 545]} to={[700, 545]} label="pull" delay={t.git + 0.4} />
           <Arrow from={[1000, 545]} to={[1080, 560]} label="apply" delay={t.app} labelOffset={[8, -22]} labelSize={22} />
           <Arrow from={[1080, 722]} to={[360, 700]} label="public IP" delay={t.lb + 0.4} color="var(--cloud)" dashed labelOffset={[0, -16]} />
         </svg>
 
         {/* Left column: the outside world */}
-        <Box x={120} y={330} w={240} h={120} title="Laptop" sub="civo CLI, kubectl, git" subStyle={{ fontSize: 20 }} delay={t.laptop} />
+        <Box x={120} y={330} w={240} h={120} title="Laptop" sub="Terraform, kubectl, git" subStyle={{ fontSize: 20 }} delay={t.laptop} />
         <Box x={120} y={485} w={240} h={120} title="GitHub" sub="the repo, gitops/" subStyle={{ fontSize: 20 }} delay={t.git} />
         <Box x={120} y={640} w={240} h={120} title="The room" sub="phones, one QR code" subStyle={{ fontSize: 20 }} delay={t.lb + 0.6} />
 
         {/* The cluster */}
         <Box x={640} y={300} w={1160} h={660} accent ghost delay={t.cluster} style={{ justifyContent: 'flex-start', borderWidth: 2 }}>
-          <div className="box-title" style={{ color: 'var(--aurora)', fontSize: 32 }}>
-            Civo Kubernetes, JKT1 (Jakarta)
+          <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
+            <Logo height={34} />
+            <div className="box-title" style={{ color: 'var(--aurora)', fontSize: 32 }}>
+              Civo Kubernetes, JKT1 (Jakarta)
+            </div>
           </div>
           <div className="box-sub">k3s, two g4s.kube.medium nodes to start</div>
         </Box>
 
-        <Box x={700} y={485} w={300} h={120} title="Argo CD" sub="one root Application, app-of-apps" delay={t.git + 0.7} />
+        <Box x={700} y={485} w={300} h={120} delay={t.git + 0.7} style={{ flexDirection: 'row', alignItems: 'center', gap: 18 }}>
+          <ArgoLogo height={64} />
+          <div>
+            <div className="box-title">Argo CD</div>
+            <div className="box-sub">one root Application, app-of-apps</div>
+          </div>
+        </Box>
 
         <Box x={1080} y={420} w={680} h={64} dashed delay={t.scale} style={{ flexDirection: 'row', alignItems: 'center', gap: 20, padding: '0 24px' }}>
           <span className="box-title" style={{ fontSize: 26 }}>HPA</span>
