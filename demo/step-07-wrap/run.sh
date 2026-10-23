@@ -18,8 +18,9 @@ run "kubectl get nodes"
 run "civo kubernetes show '$CLUSTER_NAME' --region '$CIVO_REGION' | sed -n '1,/^$/p'"
 
 say ""
-say "Pricing is per hour, the same in Jakarta as London or New York, and this"
-say "whole thing is a few dollars a day. Everything you saw is in the repo."
+say "Everything is billed per hour at the published JKT1 prices, and this whole"
+say "thing is a few dollars a day. Delete it after and you pay nothing. Everything"
+say "you saw is in the repo."
 note "$GITOPS_REPO_URL"
 printf '\n'
 ok "Terima kasih, Bandung!"

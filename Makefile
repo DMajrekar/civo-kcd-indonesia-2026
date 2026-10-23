@@ -47,7 +47,7 @@ step1: ## Step 1: Create a Kubernetes cluster in Jakarta (JKT1)
 	$(call slide,Step 1: A cluster in Jakarta)
 	@echo "$(YELLOW)Key points:$(RESET)"
 	@echo "  - JKT1 launched yesterday, operated by Arupa Cloud Nusantara"
-	@echo "  - Same platform, tooling and prices as every other Civo region"
+	@echo "  - Same platform and tooling as every other Civo region, with Indonesian data residency"
 	@echo "  - One command, ~2 minutes to a working cluster"
 	@echo ""
 	@echo "  ┌───────────────┐    civo kubernetes create    ┌──────────────────────┐"

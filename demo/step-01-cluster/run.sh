@@ -11,8 +11,8 @@ TOOL="${CLUSTER_TOOL:-terraform}"
 banner "Step 01 — a cluster in Jakarta"
 
 say "Civo's Indonesia region, JKT1, launched yesterday, run by Arupa Cloud"
-say "Nusantara. Same platform, same tooling, same prices as every other Civo"
-say "region. Let's build on it."
+say "Nusantara. Same platform and tooling as every other Civo region, with the"
+say "data staying in Indonesia. Let's build on it."
 printf '\n'
 
 run "civo region ls"
