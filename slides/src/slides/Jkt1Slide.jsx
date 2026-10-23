@@ -3,7 +3,7 @@ import { Slide, Eyebrow, Title, Bullets, fadeUp, ease } from '../ui.jsx'
 import globe from '../assets/globe.gif'
 
 // Slide 2: the launch. A looping radar-globe GIF on the right (bundled, same
-// origin, no runtime fetch), the three facts on the left.
+// origin, no runtime fetch; it carries its own captions), the facts on the left.
 export default function Jkt1Slide() {
   return (
     <Slide>
@@ -46,23 +46,6 @@ export default function Jkt1Slide() {
             alt=""
             style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
           />
-          <motion.div
-            style={{
-              position: 'absolute',
-              left: 36,
-              bottom: 28,
-              display: 'flex',
-              alignItems: 'baseline',
-              gap: 16,
-              textShadow: '0 0 24px rgba(0,0,0,0.9)',
-            }}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease, delay: 1.2 }}
-          >
-            <span style={{ fontFamily: 'var(--mono)', fontSize: 44, fontWeight: 700, color: 'var(--aurora)' }}>jkt1</span>
-            <span style={{ fontSize: 26, color: 'var(--cloud)' }}>Jakarta · fra1 · lon1 · mum1 · nyc1</span>
-          </motion.div>
         </motion.div>
       </div>
     </Slide>
