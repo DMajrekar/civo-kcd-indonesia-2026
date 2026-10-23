@@ -29,14 +29,19 @@ board (`http://<ip>/board`) and the Argo CD UI (`https://localhost:8080`).
 
 ## Measured timings
 
-Fill in from `make rehearse` (`.state/rehearsal/*.log`).
+Full `make rehearse` from a deleted cluster, 23 Oct 2026, JKT1, Terraform path.
 
-| step | machine time | slot |
-|------|--------------|------|
-| 1 | | 3m |
-| 2 | | 4m |
-| 3 | | 4m |
-| 4 | | 4m |
-| 5 | | 4m |
-| 6 | 3m13s (load on → node Ready) | 8m |
-| 7 | | 2m |
+| step | machine time | slot | notes |
+|------|--------------|------|-------|
+| 1 | 0m05s | 3m | returns as soon as `terraform apply` is running in the background |
+| cluster create | ~3m30s | (covered by talk) | Terraform reports the cluster created after 1m27s; nodes Ready and metrics-server answering about 2 minutes later |
+| 2 | 0m06s | 4m | upper bound is the cluster wait above if you reach it early |
+| 3 | 2m05s | 4m | Argo CD install and first sync |
+| 4 | 0m54s | 4m | Valkey volume, pods, Civo load balancer IP |
+| 5 | 0m28s | 4m | drift reverted, commit pushed, rollout done |
+| 6 | 3m25s | 8m | load on → HPA 16 pods → Unschedulable → Civo node Ready |
+| 7 | 0m04s | 2m | |
+| **total** | **7m04s** | 29m | |
+
+The machine needs about ten minutes of the thirty, including the cluster
+build. The rest is talking, the room voting, and Argo CD's UI on screen.
