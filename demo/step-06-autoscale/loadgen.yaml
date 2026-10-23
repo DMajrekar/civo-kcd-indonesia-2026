@@ -1,4 +1,7 @@
-# Load generator: three fortio pods hammering the app Service.
+# Load generator: five fortio pods hammering the app Service. keepalive=false
+# so every request opens a new connection and the Service spreads them across
+# all pods; with keep-alive two pods take all the load and the HPA average
+# never crosses the target.
 # Not in gitops/ on purpose -- it is a stage prop, not part of the platform.
 apiVersion: apps/v1
 kind: Deployment
