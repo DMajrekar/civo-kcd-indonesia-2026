@@ -6,8 +6,8 @@
 #   scripts/rehearse.sh 5 6        just these
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 export DEMO_AUTO=1 NO_CLEAR=1
-STEPS=("$@"); [[ ${#STEPS[@]} -eq 0 ]] && STEPS=(1 2 3 4 5 6 7 8)
-budget() { case "$1" in 1) echo 3;; 2) echo 4;; 3) echo 4;; 4) echo 4;; 5) echo 2;; 6) echo 3;; 7) echo 8;; 8) echo 2;; *) echo 0;; esac; }
+STEPS=("$@"); [[ ${#STEPS[@]} -eq 0 ]] && STEPS=(1 2 3 4 5 6 7)
+budget() { case "$1" in 1) echo 3;; 2) echo 4;; 3) echo 4;; 4) echo 4;; 5) echo 2;; 6) echo 3;; 7) echo 8;; *) echo 0;; esac; }
 LOGDIR="$STATE/rehearsal"; mkdir -p "$LOGDIR"
 TOTAL=0; FAILED=0; RESULTS=()
 banner "Rehearsal — timed, no pauses"

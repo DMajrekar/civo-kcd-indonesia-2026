@@ -57,4 +57,4 @@ run "kubectl delete -f '$HERE/loadgen.yaml' --ignore-not-found"
 
 printf '\n'
 ok "Pods and nodes scaled up on demand, and nothing was applied by hand."
-note "next:  make step8"
+note "that's the demo -- make clean afterwards, not on stage"

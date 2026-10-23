@@ -2,7 +2,7 @@
 # Run `make demo` for the 30-minute walkthrough. `make help` lists targets.
 
 .PHONY: help demo prep rehearse reset doctor set-repo standby argocd-ui clean clean-all \
-        step1 step2 step3 step4 step5 step6 step7 step8
+        step1 step2 step3 step4 step5 step6 step7
 
 -include .env
 export
@@ -45,7 +45,7 @@ help: ## Show this help
 # Runs the steps in order with an [enter] between them (DEMO_AUTO=1 skips it),
 # so the presenter decides when the next screen clears.
 demo: ## Run the full 30-minute demo
-	@steps=(step1 step2 step3 step4 step5 step6 step7 step8); \
+	@steps=(step1 step2 step3 step4 step5 step6 step7); \
 	for i in $${!steps[@]}; do \
 	  $(MAKE) --no-print-directory $${steps[$$i]} || exit $$?; \
 	  n=$${steps[$$((i+1))]-}; [ -z "$$n" ] && break; \
@@ -83,9 +83,6 @@ step7: ## Step 7: Traffic spike -- HPA adds pods, Civo autoscaler adds nodes
 	$(call slide,Step 7: Autoscaling)
 	@NO_CLEAR=1 bash demo/step-07-autoscale/run.sh
 
-step8: ## Step 8: Summary and cost
-	$(call slide,Step 8: What we built)
-	@NO_CLEAR=1 bash demo/step-08-wrap/run.sh
 
 # -------------------------------------------------------------- operations
 

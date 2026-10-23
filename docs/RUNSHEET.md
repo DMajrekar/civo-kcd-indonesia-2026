@@ -15,7 +15,7 @@ board (`http://<ip>/board`) and the Argo CD UI (`https://localhost:8080`).
 | 00:17 | `step5` | TITLE before, hand edit, Application OutOfSync then Synced, TITLE after | "Someone fixed prod." Argo CD puts it back within seconds. |
 | 00:19 | `step6` | whoami v1.0.0, diff, push, rollout, whoami v1.1.0 | Board turns red, title changes, votes survive. |
 | 00:22 | `step7` | HPA, Pending, new node | Longest wait is Civo adding a node (~2-3 min). Talk through the autoscaler logs. |
-| 00:27 | `step8` | recap, `civo kubernetes show` | Cost, repo link, winner of the vote. Terima kasih. |
+| 00:27 | — | Recap + Thanks slides | Repo link, winner of the vote. Terima kasih. |
 | 00:29 | — | Q&A | `make clean` after, not on stage. |
 
 ## Voting runs on the standby
@@ -55,7 +55,6 @@ Full `make rehearse` from a deleted cluster, 23 Oct 2026, JKT1, Terraform path
 | 5 | ~0m10s | 2m | hand edit reverted by selfHeal |
 | 6 | ~0m15s | 3m | commit pushed, refresh, rollout done |
 | 7 | 2m44s | 8m | load on → HPA 16 pods → Unschedulable → Civo node Ready |
-| 8 | 0m04s | 2m | |
 | **total** | **6m55s** | 29m | |
 
 The machine needs about seven minutes of the thirty. Step 1 is the one real
