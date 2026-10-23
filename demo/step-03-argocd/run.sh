@@ -39,10 +39,9 @@ say ""
 say "Now the only manifest we apply by hand: a root Application that points at"
 say "the repo. Everything under gitops/root is an Application too, so one"
 say "apply bootstraps the whole cluster."
-sed -e "s#__REPO_URL__#$GITOPS_REPO_URL#" -e "s#__BRANCH__#$GITOPS_BRANCH#" "$HERE/root-app.yaml" > "$STATE/root-app.yaml"
+sed -e "s#__REPO_URL__#$GITOPS_REPO_URL#" -e "s#__BRANCH__#$GITOPS_BRANCH#" -e "s#__ROOT_PATH__#$GITOPS_ROOT_PATH#" "$HERE/root-app.yaml" > "$STATE/root-app.yaml"
 run "show_file '$STATE/root-app.yaml'"
-sed -e "s#__REPO_URL__#$GITOPS_REPO_URL#" -e "s#__BRANCH__#$GITOPS_BRANCH#" "$HERE/root-app.yaml" \
-  | kubectl apply -f - >/dev/null
+kubectl apply -f "$STATE/root-app.yaml" >/dev/null
 ok "root Application applied"
 
 wait_for "Argo CD to discover the child Applications" 180 \

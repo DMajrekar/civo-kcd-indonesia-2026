@@ -1,0 +1,22 @@
+{
+  "name": "kcd-slides",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Slide deck for 'Kubernetes on Civo: from zero to autoscaling in 30 minutes', KCD Indonesia 2026",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "framer-motion": "^12.23.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.0.0",
+    "qrcode": "^1.5.4",
+    "vite": "^7.1.0"
+  }
+}

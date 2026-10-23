@@ -327,6 +327,8 @@ CIVO_NODE_COUNT="${CIVO_NODE_COUNT:-2}"
 CIVO_K8S_VERSION="${CIVO_K8S_VERSION:-}"
 GITOPS_REPO_URL="${GITOPS_REPO_URL:-https://github.com/dmajrekar/civo-kcd-indonesia-2026}"
 GITOPS_BRANCH="${GITOPS_BRANCH:-main}"
+# The standby points at gitops/root-standby, which adds the slides deck.
+GITOPS_ROOT_PATH="${GITOPS_ROOT_PATH:-gitops/root}"
 ARGOCD_VERSION="${ARGOCD_VERSION:-v3.5.6}"
 STATE="$REPO_ROOT/.state"
 # One kubeconfig per cluster, so the standby and the live cluster never mix.
