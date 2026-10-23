@@ -31,9 +31,6 @@ wait_for "both nodes to be Ready" 600 \
   "[[ \$(kubectl get nodes --no-headers 2>/dev/null | grep -c ' Ready ') -ge $CIVO_NODE_COUNT ]]"
 run "kubectl get nodes -o wide"
 
-wait_for "metrics-server to answer" 300 "kubectl top nodes"
-run "kubectl top nodes"
-
 printf '\n'
 ok "Connected. Cluster ID $CID"
 note "next:  make step3"

@@ -10,7 +10,10 @@ banner "Step 06 — autoscaling"
 
 say "Two autoscalers, both installed from git. The HPA scales pods on CPU. The"
 say "cluster autoscaler, in kube-system with a Civo API key, adds nodes when"
-say "pods cannot be scheduled. Right now: two nodes, two pods."
+say "pods cannot be scheduled. Right now: two nodes, two pods, mostly idle."
+say "The CPU numbers come from metrics-server, installed from the Civo marketplace."
+wait_for "metrics-server to answer" 300 "kubectl top nodes"
+run "kubectl top nodes"
 run "kubectl get nodes && kubectl -n $APP_NS get hpa"
 run "kubectl -n kube-system logs deploy/cluster-autoscaler --tail=3 | cut -c1-150"
 
