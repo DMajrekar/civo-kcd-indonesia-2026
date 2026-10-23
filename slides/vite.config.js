@@ -21,7 +21,16 @@ function qrPlugin() {
         errorCorrectionLevel: 'M',
         color: { dark: '#000000ff', light: '#ffffffff' },
       })
-      return `export const repoUrl = ${JSON.stringify(repo)};\nexport const repoQr = ${JSON.stringify(svg)};\n`
+      // The voting app runs on the standby cluster behind a Civo reserved IP,
+      // so this URL survives rebuilds. Changing it means rebuilding the deck.
+      const votes = 'http://49.128.189.194/'
+      const votesSvg = await QRCode.toString(votes, {
+        type: 'svg',
+        margin: 1,
+        errorCorrectionLevel: 'M',
+        color: { dark: '#000000ff', light: '#ffffffff' },
+      })
+      return `export const repoUrl = ${JSON.stringify(repo)};\nexport const repoQr = ${JSON.stringify(svg)};\nexport const votesUrl = ${JSON.stringify(votes)};\nexport const votesQr = ${JSON.stringify(votesSvg)};\n`
     },
     // React's production build embeds a docs URL in its error messages. It is
     // never fetched, but the deck must contain no external URL except the repo.
