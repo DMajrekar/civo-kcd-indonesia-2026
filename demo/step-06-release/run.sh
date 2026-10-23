@@ -31,7 +31,9 @@ say "Argo polls git every three minutes (or takes a webhook). We will not wait"
 say "on stage -- this asks it to look now."
 run "kubectl -n argocd annotate application $APP argocd.argoproj.io/refresh=normal --overwrite"
 
-wait_for "Argo CD to sync the new revision" 300 \
+say "Watch the Application: OutOfSync on the new commit, then Synced as the"
+say "new image lands in the Deployment."
+watch_until 300 "kubectl -n argocd get application $APP -w" \
   "kubectl -n $APP_NS get deploy $APP -o jsonpath='{.spec.template.spec.containers[0].image}' | grep -q v1.1.0"
 run "kubectl -n $APP_NS rollout status deploy/$APP --timeout=180s"
 run "kubectl -n $APP_NS get pods -l app=$APP"
