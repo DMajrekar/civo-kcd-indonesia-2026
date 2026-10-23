@@ -12,7 +12,7 @@ import AutoscalersSlide from './AutoscalersSlide.jsx'
 import RecapSlide from './RecapSlide.jsx'
 import ThanksSlide from './ThanksSlide.jsx'
 import StepSlide from './StepSlide.jsx'
-import { CreateCluster, Connect, ArgoCd, TheApp, Drift, Release, Autoscaling, WhatWeBuilt } from './illustrations.jsx'
+import { CreateCluster, Connect, ArgoCd, TheApp, Drift, Release } from './illustrations.jsx'
 
 // Key points come from the Makefile stepN targets and the run.sh "say" lines.
 const Step1 = () => (
@@ -97,32 +97,6 @@ const Step6 = () => (
   />
 )
 
-const Step7 = () => (
-  <StepSlide
-    n={7}
-    title="Autoscaling"
-    points={[
-      'HPA: CPU above 50% means more pods, up to 20',
-      'Pods go Pending when two nodes are full',
-      'Cluster autoscaler, with the Civo cloud provider, adds nodes, up to 5',
-    ]}
-    illustration={<Autoscaling />}
-  />
-)
-
-const Step8 = () => (
-  <StepSlide
-    n={8}
-    title="What we built, and what it costs"
-    points={[
-      'Under thirty minutes, in a region that is one day old',
-      'Billed per hour; delete it after and pay nothing',
-      'Everything you saw is in the repo',
-    ]}
-    illustration={<WhatWeBuilt />}
-  />
-)
-
 export const slides = [
   TitleSlide,
   Jkt1Slide,
@@ -141,8 +115,6 @@ export const slides = [
   WhyAutoscaleSlide,
   AutoscalerNeedsSlide,
   AutoscalersSlide,
-  Step7,
-  Step8,
   RecapSlide,
   ThanksSlide,
 ]
