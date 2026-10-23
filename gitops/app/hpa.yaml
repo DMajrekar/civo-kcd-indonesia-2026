@@ -6,7 +6,7 @@ metadata:
 spec:
   scaleTargetRef: {apiVersion: apps/v1, kind: Deployment, name: jakarta-votes}
   minReplicas: 2
-  maxReplicas: 20   # 20 x 250m CPU does not fit on two small nodes -> cluster autoscaler
+  maxReplicas: 20   # 20 x 500m CPU does not fit on two nodes -> cluster autoscaler
   metrics:
     - type: Resource
       resource:

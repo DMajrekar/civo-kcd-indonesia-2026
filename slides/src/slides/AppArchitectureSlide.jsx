@@ -34,11 +34,11 @@ export default function AppArchitectureSlide() {
               Civo Kubernetes, JKT1 (Jakarta)
             </div>
           </div>
-          <div className="box-sub">k3s, two g4s.kube.medium nodes to start</div>
+          <div className="box-sub">k3s, two g4s.kube.large nodes to start</div>
         </Box>
 
         <Box x={300} y={520} w={340} h={130} title="Load balancer" sub="Service type LoadBalancer, public IP" accent delay={t.lb} />
-        <Box x={760} y={470} w={420} h={230} title="jakarta-votes" sub="Deployment, 2 pods to start, 250m CPU each" delay={t.app}>
+        <Box x={760} y={470} w={420} h={230} title="jakarta-votes" sub="Deployment, 2 pods to start, 500m CPU each" delay={t.app}>
           <Pods n={2} delay={t.app + 0.3} />
         </Box>
         <Box x={1260} y={470} w={360} h={130} title="Valkey" sub="StatefulSet, 1 replica" delay={t.valkey} />

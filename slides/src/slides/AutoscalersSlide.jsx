@@ -133,7 +133,7 @@ export default function AutoscalersSlide() {
               >
                 <div style={{ fontSize: 26, fontWeight: 600, color: present ? 'var(--white)' : 'var(--dim)' }}>node {i + 1}</div>
                 <div className="muted" style={{ fontSize: 20 }}>
-                  {present ? 'g4s.kube.medium' : pendingHere ? 'no room: Pending' : 'added by autoscaler'}
+                  {present ? 'g4s.kube.large' : pendingHere ? 'no room: Pending' : 'added by autoscaler'}
                 </div>
               </motion.div>
             )

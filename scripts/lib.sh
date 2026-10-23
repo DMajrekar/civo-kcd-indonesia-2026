@@ -349,7 +349,7 @@ civo_auth() {
 # Cluster settings every step shares. .env wins; these are the defaults.
 CLUSTER_NAME="${CLUSTER_NAME:-kcd-jakarta}"
 CIVO_REGION="$(echo "${CIVO_REGION:-JKT1}" | tr '[:lower:]' '[:upper:]')"
-CIVO_NODE_SIZE="${CIVO_NODE_SIZE:-g4s.kube.medium}"
+CIVO_NODE_SIZE="${CIVO_NODE_SIZE:-g4s.kube.large}"
 CIVO_NODE_COUNT="${CIVO_NODE_COUNT:-2}"
 CIVO_K8S_VERSION="${CIVO_K8S_VERSION:-}"
 GITOPS_REPO_URL="${GITOPS_REPO_URL:-https://github.com/dmajrekar/civo-kcd-indonesia-2026}"

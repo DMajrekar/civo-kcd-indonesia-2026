@@ -24,7 +24,7 @@ run "kubectl apply -f '$HERE/loadgen.yaml'"
 
 say ""
 say "Watch the HPA. Metrics land every 15-60 seconds; pods double, then double"
-say "again, until 20 x 250m CPU no longer fits on two nodes. The watch ends"
+say "again, until 20 x 500m CPU no longer fits on two nodes. The watch ends"
 say "when the first pod is stuck Pending with nowhere to go."
 # The watch stops on "Unschedulable", not on Pending: every pod spends a
 # moment Pending on its way to a node, and the condition must say so.

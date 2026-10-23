@@ -11,9 +11,9 @@ export function CreateCluster() {
         <Arrow from={[250, 150]} to={[480, 150]} label="terraform apply" delay={1.2} labelSize={21} />
       </svg>
       <Box x={0} y={90} w={250} h={120} title="laptop" sub="Terraform, civo provider" delay={0.7} />
-      <Box x={480} y={60} w={340} h={180} title="JKT1" sub="firewall + k3s cluster, 2 x g4s.kube.medium, metrics-server" accent delay={1.5} />
+      <Box x={480} y={60} w={340} h={180} title="JKT1" sub="firewall + k3s cluster, 2 x g4s.kube.large, metrics-server" accent delay={1.5} />
       <Code delay={2.0} style={{ position: 'absolute', left: 0, top: 300, width: 820, fontSize: 23 }}>
-        {'resource "civo_kubernetes_cluster" "demo" {\n  pools { size = "g4s.kube.medium"  node_count = 2 }\n  '}
+        {'resource "civo_kubernetes_cluster" "demo" {\n  pools { size = "g4s.kube.large"  node_count = 2 }\n  '}
         <span className="hl">{'lifecycle { ignore_changes = [pools[0].node_count] }'}</span>
         {'\n}'}
       </Code>
@@ -204,7 +204,7 @@ export function Autoscaling() {
       <Stat x={580} y={160} big="5" label="nodes, autoscaler max" delay={2.8} />
 
       <motion.div className="muted" style={{ position: 'absolute', left: 0, top: 410, fontSize: 26, lineHeight: 1.4 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 3.2 }}>
-        Three load generators push as many requests as they can. Metrics land every 15 to 60 seconds; 20 x 250m CPU does not fit on two nodes, so pods go Pending and Civo adds a node (2 to 3 minutes).
+        Three load generators push as many requests as they can. Metrics land every 15 to 60 seconds; 20 x 500m CPU does not fit on two nodes, so pods go Pending and Civo adds a node (2 to 3 minutes).
       </motion.div>
     </>
   )

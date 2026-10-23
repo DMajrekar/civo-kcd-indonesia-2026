@@ -10,7 +10,7 @@ variable "region" {
 
 variable "node_size" {
   type    = string
-  default = "g4s.kube.medium" # 2 vCPU / 4 GB
+  default = "g4s.kube.large" # 4 vCPU / 8 GB
 }
 
 variable "node_count" {

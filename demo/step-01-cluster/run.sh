@@ -19,7 +19,7 @@ printf '\n'
 run "civo region ls"
 
 say ""
-say "We start with two g4s.kube.medium nodes (2 vCPU / 4 GB) and let the"
+say "We start with two g4s.kube.large nodes (4 vCPU / 8 GB) and let the"
 say "autoscaler add more later."
 
 if civo_cluster_exists "$CLUSTER_NAME" "$CIVO_REGION"; then

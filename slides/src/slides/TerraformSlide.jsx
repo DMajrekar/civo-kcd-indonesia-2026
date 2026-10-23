@@ -37,7 +37,7 @@ const right = [
   '  write_kubeconfig = true',
   '',
   '  pools {',
-  '    size       = var.node_size   # g4s.kube.medium',
+  '    size       = var.node_size   # g4s.kube.large',
   '    node_count = var.node_count  # 2',
   '  }',
   '',
