@@ -103,6 +103,22 @@ export default function Deck() {
     return () => window.removeEventListener('keydown', onKey)
   }, [index, go])
 
+  // Touch: swipe left/right, or tap the right two-thirds for next and the
+  // left third for previous. Lets the deck be reviewed on a phone.
+  useEffect(() => {
+    let startX = 0, startY = 0, startT = 0
+    const onStart = (e) => { const t = e.touches[0]; startX = t.clientX; startY = t.clientY; startT = Date.now() }
+    const onEnd = (e) => {
+      const t = e.changedTouches[0]
+      const dx = t.clientX - startX, dy = t.clientY - startY, dt = Date.now() - startT
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) { go(index + (dx < 0 ? 1 : -1)); return }
+      if (Math.abs(dx) < 10 && Math.abs(dy) < 10 && dt < 400) go(index + (t.clientX > window.innerWidth / 3 ? 1 : -1))
+    }
+    window.addEventListener('touchstart', onStart, { passive: true })
+    window.addEventListener('touchend', onEnd, { passive: true })
+    return () => { window.removeEventListener('touchstart', onStart); window.removeEventListener('touchend', onEnd) }
+  }, [index, go])
+
   const Current = slides[index]
   const variants = {
     enter: (d) => ({ opacity: 0, x: 80 * d, scale: 0.985 }),
