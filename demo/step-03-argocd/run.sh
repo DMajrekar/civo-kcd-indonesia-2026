@@ -36,11 +36,13 @@ say "the repo. Everything under gitops/root is an Application too, so one"
 say "apply bootstraps the whole cluster."
 sed -e "s#__REPO_URL__#$GITOPS_REPO_URL#" -e "s#__BRANCH__#$GITOPS_BRANCH#" -e "s#__ROOT_PATH__#$GITOPS_ROOT_PATH#" "$HERE/root-app.yaml" > "$STATE/root-app.yaml"
 run "show_file '$STATE/root-app.yaml'"
-kubectl apply -f "$STATE/root-app.yaml" >/dev/null
-ok "root Application applied"
+run "kubectl apply -f '$STATE/root-app.yaml'"
 
-wait_for "Argo CD to discover the child Applications" 180 \
-  "kubectl -n argocd get application $APP cluster-autoscaler"
+say ""
+say "Watch the Application objects appear: root first, then the ones it finds"
+say "in gitops/root, and their sync status turning to Synced."
+watch_until 180 "kubectl -n argocd get applications -w" \
+  "[[ \$(kubectl -n argocd get applications --no-headers 2>/dev/null | awk '\$2==\"Synced\"' | wc -l) -ge 3 ]]"
 run "kubectl -n argocd get applications"
 
 # ---------------------------------------------------------------- the UI

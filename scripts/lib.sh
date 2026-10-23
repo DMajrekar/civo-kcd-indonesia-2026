@@ -388,3 +388,22 @@ tf_vars() {
     "$CLUSTER_NAME" "$CIVO_REGION" "$CIVO_NODE_SIZE" "$CIVO_NODE_COUNT" "$CIVO_K8S_VERSION" "$KUBECONFIG"
 }
 TF_LOG_FILE="$STATE/terraform-apply-$CLUSTER_NAME.log"
+
+# watch_until <seconds> "<watch command>" "<done condition>"
+#
+# Stream a `kubectl ... -w` style command to the screen and stop it as soon as
+# the condition holds (or the time is up). Rows appear as the cluster changes,
+# which is the point: the room sees objects being created, not a final table.
+watch_until() {
+  local secs="$1" cmd="$2" cond="$3" pid deadline=$(( SECONDS + secs ))
+  printf '\n%s%s$ %s%s\n\n' "$BOLD" "$GREEN" "$cmd" "$RESET"
+  eval "$cmd" &
+  pid=$!
+  while (( SECONDS < deadline )); do
+    if eval "$cond" >/dev/null 2>&1; then sleep 2; break; fi
+    kill -0 "$pid" 2>/dev/null || break
+    sleep 1
+  done
+  kill "$pid" 2>/dev/null || true; wait "$pid" 2>/dev/null || true
+  printf '\n'
+}
