@@ -29,6 +29,18 @@ resource "helm_release" "argocd" {
     { name = "configs.params.server\\.insecure", value = "true" },
   ]
 
+  # Requests so the scheduler accounts for Argo CD, memory limits so a leak
+  # cannot take a node down. No CPU limits: throttling only makes syncs slow.
+  values = [yamlencode({
+    controller     = { resources = { requests = { cpu = "250m", memory = "256Mi" }, limits = { memory = "768Mi" } } }
+    repoServer     = { resources = { requests = { cpu = "100m", memory = "128Mi" }, limits = { memory = "512Mi" } } }
+    server         = { resources = { requests = { cpu = "100m", memory = "128Mi" }, limits = { memory = "256Mi" } } }
+    redis          = { resources = { requests = { cpu = "50m", memory = "64Mi" }, limits = { memory = "128Mi" } } }
+    applicationSet = { resources = { requests = { cpu = "50m", memory = "64Mi" }, limits = { memory = "128Mi" } } }
+    notifications  = { resources = { requests = { cpu = "50m", memory = "64Mi" }, limits = { memory = "128Mi" } } }
+    dex            = { resources = { requests = { cpu = "50m", memory = "64Mi" }, limits = { memory = "128Mi" } } }
+  })]
+
   wait    = true
   timeout = 600
 

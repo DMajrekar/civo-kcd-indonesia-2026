@@ -35,7 +35,9 @@ spec:
           volumeMounts:
             - {name: data, mountPath: /data}
           resources:
-            requests: {cpu: 50m, memory: 64Mi}
+            # Every request to the app is two Valkey round trips. Give it a
+            # real CPU share so it is never starved on a busy node.
+            requests: {cpu: 500m, memory: 128Mi}
             limits:   {memory: 256Mi}
           readinessProbe:
             exec: {command: ["valkey-cli", "ping"]}
