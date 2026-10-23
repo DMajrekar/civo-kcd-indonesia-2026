@@ -420,6 +420,16 @@ watch_until() {
     kill -0 "$pid" 2>/dev/null || break
     sleep 1
   done
-  kill "$pid" 2>/dev/null || true; wait "$pid" 2>/dev/null || true
+  # $pid is the subshell wrapping the command: kill its children too, or a
+  # `kubectl ... -w` outlives the step.
+  kill_tree "$pid"
+  wait "$pid" 2>/dev/null || true
   printf '\n'
+}
+
+# kill_tree <pid> -- TERM a process and every descendant, children first.
+kill_tree() {
+  local child
+  for child in $(pgrep -P "$1" 2>/dev/null); do kill_tree "$child"; done
+  kill -TERM "$1" 2>/dev/null || true
 }

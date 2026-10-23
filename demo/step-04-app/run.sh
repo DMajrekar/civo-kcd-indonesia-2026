@@ -31,7 +31,6 @@ run "civo loadbalancer ls --region '$CIVO_REGION'"
 
 IP="$(app_ip)"
 wait_for "the app to answer on http://$IP" 180 "curl -fsS -m 5 http://$IP/healthz"
-run "curl -s http://$IP/api/whoami | jq ."
 
 printf '\n'
 ok "Live at http://$IP   — put http://$IP/board on the projector"

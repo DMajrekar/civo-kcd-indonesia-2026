@@ -9,14 +9,20 @@ title_env() { kubectl -n "$APP_NS" get deploy "$APP" -o jsonpath='{.spec.templat
 banner "Step 05 — GitOps in practice"
 
 # ------------------------------------------------------------------ drift
-say "First, the thing GitOps protects you from. Someone 'fixes' production"
-say "with kubectl:"
+say "First, the thing GitOps protects you from. This is the title git says the"
+say "app should have:"
+run "kubectl -n $APP_NS get deploy $APP -o jsonpath='{.spec.template.spec.containers[0].env[0]}{\"\\n\"}'"
+say ""
+say "Now someone 'fixes' production with kubectl:"
 run "kubectl -n $APP_NS set env deploy/$APP TITLE='edited by hand in prod (oops)'"
+run "kubectl -n $APP_NS get deploy $APP -o jsonpath='{.spec.template.spec.containers[0].env[0]}{\"\\n\"}'"
 say ""
 say "Argo CD notices the live state no longer matches git, and puts it back."
-wait_for "Argo CD to revert the hand edit" 300 "[[ \"\$(title_env)\" != 'edited by hand in prod (oops)' ]]"
-run "kubectl -n argocd get application $APP -o jsonpath='{.status.sync.status} {.status.health.status}{\"\\n\"}'"
-run "kubectl -n $APP_NS get deploy $APP -o jsonpath='{.spec.template.spec.containers[0].env[0].value}{\"\\n\"}'"
+say "Watch the Application go OutOfSync, then Synced again:"
+watch_until 300 "kubectl -n argocd get application $APP -w" \
+  "[[ \"\$(title_env)\" != 'edited by hand in prod (oops)' ]]"
+say "And the Deployment is back to what git says:"
+run "kubectl -n $APP_NS get deploy $APP -o jsonpath='{.spec.template.spec.containers[0].env[0]}{\"\\n\"}'"
 
 # ----------------------------------------------------------------- release
 say ""
