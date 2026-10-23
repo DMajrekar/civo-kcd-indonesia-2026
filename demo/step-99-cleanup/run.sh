@@ -36,6 +36,17 @@ if have_kubeconfig; then
     | while read -r ns name; do run "kubectl -n '$ns' delete svc '$name' --timeout=120s || true"; done
 fi
 VOLS=""; [[ -n "$CID" ]] && VOLS=$(civo_cluster_volumes "$CID" "$CIVO_REGION")
+# Remove the given volume IDs, skipping any that are already gone (the same
+# IDs are swept more than once below, and a volume often goes with the cluster).
+remove_volumes() {
+  [[ $# -eq 0 ]] && return 0
+  local existing v
+  existing="$(civo volume ls --region "$CIVO_REGION" -o json 2>/dev/null | jq -r '.[]?.id')"
+  for v in "$@"; do
+    grep -qx "$v" <<<"$existing" && run "civo volume remove '$v' --region '$CIVO_REGION' --yes || true"
+  done
+  return 0
+}
 if tf_has_state; then
   # Two phases: the cluster first (Argo CD and the kubeconfig go with it), then
   # the volumes the cluster's PVCs created, then the network and firewall.
@@ -45,22 +56,22 @@ if tf_has_state; then
     run "tf destroy -auto-approve -input=false -no-color -target=civo_kubernetes_cluster.demo $(tf_vars)"
   fi
   sleep 5
-  for v in $VOLS; do run "civo volume remove '$v' --region '$CIVO_REGION' --yes || true"; done
+  remove_volumes $VOLS
   # Anything else still in this cluster's network blocks the network delete.
   NET_ID="$(tf output -raw network_id 2>/dev/null || true)"
   if [[ -n "$NET_ID" ]]; then
-    civo volume ls --region "$CIVO_REGION" -o json 2>/dev/null \
-      | jq -r --arg n "$NET_ID" '.[]? | select(.network_id==$n) | .id' \
-      | while read -r v; do [[ -n "$v" ]] && run "civo volume remove '$v' --region '$CIVO_REGION' --yes || true"; done
+    remove_volumes $(civo volume ls --region "$CIVO_REGION" -o json 2>/dev/null \
+      | jq -r --arg n "$NET_ID" '.[]? | select(.network_id==$n) | .id')
   fi
   run "tf destroy -auto-approve -input=false -no-color $(tf_vars)"
   tf workspace select default >/dev/null 2>&1 && tf workspace delete "$CLUSTER_NAME" >/dev/null 2>&1 || true
 else
   run "civo kubernetes remove '$CID' --region '$CIVO_REGION' --yes"
-  for v in $VOLS; do run "civo volume remove '$v' --region '$CIVO_REGION' --yes || true"; done
+  sleep 5
+  remove_volumes $VOLS
 fi
 rm -f "$TF_LOG_FILE"
-for v in $VOLS; do run "civo volume remove '$v' --region '$CIVO_REGION' --yes || true"; done
+remove_volumes $VOLS   # safety net: no-op when the first pass got them all
 
 # Load balancers can outlive a deleted cluster. Remove any left over.
 sleep 5
