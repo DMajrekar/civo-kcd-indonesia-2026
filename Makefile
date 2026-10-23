@@ -89,8 +89,8 @@ step3: ## Step 3: Install Argo CD and point it at git
 step4: ## Step 4: The application arrives from git, with a Civo load balancer
 	$(call slide,Step 4: The application)
 	@echo "$(YELLOW)Key points:$(RESET)"
-	@echo "  - Valkey on a Civo volume, Deployment, Service(LoadBalancer), HPA: all from gitops/app
-	@echo "  - QR code on the board: the room votes on my free day in Jakarta""
+	@echo "  - Valkey on a Civo volume, Deployment, Service(LoadBalancer), HPA: all from gitops/app"
+	@echo "  - QR code on the board: the room votes on my free day in Jakarta"
 	@echo "  - Service type LoadBalancer gives a public IP on Civo, no extras"
 	@echo ""
 	@NO_CLEAR=1 bash demo/step-04-app/run.sh
