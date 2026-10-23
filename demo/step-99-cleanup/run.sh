@@ -9,10 +9,12 @@ civo_auth
 banner "Cleanup — delete '$CLUSTER_NAME'"
 
 CID="$(civo_cluster_id "$CLUSTER_NAME" "$CIVO_REGION")"
-if [[ -z "$CID" ]]; then
-  ok "no cluster named exactly '$CLUSTER_NAME' in $CIVO_REGION — nothing to delete"
+tf_has_state() { [[ -d "$TF_DIR/terraform.tfstate.d/$CLUSTER_NAME" ]] && tf_init && [[ -n "$(tf state list 2>/dev/null)" ]]; }
+if [[ -z "$CID" ]] && ! tf_has_state; then
+  ok "no cluster named exactly '$CLUSTER_NAME' in $CIVO_REGION and no Terraform state — nothing to delete"
   exit 0
 fi
+[[ -z "$CID" ]] && warn "no cluster, but Terraform still tracks resources (network/firewall) — destroying those"
 
 warn "This permanently deletes '$CLUSTER_NAME' ($CID), its load balancer and volumes."
 if [[ -z "${DEMO_AUTO-}" && -t 0 ]]; then
@@ -33,12 +35,29 @@ if have_kubeconfig; then
     | jq -r '.items[] | select(.spec.type=="LoadBalancer") | "\(.metadata.namespace) \(.metadata.name)"' \
     | while read -r ns name; do run "kubectl -n '$ns' delete svc '$name' --timeout=120s || true"; done
 fi
-VOLS=$(civo_cluster_volumes "$CID" "$CIVO_REGION")
-if [[ -d "$TF_DIR/terraform.tfstate.d/$CLUSTER_NAME" ]] && tf_init && tf state list 2>/dev/null | grep -q civo_kubernetes_cluster; then
-  run "tf destroy -auto-approve -input=false $(tf_vars)"
+VOLS=""; [[ -n "$CID" ]] && VOLS=$(civo_cluster_volumes "$CID" "$CIVO_REGION")
+if tf_has_state; then
+  # Two phases: the cluster first (Argo CD and the kubeconfig go with it), then
+  # the volumes the cluster's PVCs created, then the network and firewall.
+  # Destroying everything at once fails: Civo will not delete a network that
+  # still holds volumes, and the provider times out waiting.
+  if tf state list 2>/dev/null | grep -q civo_kubernetes_cluster; then
+    run "tf destroy -auto-approve -input=false -no-color -target=civo_kubernetes_cluster.demo $(tf_vars)"
+  fi
+  sleep 5
+  for v in $VOLS; do run "civo volume remove '$v' --region '$CIVO_REGION' --yes || true"; done
+  # Anything else still in this cluster's network blocks the network delete.
+  NET_ID="$(tf output -raw network_id 2>/dev/null || true)"
+  if [[ -n "$NET_ID" ]]; then
+    civo volume ls --region "$CIVO_REGION" -o json 2>/dev/null \
+      | jq -r --arg n "$NET_ID" '.[]? | select(.network_id==$n) | .id' \
+      | while read -r v; do [[ -n "$v" ]] && run "civo volume remove '$v' --region '$CIVO_REGION' --yes || true"; done
+  fi
+  run "tf destroy -auto-approve -input=false -no-color $(tf_vars)"
   tf workspace select default >/dev/null 2>&1 && tf workspace delete "$CLUSTER_NAME" >/dev/null 2>&1 || true
 else
   run "civo kubernetes remove '$CID' --region '$CIVO_REGION' --yes"
+  for v in $VOLS; do run "civo volume remove '$v' --region '$CIVO_REGION' --yes || true"; done
 fi
 rm -f "$TF_LOG_FILE"
 for v in $VOLS; do run "civo volume remove '$v' --region '$CIVO_REGION' --yes || true"; done
