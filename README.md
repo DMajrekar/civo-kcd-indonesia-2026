@@ -9,7 +9,7 @@ make demo
 
 | Step | What happens | Civo / Kubernetes thing shown |
 |------|--------------|-------------------------------|
-| 1 | Terraform plan, apply in the background, cluster in JKT1 | regions, sizes, marketplace apps, `ignore_changes` on node count |
+| 1 | Terraform plan and apply, wait for the cluster in JKT1 | regions, sizes, marketplace apps, `ignore_changes` on node count |
 | 2 | kubeconfig, nodes, `kubectl top` | metrics-server |
 | 3 | Argo CD is already there (Terraform Helm release); one root Application by hand; autoscaler reuses Civo's pre-installed API Secret | app-of-apps, secrets stay out of git |
 | 4 | App + Valkey + HPA arrive from git; public IP; QR on the projector | Civo load balancer, Civo volume (PVC) |

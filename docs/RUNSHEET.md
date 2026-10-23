@@ -7,7 +7,7 @@ board (`http://<ip>/board`) and the Argo CD UI (`https://localhost:8080`).
 | Time | Target | On screen | Talk track |
 |------|--------|-----------|------------|
 | 00:00 | — | Title | Who I am, Civo, yesterday's JKT1 launch with Arupa. |
-| 00:02 | `step1` | `terraform plan`, apply in background | **Fire this early.** Regions, sizes, the `ignore_changes` on node count. Civo takes 3-4 min to ACTIVE. |
+| 00:02 | `step1` | `terraform plan`, apply, wait for ACTIVE | **Fire this early.** Regions, sizes, the `ignore_changes` on node count. The apply blocks 2-3 min; talk over slides 6-7. |
 | 00:04 | — | slides / talk | What we are about to build (diagram on step 3 slide). Why GitOps. ~3 min of air cover while Civo provisions. |
 | 00:07 | `step2` | nodes Ready, `kubectl top` | Blocks until ACTIVE. Normally already there. |
 | 00:09 | `step3` | Argo CD install, root app | "One kubectl apply, ever." The autoscaler reuses the `civo-api-access` Secret Civo installs for its CCM. Open Argo UI. |
@@ -47,8 +47,8 @@ Full `make rehearse` from a deleted cluster, 23 Oct 2026, JKT1, Terraform path
 
 | step | machine time | slot | notes |
 |------|--------------|------|-------|
-| 1 | 0m07s | 3m | returns once `terraform apply` is running in the background |
-| 2 | 3m08s | 4m | this is the wait for the apply: cluster 1m28s, then Argo CD 1m25s; nodes Ready and metrics-server answering at the end |
+| 1 | ~3m | 3m | blocks until `terraform apply` finishes: cluster ACTIVE, kubeconfig, Argo CD |
+| 2 | ~0m20s | 2m | cluster show, nodes Ready, metrics-server answering (the apply wait moved into step 1: cluster ~1m30s, then Argo CD ~1m25s) |
 | 3 | 0m14s | 4m | root Application applied, Applications stream in, UI opens |
 | 4 | 0m20s | 4m | Valkey volume, pods, Civo load balancer IP (cold run was 0m54s) |
 | 5 | 0m18s | 4m | drift reverted, commit pushed, rollout done |
@@ -56,6 +56,6 @@ Full `make rehearse` from a deleted cluster, 23 Oct 2026, JKT1, Terraform path
 | 7 | 0m04s | 2m | |
 | **total** | **6m55s** | 29m | |
 
-The machine needs about seven minutes of the thirty. Step 2 is the one real
-wait; start step 1 within the first two minutes and talk over slides 6 and 7
+The machine needs about seven minutes of the thirty. Step 1 is the one real
+wait; start it within the first two minutes and talk over slides 6 and 7
 (Terraform) while it runs.
