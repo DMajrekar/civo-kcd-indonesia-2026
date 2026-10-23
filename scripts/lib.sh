@@ -102,12 +102,24 @@ fail() { printf '%s%s✗ %s%s\n' "$BOLD" "$RED" "$*" "$RESET"; }
 
 # ---------------------------------------------------------------- interaction
 
+# Wait for Enter on the terminal. Without a terminal and without DEMO_AUTO=1
+# this ABORTS rather than racing through every pause (a piped or scripted
+# `make step1` once created a cluster this way).
+wait_enter() {
+  if [[ -n "${DEMO_AUTO-}" ]]; then printf '\n'; return 0; fi
+  if { : < /dev/tty; } 2>/dev/null; then
+    read -r _ < /dev/tty || true
+    printf '\n'
+    return 0
+  fi
+  printf '\n%s%sNo terminal to pause on and DEMO_AUTO is not set -- refusing to run unattended.%s\n' "$BOLD" "$RED" "$RESET" >&2
+  exit 2
+}
+
 pause() {
   [[ -n "${DEMO_AUTO-}" ]] && return 0
-  [[ -t 0 ]] || return 0
   printf '\n%s%s  [enter] %s%s' "$DIM" "$CYAN" "${1:-continue}" "$RESET"
-  read -r _ < /dev/tty || true
-  printf '\n'
+  wait_enter
 }
 
 # run "<command>" -- show it, wait for enter, execute it, report.
@@ -121,7 +133,7 @@ pause() {
 run() {
   local cmd="$*"
   printf '\n%s%s$ %s%s' "$BOLD" "$GREEN" "$cmd" "$RESET"
-  if [[ -z "${DEMO_AUTO-}" && -t 0 ]]; then read -r _ < /dev/tty || true; else printf '\n'; fi
+  wait_enter
   printf '\n'
   local rc=0
   eval "$cmd" || rc=$?
@@ -136,7 +148,7 @@ run() {
 run_quiet() {
   local cmd="$*"
   printf '\n%s%s$ %s%s' "$BOLD" "$GREEN" "$cmd" "$RESET"
-  if [[ -z "${DEMO_AUTO-}" && -t 0 ]]; then read -r _ < /dev/tty || true; else printf '\n'; fi
+  wait_enter
   local out rc=0
   out="$(eval "$cmd" 2>&1)" || rc=$?
   if (( rc != 0 )); then printf '\n%s\n' "$out"; fail "command exited $rc"; exit $rc; fi

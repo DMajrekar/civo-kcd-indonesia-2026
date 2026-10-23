@@ -9,12 +9,15 @@ export
 export PATH := $(HOME)/.local/bin:$(PATH)
 SHELL := /usr/bin/env bash
 
-CYAN   := \033[36m
-GREEN  := \033[32m
-YELLOW := \033[33m
-DIM    := \033[2m
-BOLD   := \033[1m
-RESET  := \033[0m
+# Real escape characters (bash's echo does not interpret \033), and kept out of
+# the environment so scripts/lib.sh keeps its own colour handling.
+CYAN   := $(shell printf '\033[36m')
+GREEN  := $(shell printf '\033[32m')
+YELLOW := $(shell printf '\033[33m')
+DIM    := $(shell printf '\033[2m')
+BOLD   := $(shell printf '\033[1m')
+RESET  := $(shell printf '\033[0m')
+unexport CYAN GREEN YELLOW DIM BOLD RESET
 
 TITLE := KCD INDONESIA 2026  ·  Kubernetes on Civo, from zero to autoscaling
 
@@ -48,11 +51,11 @@ step1: ## Step 1: Create a Kubernetes cluster in Jakarta (JKT1)
 	@echo "$(YELLOW)Key points:$(RESET)"
 	@echo "  - JKT1 launched yesterday, operated by Arupa Cloud Nusantara"
 	@echo "  - Same platform and tooling as every other Civo region, with Indonesian data residency"
-	@echo "  - One command, ~2 minutes to a working cluster"
+	@echo "  - One terraform apply, ~2 minutes to a working cluster (the HCL is on the slides)"
 	@echo ""
-	@echo "  ┌───────────────┐    civo kubernetes create    ┌──────────────────────┐"
+	@echo "  ┌───────────────┐       terraform apply        ┌──────────────────────┐"
 	@echo "  │   laptop      │ ───────────────────────────► │  JKT1  (Jakarta)     │"
-	@echo "  │   civo CLI    │                              │  k3s · 2 x medium    │"
+	@echo "  │   terraform   │   network · firewall · k3s   │  k3s · 2 x medium    │"
 	@echo "  └───────────────┘                              └──────────────────────┘"
 	@echo ""
 	@NO_CLEAR=1 bash demo/step-01-cluster/run.sh
