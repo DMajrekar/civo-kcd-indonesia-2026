@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import argoIcon from './assets/argo-icon-color.svg'
 
 // White Civo logo, 88x36 viewBox, inlined so nothing is fetched at runtime.
 export function Logo({ height = 36, color = '#ffffff', style }) {
@@ -19,6 +20,12 @@ export function Logo({ height = 36, color = '#ffffff', style }) {
       <path d="M0.00625797 22.1476C-0.0330976 20.6355 -0.013705 15.4606 4.14234 11.4713C6.99134 8.73656 10.3347 8.2068 11.5919 8.0204C16.447 7.3007 20.2344 9.42699 21.6882 10.3403C21.8717 10.4557 21.9825 10.6623 21.9825 10.8845V17.4846C21.9825 17.6938 21.7207 17.7734 21.609 17.5991C20.4202 15.7447 19.1221 14.4153 17.6369 13.6106C16.4984 12.9937 15.2501 12.6853 13.857 12.6853C9.84498 12.6853 6.31007 15.6291 6.31007 20.518C6.31007 25.8799 10.2512 29.402 15.482 29.402C18.0325 29.402 20.4984 28.4817 22.1061 26.5607C22.2386 26.4023 22.4907 26.5172 22.4643 26.725C21.7316 32.4975 18.0871 35.5 12.3841 35.5C4.9697 35.5 0.215584 30.1876 0.00625797 22.1476Z" fill={color} />
     </svg>
   )
+}
+
+// Official CNCF Argo icon (cncf/artwork), imported from src/assets so it is
+// part of the bundle and nothing is fetched at runtime.
+export function ArgoLogo({ height = 40, style }) {
+  return <img src={argoIcon} alt="Argo CD" height={height} style={{ display: 'block', width: 'auto', height, ...style }} />
 }
 
 export const ease = [0.22, 1, 0.36, 1]

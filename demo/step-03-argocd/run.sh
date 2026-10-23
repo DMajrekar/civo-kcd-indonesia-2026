@@ -23,16 +23,12 @@ wait_for "Argo CD repo-server to be ready" 300 \
 # --------------------------------------------------- autoscaler credentials
 say ""
 say "One thing never goes in git: credentials. The cluster autoscaler needs a"
-say "Civo API key to add nodes, so that Secret is created here, by hand."
-printf '\n%s%s$ kubectl -n kube-system create secret generic civo-api-access --from-literal=api-key=**** ...%s\n' \
-  "$BOLD" "$GREEN" "$RESET"
-kubectl -n kube-system create secret generic civo-api-access \
-  --from-literal=api-url=https://api.civo.com \
-  --from-literal=api-key="$CIVO_API_KEY" \
-  --from-literal=cluster-id="$CID" \
-  --from-literal=region="$CIVO_REGION" \
-  --dry-run=client -o yaml | kubectl apply -f - >/dev/null
-ok "secret civo-api-access in kube-system"
+say "Civo API key to add nodes. We do not create one -- Civo already put a"
+say "scoped key in the cluster for its own cloud controller and CSI driver,"
+say "and the autoscaler reads the same Secret."
+wait_for "the Civo-managed Secret civo-api-access" 120 "kubectl -n kube-system get secret civo-api-access"
+run "kubectl -n kube-system get secret civo-api-access -o json | jq '{created: .metadata.creationTimestamp, keys: (.data | keys)}'"
+run "kubectl -n kube-system get deploy civo-ccm -o jsonpath='{.spec.template.spec.containers[0].env[*].valueFrom.secretKeyRef.name}{\"\\n\"}' | tr ' ' '\\n' | sort -u"
 
 # ------------------------------------------------------------- root app
 say ""

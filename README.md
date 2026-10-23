@@ -11,7 +11,7 @@ make demo
 |------|--------------|-------------------------------|
 | 1 | Terraform plan, apply in the background, cluster in JKT1 | regions, sizes, marketplace apps, `ignore_changes` on node count |
 | 2 | kubeconfig, nodes, `kubectl top` | metrics-server |
-| 3 | Install Argo CD, one root Application, autoscaler Secret by hand | app-of-apps, secrets stay out of git |
+| 3 | Install Argo CD, one root Application; autoscaler reuses Civo's pre-installed API Secret | app-of-apps, secrets stay out of git |
 | 4 | App + Valkey + HPA arrive from git; public IP; QR on the projector | Civo load balancer, Civo volume (PVC) |
 | 5 | Hand-edit reverted; release shipped as a commit | selfHeal, rolling update |
 | 6 | Load generator → HPA to 20 pods → Pending → Civo adds nodes | HPA, cluster autoscaler (Civo provider) |

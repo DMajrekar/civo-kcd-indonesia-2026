@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Slide, Eyebrow, Title, Bullets, ease } from '../ui.jsx'
+import { Slide, Eyebrow, Title, Bullets, ArgoLogo, ease } from '../ui.jsx'
 
 export default function WhyGitOpsSlide() {
   return (
@@ -67,11 +67,12 @@ function Loop() {
       <motion.div
         style={{
           position: 'absolute',
-          left: cx - 110,
+          left: cx - 140,
           top: cy - 48,
-          width: 220,
+          width: 280,
           height: 96,
           borderRadius: 48,
+          gap: 16,
           background: 'var(--aurora)',
           color: 'var(--black)',
           display: 'flex',
@@ -84,6 +85,7 @@ function Loop() {
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.5, ease, delay: 1.5 }}
       >
+        <ArgoLogo height={56} />
         Argo CD
       </motion.div>
       <motion.div

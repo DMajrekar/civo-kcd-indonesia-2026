@@ -1,6 +1,7 @@
 # Kubernetes cluster-autoscaler with the Civo cloud provider.
-# Credentials come from the `civo-api-access` Secret, which is created out of
-# band by demo/step-03 -- secrets never go in git.
+# Credentials come from the `civo-api-access` Secret that Civo installs in
+# kube-system for its cloud controller manager and CSI driver. Nothing secret
+# in git, nothing created by hand.
 apiVersion: v1
 kind: ServiceAccount
 metadata:

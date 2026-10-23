@@ -10,7 +10,7 @@ board (`http://<ip>/board`) and the Argo CD UI (`https://localhost:8080`).
 | 00:02 | `step1` | `terraform plan`, apply in background | **Fire this early.** Regions, sizes, the `ignore_changes` on node count. Civo takes 3-4 min to ACTIVE. |
 | 00:04 | — | slides / talk | What we are about to build (diagram on step 3 slide). Why GitOps. ~3 min of air cover while Civo provisions. |
 | 00:07 | `step2` | nodes Ready, `kubectl top` | Blocks until ACTIVE. Normally already there. |
-| 00:09 | `step3` | Argo CD install, root app | "One kubectl apply, ever." The Secret created by hand, deliberately. Open Argo UI. |
+| 00:09 | `step3` | Argo CD install, root app | "One kubectl apply, ever." The autoscaler reuses the `civo-api-access` Secret Civo installs for its CCM. Open Argo UI. |
 | 00:13 | `step4` | app, PVC, LB IP, **board + QR** | Everyone scans. Let it run 60s: votes climb, pod names rotate in the footer. |
 | 00:17 | `step5` | hand edit reverted; diff, push, rollout | Board turns red, title changes, votes survive. |
 | 00:21 | `step6` | HPA, Pending, new node | Longest wait is Civo adding a node (~2-3 min). Talk through the autoscaler logs. |

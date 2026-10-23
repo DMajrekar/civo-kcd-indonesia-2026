@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Box, Arrow, ArrowDefs, Chip, ease } from '../ui.jsx'
+import { Box, Arrow, ArrowDefs, Chip, Logo, ArgoLogo, ease } from '../ui.jsx'
 
 // All illustrations live in an 820x600 canvas on the right-hand column.
 
@@ -67,8 +67,16 @@ export function ArgoCd() {
         <Arrow from={[515, 150]} to={[610, 150]} label="apply" delay={1.8} labelOffset={[0, -16]} />
       </svg>
       <Box x={0} y={90} w={210} h={120} title="GitHub" sub="gitops/" delay={0.6} />
-      <Box x={305} y={90} w={210} h={120} title="Argo CD" sub="in the cluster" accent delay={1.0} />
-      <Box x={610} y={60} w={210} h={180} title="cluster" sub="app, Valkey, autoscaler" delay={1.4} />
+      <Box x={305} y={60} w={210} h={180} accent delay={1.0} style={{ alignItems: 'center', textAlign: 'center', gap: 10 }}>
+        <ArgoLogo height={64} />
+        <div className="box-title" style={{ color: 'var(--aurora)' }}>Argo CD</div>
+        <div className="box-sub">in the cluster</div>
+      </Box>
+      <Box x={610} y={60} w={210} h={180} delay={1.4} style={{ alignItems: 'center', textAlign: 'center', gap: 10 }}>
+        <Logo height={44} />
+        <div className="box-title">cluster</div>
+        <div className="box-sub">app, Valkey, autoscaler</div>
+      </Box>
       <Chip block delay={2.2} style={{ position: 'absolute', left: 0, top: 300, width: 820, fontSize: 25 }}>
         kubectl apply -f root-app.yaml
       </Chip>
