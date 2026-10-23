@@ -18,7 +18,7 @@ export function CreateCluster() {
         {'\n}'}
       </Code>
       <motion.div className="muted" style={{ position: 'absolute', left: 0, top: 500, fontSize: 26 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.6 }}>
-        plan on stage; apply runs in the background while we talk, step 2 picks it up.
+        Step 2 picks up the result; Terraform writes the kubeconfig too.
       </motion.div>
     </>
   )
@@ -172,29 +172,34 @@ export function GitOpsInPractice() {
   )
 }
 
+export function FlowStrip({ steps = ['load', 'pods x2', 'x4', 'x8', 'Pending', '+ node'], start = 0.6, fontSize = 23, style }) {
+  return (
+    <div style={{ display: 'flex', flexWrap: 'nowrap', gap: 10, alignItems: 'center', ...style }}>
+      {steps.map((s, i) => (
+        <motion.div key={s} style={{ display: 'flex', alignItems: 'center', gap: 10 }} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: start + i * 0.25 }}>
+          <span
+            style={{
+              fontFamily: 'var(--mono)',
+              fontSize,
+              padding: '8px 14px',
+              borderRadius: 10,
+              border: `2px solid ${s === 'Pending' ? 'var(--private)' : s === '+ node' ? 'var(--aurora)' : 'var(--line)'}`,
+              color: s === 'Pending' ? 'var(--private)' : s === '+ node' ? 'var(--aurora)' : 'var(--cloud)',
+            }}
+          >
+            {s}
+          </span>
+          {i < steps.length - 1 && <span className="muted" style={{ fontSize: fontSize - 1 }}>&rarr;</span>}
+        </motion.div>
+      ))}
+    </div>
+  )
+}
+
 export function Autoscaling() {
-  const steps = ['load', 'pods x2', 'x4', 'x8', 'Pending', '+ node']
   return (
     <>
-      <div style={{ position: 'absolute', left: 0, top: 30, width: 820, display: 'flex', flexWrap: 'nowrap', gap: 10, alignItems: 'center' }}>
-        {steps.map((s, i) => (
-          <motion.div key={s} style={{ display: 'flex', alignItems: 'center', gap: 10 }} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6 + i * 0.25 }}>
-            <span
-              style={{
-                fontFamily: 'var(--mono)',
-                fontSize: 23,
-                padding: '8px 14px',
-                borderRadius: 10,
-                border: `2px solid ${s === 'Pending' ? 'var(--private)' : s === '+ node' ? 'var(--aurora)' : 'var(--line)'}`,
-                color: s === 'Pending' ? 'var(--private)' : s === '+ node' ? 'var(--aurora)' : 'var(--cloud)',
-              }}
-            >
-              {s}
-            </span>
-            {i < steps.length - 1 && <span className="muted" style={{ fontSize: 22 }}>&rarr;</span>}
-          </motion.div>
-        ))}
-      </div>
+      <FlowStrip style={{ position: 'absolute', left: 0, top: 30, width: 820 }} />
 
       <Stat x={0} y={160} big="50%" label="CPU per pod, HPA target" delay={2.2} />
       <Stat x={300} y={160} big="20" label="pods, HPA max" delay={2.5} />

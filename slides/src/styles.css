@@ -217,6 +217,19 @@ h1, h2, h3, p, ul { margin: 0; }
   padding: 40px 48px;
 }
 
+.hcl {
+  font-family: var(--mono);
+  font-size: 24px;
+  line-height: 1.32;
+  margin: 0;
+  color: rgba(209, 204, 190, 0.85);
+}
+.hcl .ln { display: block; white-space: pre; }
+.hcl .kw { color: var(--cloud); font-weight: 700; }
+.hcl .str { color: var(--white); }
+.hcl .cm { color: var(--dim); font-style: italic; }
+.hcl .hl, .hcl .hl .kw, .hcl .hl .str, .hcl .hl .cm { color: var(--aurora); font-style: normal; }
+
 .kbd-hint {
   position: absolute;
   left: 50%;

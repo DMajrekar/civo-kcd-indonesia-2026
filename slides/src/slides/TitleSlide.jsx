@@ -41,9 +41,6 @@ export default function TitleSlide() {
           <br />
           in 30 minutes
         </motion.h1>
-        <motion.p className="subtitle" variants={fadeUp} initial="hidden" animate="show" custom={0.55}>
-          A live build: a cluster in Jakarta, GitOps with Argo CD, and two autoscalers.
-        </motion.p>
       </div>
 
       <motion.div

@@ -1,6 +1,8 @@
 import TitleSlide from './TitleSlide.jsx'
 import Jkt1Slide from './Jkt1Slide.jsx'
-import ArchitectureSlide from './ArchitectureSlide.jsx'
+import AppArchitectureSlide from './AppArchitectureSlide.jsx'
+import AutoscalerNeedsSlide from './AutoscalerNeedsSlide.jsx'
+import TerraformSlide from './TerraformSlide.jsx'
 import WhyGitOpsSlide from './WhyGitOpsSlide.jsx'
 import AutoscalersSlide from './AutoscalersSlide.jsx'
 import RecapSlide from './RecapSlide.jsx'
@@ -13,9 +15,11 @@ const Step1 = () => (
   <StepSlide
     n={1}
     title="Create a cluster in Jakarta"
+    size={36}
     points={[
-      'Terraform: a firewall and a k3s cluster, two nodes, metrics-server from the marketplace',
-      'terraform plan on stage, apply runs in the background while we talk',
+      'Terraform: infrastructure as code. You declare the resources in HCL; the civo provider turns that into API calls',
+      'A firewall and a k3s cluster, two nodes, metrics-server from the marketplace',
+      'plan shows the diff, on stage; apply makes it real, running in the background while we talk',
       <>
         <code>{'lifecycle { ignore_changes = [pools[0].node_count] }'}</code>: the autoscaler owns the node count
       </>,
@@ -105,9 +109,11 @@ const Step7 = () => (
 export const slides = [
   TitleSlide,
   Jkt1Slide,
-  ArchitectureSlide,
+  AppArchitectureSlide,
+  AutoscalerNeedsSlide,
   WhyGitOpsSlide,
   Step1,
+  TerraformSlide,
   Step2,
   Step3,
   Step4,
