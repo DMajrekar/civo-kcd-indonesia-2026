@@ -1,28 +1,34 @@
 import { motion } from 'framer-motion'
 import { Slide, Eyebrow, Title, ease } from '../ui.jsx'
 
-// Condensed from terraform/cluster.tf (88 lines in the real file). The
-// firewall is shown with one rule; the lifecycle block is the point.
+// Condensed from terraform/cluster.tf (88 lines) and terraform/argocd.tf
+// (36 lines). The firewall rules are elided; the lifecycle block and the
+// helm_release are the point.
 const left = [
   'resource "civo_network" "cluster" {',
   '  label  = "${var.cluster_name}-network"',
   '  region = var.region',
   '}',
-  '',
   'resource "civo_firewall" "cluster" {',
   '  name                 = "${var.cluster_name}-firewall"',
   '  create_default_rules = false',
-  '',
-  '  ingress_rule {',
-  '    label      = "kubernetes api"',
-  '    protocol   = "tcp"',
-  '    port_range = "6443"',
-  '    cidr       = ["0.0.0.0/0"]',
-  '    action     = "allow"',
-  '  }',
-  '  # ... http and https in, everything out',
+  '  # ... rules: API, http, https in; everything out',
+  '}',
+  '# helm provider: talks to the cluster',
+  '# using the kubeconfig Civo returned',
+  'resource "helm_release" "argocd" {',
+  '  name             = "argocd"',
+  '  namespace        = "argocd"',
+  '  create_namespace = true',
+  '  repository       = "https://argoproj.github.io/argo-helm"',
+  '  chart            = "argo-cd"',
+  '  version          = var.argocd_chart_version',
+  '  set = [{ name  = "configs.params.server\\\\.insecure",',
+  '           value = "true" }]',
+  '  wait = true',
   '}',
 ]
+const leftHighlight = new Set([11])
 
 const right = [
   'resource "civo_kubernetes_cluster" "demo" {',
@@ -82,9 +88,9 @@ export default function TerraformSlide() {
   return (
     <Slide>
       <Eyebrow>
-        terraform/cluster.tf <span className="muted">(condensed here: the firewall has five more rules)</span>
+        terraform/cluster.tf + argocd.tf <span className="muted">(condensed here: firewall rules and the helm provider elided)</span>
       </Eyebrow>
-      <Title small>The whole cluster is 88 lines of HCL</Title>
+      <Title small>Cluster and Argo CD: 124 lines of HCL</Title>
       <motion.div
         className="panel"
         style={{ marginTop: 24, padding: '24px 40px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48, flex: 1, minHeight: 0 }}
@@ -92,7 +98,7 @@ export default function TerraformSlide() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease, delay: 0.2 }}
       >
-        <CodeColumn lines={left} start={0.5} />
+        <CodeColumn lines={left} highlight={leftHighlight} start={0.5} />
         <CodeColumn lines={right} highlight={rightHighlight} start={0.9} />
       </motion.div>
     </Slide>

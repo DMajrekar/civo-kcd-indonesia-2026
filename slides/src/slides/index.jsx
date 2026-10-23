@@ -19,7 +19,7 @@ const Step1 = () => (
     size={36}
     points={[
       'Terraform: infrastructure as code. You declare the resources in HCL; the civo provider turns that into API calls',
-      'A firewall and a k3s cluster, two nodes, metrics-server from the marketplace',
+      'A network, a firewall, a k3s cluster with metrics-server, and Argo CD as a Helm release',
       'plan shows the diff, on stage; apply makes it real, running in the background while we talk',
       <>
         <code>{'lifecycle { ignore_changes = [pools[0].node_count] }'}</code>: the autoscaler owns the node count
@@ -46,10 +46,10 @@ const Step3 = () => (
   <StepSlide
     n={3}
     title="Argo CD: git as the source of truth"
+    size={36}
     points={[
-      'Nothing is kubectl-applied by hand except one root Application',
-      'App-of-apps: gitops/root holds the other Applications',
-      'No secrets in git, none typed by hand: the autoscaler reuses the API Secret Civo installs for its own cloud controller',
+      'Argo CD is already running: Terraform installed it as a Helm release, right after the cluster',
+      'The one kubectl apply of the day: a root Application pointing at the repo. App-of-apps: gitops/root holds the rest',
     ]}
     illustration={<ArgoCd />}
   />

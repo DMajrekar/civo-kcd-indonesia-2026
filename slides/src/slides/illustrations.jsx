@@ -72,7 +72,7 @@ export function ArgoCd() {
       <Box x={305} y={60} w={210} h={180} accent delay={1.0} style={{ alignItems: 'center', textAlign: 'center', gap: 10 }}>
         <ArgoLogo height={64} />
         <div className="box-title" style={{ color: 'var(--aurora)' }}>Argo CD</div>
-        <div className="box-sub">in the cluster</div>
+        <div className="box-sub">installed by Terraform</div>
       </Box>
       <Box x={610} y={60} w={210} h={180} delay={1.4} style={{ alignItems: 'center', textAlign: 'center', gap: 10 }}>
         <Logo height={44} />
@@ -84,15 +84,6 @@ export function ArgoCd() {
       </Chip>
       <motion.div className="muted" style={{ position: 'absolute', left: 0, top: 400, fontSize: 26 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.6 }}>
         The one manifest applied by hand. gitops/root holds more Applications, so one apply bootstraps everything.
-      </motion.div>
-      <motion.div
-        style={{ position: 'absolute', left: 0, top: 500, display: 'flex', gap: 18, alignItems: 'center', fontSize: 26, color: 'var(--private)' }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 3.0 }}
-      >
-        <span style={{ width: 14, height: 14, borderRadius: 3, background: 'var(--private)' }} />
-        Secret civo-api-access: pre-installed by Civo, reused by the autoscaler
       </motion.div>
     </>
   )

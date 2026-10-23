@@ -395,7 +395,11 @@ TF_LOG_FILE="$STATE/terraform-apply-$CLUSTER_NAME.log"
 # the condition holds (or the time is up). Rows appear as the cluster changes,
 # which is the point: the room sees objects being created, not a final table.
 watch_until() {
-  local secs="$1" cmd="$2" cond="$3" pid deadline=$(( SECONDS + secs ))
+  # Separate statements: bash expands every word of a `local` line before
+  # assigning any of them, so `secs` would still be unset in the arithmetic.
+  local secs="$1" cmd="$2" cond="$3"
+  local pid deadline
+  deadline=$(( SECONDS + secs ))
   printf '\n%s%s$ %s%s\n\n' "$BOLD" "$GREEN" "$cmd" "$RESET"
   eval "$cmd" &
   pid=$!
