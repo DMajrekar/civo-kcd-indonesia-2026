@@ -18,7 +18,7 @@ run "civo region ls"
 say ""
 say "Node sizes are plain: g4s.kube.medium is 2 vCPU / 4 GB. We start with two"
 say "of them and let the autoscaler add more later."
-run "civo kubernetes size | grep -E 'Name|kube.(small|medium|large)'"
+run "civo kubernetes size | grep -E 'Name|g4s.kube'"
 
 VERSION_FLAG=""
 [[ -n "$CIVO_K8S_VERSION" ]] && VERSION_FLAG="--version '$CIVO_K8S_VERSION'"

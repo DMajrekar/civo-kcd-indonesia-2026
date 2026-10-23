@@ -5,27 +5,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{.Title}}</title>
 <style>
-  :root { --c: {{.Color}}; }
+  :root { --c: {{.Color}}; --cloud: #D1CCBE; }
   * { box-sizing: border-box; }
-  body { margin: 0; font-family: -apple-system, system-ui, Segoe UI, Roboto, sans-serif; background: #0b1020; color: #e8ecf5; }
-  header { background: var(--c); padding: 20px 16px 16px; }
-  header h1 { margin: 0; font-size: 1.25rem; line-height: 1.3; }
-  header p { margin: 6px 0 0; opacity: .85; font-size: .85rem; }
-  main { padding: 12px 16px 40px; max-width: 560px; margin: 0 auto; }
-  .item { display: flex; align-items: center; gap: 12px; background: #151c33; border-radius: 12px; padding: 12px 14px; margin: 8px 0; }
+  body { margin: 0; font-family: "Hanken Grotesk", -apple-system, system-ui, Segoe UI, Roboto, sans-serif; background: #000; color: #fff; letter-spacing: -.01em; }
+  header { padding: 18px 16px 14px; border-bottom: 1px solid #1a1a1a; }
+  header .brand { display: flex; align-items: center; gap: 10px; color: var(--cloud); font-size: .8rem; margin-bottom: 14px; }
+  header .brand svg { height: 22px; width: auto; }
+  header h1 { margin: 0; font-size: 1.3rem; line-height: 1.25; font-weight: 600; }
+  header p { margin: 6px 0 0; color: var(--cloud); font-size: .85rem; }
+  main { padding: 10px 16px 40px; max-width: 560px; margin: 0 auto; }
+  .item { display: flex; align-items: center; gap: 12px; background: #111; border: 1px solid #1f1f1f; border-radius: 12px; padding: 12px 14px; margin: 8px 0; }
   .item .t { flex: 1; font-size: 1rem; }
-  .item .n { min-width: 2.5rem; text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; color: var(--c); filter: brightness(1.6); }
-  .item button { border: 0; background: var(--c); color: #fff; font-size: 1.1rem; width: 44px; height: 44px; border-radius: 10px; }
-  .item button:disabled { background: #2a3350; color: #8a93ad; }
+  .item .n { min-width: 2.5rem; text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; color: var(--c); }
+  .item button { border: 0; background: var(--c); color: #000; font-size: 1.1rem; font-weight: 700; width: 44px; height: 44px; border-radius: 10px; }
+  .item button:disabled { background: #222; color: #666; }
   form { display: flex; gap: 8px; margin: 18px 0 6px; }
-  form input { flex: 1; font-size: 1rem; padding: 12px; border-radius: 10px; border: 1px solid #2a3350; background: #151c33; color: #e8ecf5; }
-  form button { font-size: 1rem; padding: 0 16px; border-radius: 10px; border: 0; background: var(--c); color: #fff; }
-  footer { font-size: .75rem; color: #8a93ad; margin-top: 22px; line-height: 1.6; }
-  footer code { color: #c3cbe0; }
+  form input { flex: 1; font-size: 1rem; padding: 12px; border-radius: 10px; border: 1px solid #2a2a2a; background: #111; color: #fff; }
+  form button { font-size: 1rem; font-weight: 600; padding: 0 16px; border-radius: 10px; border: 0; background: var(--c); color: #000; }
+  footer { font-size: .75rem; color: #8a8a8a; margin-top: 22px; line-height: 1.6; }
+  footer code { color: var(--cloud); }
 </style>
 </head>
 <body>
 <header>
+  <div class="brand">{{template "logo"}} <span>Indonesia · JKT1</span></div>
   <h1>{{.Title}}</h1>
   <p>Tap ▲ to vote. Add your own idea at the bottom.</p>
 </header>
@@ -36,8 +39,8 @@
     <button>Add</button>
   </form>
   <footer>
-    Served by pod <code id="pod">{{.Pod}}</code> on node <code id="node">{{.Node}}</code> · v<code id="ver">{{.Version}}</code> · store <code>{{.Store}}</code><br>
-    Running on Civo Kubernetes in Jakarta (JKT1). KCD Indonesia 2026.
+    Served by pod <code id="pod">{{.Pod}}</code> on node <code id="node">{{.Node}}</code> · <code id="ver">{{.Version}}</code> · store <code>{{.Store}}</code><br>
+    Running on Civo Kubernetes in Jakarta. KCD Indonesia 2026.
   </footer>
 </main>
 <script>

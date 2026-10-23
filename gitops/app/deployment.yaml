@@ -19,7 +19,7 @@ spec:
             - {name: http, containerPort: 8080}
           env:
             - {name: TITLE,       value: "Dinesh has a free day in Jakarta. What should he do?"}
-            - {name: THEME_COLOR, value: "#1d4ed8"}
+            - {name: THEME_COLOR, value: "#00FF6F"}
             - {name: REDIS_ADDR,  value: "valkey.jakarta.svc.cluster.local:6379"}
             - name: POD_NAME
               valueFrom: {fieldRef: {fieldPath: metadata.name}}

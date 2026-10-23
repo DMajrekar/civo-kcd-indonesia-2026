@@ -43,7 +43,7 @@ func env(k, def string) string {
 func main() {
 	a := &app{
 		title:   env("TITLE", "Dinesh has a free day in Jakarta. What should he do?"),
-		color:   env("THEME_COLOR", "#1d4ed8"),
+		color:   env("THEME_COLOR", "#00FF6F"),
 		pod:     env("POD_NAME", hostnameOr("local")),
 		node:    env("NODE_NAME", "local"),
 		public:  os.Getenv("PUBLIC_URL"),

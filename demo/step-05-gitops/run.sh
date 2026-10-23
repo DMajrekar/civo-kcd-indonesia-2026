@@ -29,7 +29,7 @@ if grep -q 'jakarta-votes:v1.1.0' "$DEPLOY"; then
 else
   sed -i \
     -e 's#jakarta-votes:v1.0.0#jakarta-votes:v1.1.0#' \
-    -e 's#value: "\#1d4ed8"#value: "\#dc2626"#' \
+    -e 's#value: "\#00FF6F"#value: "\#FF4D4D"#' \
     -e 's#value: "Dinesh has a free day in Jakarta. What should he do?"#value: "Halo Bandung! Shipped from git to JKT1 — keep voting"#' \
     "$DEPLOY"
   run "git -C '$REPO_ROOT' --no-pager diff --color=always -- gitops/app/deployment.yaml"

@@ -5,30 +5,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Board · {{.Title}}</title>
 <style>
-  :root { --c: {{.Color}}; }
+  :root { --c: {{.Color}}; --cloud: #D1CCBE; }
   * { box-sizing: border-box; }
-  body { margin: 0; font-family: -apple-system, system-ui, Segoe UI, Roboto, sans-serif; background: #0b1020; color: #e8ecf5; height: 100vh; display: grid; grid-template-rows: auto 1fr auto; }
-  header { background: var(--c); padding: 22px 36px; display: flex; align-items: center; justify-content: space-between; }
-  header h1 { margin: 0; font-size: 2rem; }
-  header .url { font-size: 1.4rem; font-weight: 600; opacity: .95; }
-  main { display: grid; grid-template-columns: 1fr 360px; gap: 32px; padding: 28px 36px; overflow: hidden; }
+  body { margin: 0; font-family: "Hanken Grotesk", -apple-system, system-ui, Segoe UI, Roboto, sans-serif; background: #000; color: #fff; height: 100vh; display: grid; grid-template-rows: auto 1fr auto; letter-spacing: -.01em; }
+  header { padding: 26px 40px 18px; display: flex; align-items: flex-end; justify-content: space-between; gap: 30px; border-bottom: 1px solid #1a1a1a; }
+  header .brand { display: flex; align-items: center; gap: 14px; color: var(--cloud); font-size: 1.1rem; margin-bottom: 14px; }
+  header .brand svg { height: 34px; width: auto; }
+  header h1 { margin: 0; font-size: 2.3rem; font-weight: 600; line-height: 1.15; }
+  header .url { font-size: 1.6rem; font-weight: 600; color: var(--c); white-space: nowrap; margin-bottom: 6px; }
+  main { display: grid; grid-template-columns: 1fr 380px; gap: 40px; padding: 26px 40px; overflow: hidden; }
   ol { margin: 0; padding: 0; list-style: none; counter-reset: n; }
-  li { display: grid; grid-template-columns: 2.2rem 1fr auto; align-items: center; gap: 14px; font-size: 1.55rem; padding: 10px 0; border-bottom: 1px solid #1d2642; transition: all .4s; }
-  li::before { counter-increment: n; content: counter(n); color: #8a93ad; font-size: 1.1rem; }
-  li .bar { height: 10px; background: var(--c); border-radius: 5px; margin-top: 6px; transition: width .6s; filter: brightness(1.4); }
-  li .n { font-weight: 800; font-size: 1.9rem; font-variant-numeric: tabular-nums; min-width: 3.5rem; text-align: right; }
+  li { display: grid; grid-template-columns: 2.2rem 1fr auto; align-items: center; gap: 14px; font-size: 1.55rem; padding: 10px 0; border-bottom: 1px solid #1a1a1a; }
+  li::before { counter-increment: n; content: counter(n); color: #666; font-size: 1.1rem; }
+  li .bar { height: 10px; background: var(--c); border-radius: 5px; margin-top: 6px; transition: width .6s; }
+  li .n { font-weight: 700; font-size: 1.9rem; font-variant-numeric: tabular-nums; min-width: 3.5rem; text-align: right; color: var(--c); }
   aside { text-align: center; }
-  aside img { width: 320px; height: 320px; background: #fff; border-radius: 16px; padding: 10px; }
-  aside p { font-size: 1.3rem; margin: 12px 0 0; }
-  footer { padding: 14px 36px; font-size: 1.05rem; color: #8a93ad; display: flex; justify-content: space-between; }
-  footer code { color: #e8ecf5; }
-  .pods { display: flex; gap: 6px; flex-wrap: wrap; }
-  .pods span { background: #151c33; border-radius: 6px; padding: 2px 8px; font-family: ui-monospace, monospace; font-size: .9rem; }
+  aside img { width: 340px; height: 340px; background: #fff; border-radius: 16px; padding: 10px; }
+  aside p { font-size: 1.3rem; margin: 12px 0 0; color: var(--cloud); }
+  footer { padding: 14px 40px; font-size: 1.05rem; color: #8a8a8a; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #1a1a1a; }
+  footer code { color: var(--cloud); }
+  .pods { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+  .pods span { background: #111; border: 1px solid #1f1f1f; border-radius: 6px; padding: 2px 8px; font-family: ui-monospace, monospace; font-size: .9rem; color: var(--cloud); }
 </style>
 </head>
 <body>
 <header>
-  <h1>{{.Title}}</h1>
+  <div>
+    <div class="brand">{{template "logo"}} <span>Indonesia · JKT1 · KCD Indonesia 2026</span></div>
+    <h1>{{.Title}}</h1>
+  </div>
   <div class="url">{{.PublicURL}}</div>
 </header>
 <main>
@@ -39,7 +44,7 @@
   </aside>
 </main>
 <footer>
-  <div>total votes <code id="total">0</code> · v<code id="ver">{{.Version}}</code> · store <code>{{.Store}}</code> · Civo JKT1</div>
+  <div>total votes <code id="total">0</code> · <code id="ver">{{.Version}}</code> · store <code>{{.Store}}</code> · pods serving this page:</div>
   <div class="pods" id="pods"></div>
 </footer>
 <script>
