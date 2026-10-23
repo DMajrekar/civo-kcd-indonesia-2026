@@ -6,7 +6,7 @@ metadata:
   name: loadgen
   namespace: jakarta
 spec:
-  replicas: 3
+  replicas: 5
   selector:
     matchLabels: {app: loadgen}
   template:
@@ -16,6 +16,6 @@ spec:
       containers:
         - name: fortio
           image: fortio/fortio:1.69.5
-          args: ["load", "-c", "64", "-qps", "0", "-t", "0", "-quiet", "http://jakarta-votes.jakarta.svc.cluster.local/api/items"]
+          args: ["load", "-c", "32", "-qps", "0", "-t", "0", "-keepalive=false", "-quiet", "http://jakarta-votes.jakarta.svc.cluster.local/api/items"]
           resources:
             requests: {cpu: 100m, memory: 32Mi}
