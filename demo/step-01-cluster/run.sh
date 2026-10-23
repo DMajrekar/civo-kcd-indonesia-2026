@@ -19,9 +19,8 @@ printf '\n'
 run "civo region ls"
 
 say ""
-say "Node sizes are plain: g4s.kube.medium is 2 vCPU / 4 GB. We start with two"
-say "of them and let the autoscaler add more later."
-run "civo kubernetes size | grep -E 'Name|g4s.kube'"
+say "We start with two g4s.kube.medium nodes (2 vCPU / 4 GB) and let the"
+say "autoscaler add more later."
 
 if civo_cluster_exists "$CLUSTER_NAME" "$CIVO_REGION"; then
   ok "cluster '$CLUSTER_NAME' already exists in $CIVO_REGION — reusing it"
