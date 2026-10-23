@@ -37,7 +37,6 @@ say "Watch the Application objects appear: root first, then the ones it finds"
 say "in gitops/root, and their sync status turning to Synced."
 watch_until 180 "kubectl -n argocd get applications -w" \
   "[[ \$(kubectl -n argocd get applications --no-headers 2>/dev/null | awk '\$2==\"Synced\"' | wc -l) -ge 3 ]]"
-run "kubectl -n argocd get applications"
 
 # ---------------------------------------------------------------- the UI
 say ""
