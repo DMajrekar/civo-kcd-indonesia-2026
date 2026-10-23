@@ -46,6 +46,12 @@ civo loadbalancer ls --region "$CIVO_REGION" -o json 2>/dev/null \
   | jq -r --arg cid "$CID" '.[]? | select(.cluster_id==$cid) | .id' \
   | while read -r lb; do [[ -n "$lb" ]] && run "civo loadbalancer remove '$lb' --region '$CIVO_REGION' --yes || true"; done
 
+# `civo kubernetes remove` leaves the firewall it created behind. Sweep any
+# firewall for this cluster that no longer protects anything.
+civo firewall ls --region "$CIVO_REGION" -o json 2>/dev/null \
+  | jq -r --arg n "$CLUSTER_NAME" '.[] | select(.name | startswith("k3s-cluster-" + $n)) | select((.cluster_count // 0) == 0 and (.loadbalancer_count // 0) == 0 and (.instance_count // 0) == 0) | .id' \
+  | while read -r fw; do [[ -n "$fw" ]] && run "civo firewall remove '$fw' --region '$CIVO_REGION' --yes || true"; done
+
 [[ -z "${STANDBY-}" ]] && rm -f "$KUBECONFIG" "$STATE/argocd-password"
 printf '\n'
 ok "Deleted."

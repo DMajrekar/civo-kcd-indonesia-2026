@@ -9,7 +9,7 @@ make demo
 
 | Step | What happens | Civo / Kubernetes thing shown |
 |------|--------------|-------------------------------|
-| 1 | `civo kubernetes create` in JKT1, async | regions, sizes, marketplace apps |
+| 1 | Terraform plan, apply in the background, cluster in JKT1 | regions, sizes, marketplace apps, `ignore_changes` on node count |
 | 2 | kubeconfig, nodes, `kubectl top` | metrics-server |
 | 3 | Install Argo CD, one root Application, autoscaler Secret by hand | app-of-apps, secrets stay out of git |
 | 4 | App + Valkey + HPA arrive from git; public IP; QR on the projector | Civo load balancer, Civo volume (PVC) |
@@ -33,6 +33,8 @@ autoscaling step is visible on the board.
 | `gitops/app/` | The application: Valkey StatefulSet + PVC, Deployment, Service, HPA. |
 | `gitops/cluster-autoscaler/` | Kubernetes cluster-autoscaler with the Civo cloud provider. |
 | `app/` | Go source, Dockerfile. Built by `.github/workflows/build.yml` to `ghcr.io/<owner>/jakarta-votes`. |
+| `terraform/` | Firewall + k3s cluster. One workspace per cluster name. `CLUSTER_TOOL=cli` in `.env` uses the civo CLI instead. |
+| `slides/` | The React slide deck, served from the standby cluster (`gitops/slides`, `gitops/root-standby`). |
 | `docs/RUNSHEET.md` | Minute-by-minute plan and rehearsal timings. |
 
 ## Before the day
@@ -59,5 +61,9 @@ and waits for Enter before running it. If a step fails, fix the cause and run
 `make stepN` again; every step is safe to re-run. `DEMO_AUTO=1` skips pauses.
 
 If step 1 stalls and a standby exists: `CLUSTER_NAME=kcd-jakarta-standby make step4`.
+The standby also serves the slide deck (`make standby` points its Argo root at
+`gitops/root-standby`). Never change a running cluster's root path: Argo prunes
+the old child Applications first, which deletes the app, its load balancer and
+its volume before recreating them.
 
 Afterwards: `make clean` (or `make clean-all` with the standby).

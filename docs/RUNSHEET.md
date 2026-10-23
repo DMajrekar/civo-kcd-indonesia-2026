@@ -7,7 +7,7 @@ board (`http://<ip>/board`) and the Argo CD UI (`https://localhost:8080`).
 | Time | Target | On screen | Talk track |
 |------|--------|-----------|------------|
 | 00:00 | — | Title | Who I am, Civo, yesterday's JKT1 launch with Arupa. |
-| 00:02 | `step1` | `civo kubernetes create` | **Fire this early.** Returns in seconds. Regions, sizes, pricing parity. |
+| 00:02 | `step1` | `terraform plan`, apply in background | **Fire this early.** Regions, sizes, the `ignore_changes` on node count. Civo takes 3-4 min to ACTIVE. |
 | 00:04 | — | slides / talk | What we are about to build (diagram on step 3 slide). Why GitOps. ~3 min of air cover while Civo provisions. |
 | 00:07 | `step2` | nodes Ready, `kubectl top` | Blocks until ACTIVE. Normally already there. |
 | 00:09 | `step3` | Argo CD install, root app | "One kubectl apply, ever." The Secret created by hand, deliberately. Open Argo UI. |
@@ -19,7 +19,9 @@ board (`http://<ip>/board`) and the Argo CD UI (`https://localhost:8080`).
 
 ## Fallbacks
 
-- **Step 1 stalls** (region busy): keep talking, re-run `make step2` once; after 5 min switch to the standby: `CLUSTER_NAME=kcd-jakarta-standby make step4`.
+- **Step 1 stalls** (region busy): keep talking, re-run `make step2` once; after 5 min switch to the standby: `CLUSTER_NAME=kcd-jakarta-standby make step4`. Standby app is already up, so continue from step 5 there.
+- **Terraform misbehaves**: `CLUSTER_TOOL=cli make step1` uses the civo CLI; everything after is identical.
+- **Slides**: served from the standby at the `kcd-slides` load balancer IP (`kubectl -n slides get svc`, standby kubeconfig). Have a local `cd slides && npm run dev` as backup.
 - **No venue wifi for phones**: the board still works; the load generator does the scaling.
 - **Image pull fails**: `make doctor` the night before checks the package is public.
 - **Argo slow to notice the push**: step 5 already forces a refresh with an annotation.
@@ -36,5 +38,5 @@ Fill in from `make rehearse` (`.state/rehearsal/*.log`).
 | 3 | | 4m |
 | 4 | | 4m |
 | 5 | | 4m |
-| 6 | | 8m |
+| 6 | 3m13s (load on → node Ready) | 8m |
 | 7 | | 2m |
