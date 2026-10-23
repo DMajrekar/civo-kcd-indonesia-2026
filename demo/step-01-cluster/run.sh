@@ -27,8 +27,8 @@ if civo_cluster_exists "$CLUSTER_NAME" "$CIVO_REGION"; then
   [[ "$TOOL" == terraform ]] && tf_init && [[ ! -s "$KUBECONFIG" ]] && tf output -raw kubeconfig_path >/dev/null 2>&1 || true
 elif [[ "$TOOL" == terraform ]]; then
   say ""
-  say "The cluster is Terraform: a firewall and a k3s cluster, two nodes,"
-  say "metrics-server from the Civo marketplace, and one important lifecycle"
+  say "The cluster is Terraform: its own network, a firewall and a k3s cluster,"
+  say "two nodes, metrics-server from the marketplace, and one important lifecycle"
   say "rule -- Terraform ignores the node count, because the autoscaler owns it."
   run "show_file '$TF_DIR/cluster.tf' hcl"
   tf_init

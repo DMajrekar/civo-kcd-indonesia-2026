@@ -33,7 +33,7 @@ autoscaling step is visible on the board.
 | `gitops/app/` | The application: Valkey StatefulSet + PVC, Deployment, Service, HPA. |
 | `gitops/cluster-autoscaler/` | Kubernetes cluster-autoscaler with the Civo cloud provider. |
 | `app/` | Go source, Dockerfile. Built by `.github/workflows/build.yml` to `ghcr.io/<owner>/jakarta-votes`. |
-| `terraform/` | Firewall + k3s cluster. One workspace per cluster name. `CLUSTER_TOOL=cli` in `.env` uses the civo CLI instead. |
+| `terraform/` | Dedicated network + firewall + k3s cluster. One workspace per cluster name. `CLUSTER_TOOL=cli` in `.env` uses the civo CLI instead. |
 | `slides/` | The React slide deck, served from the standby cluster (`gitops/slides`, `gitops/root-standby`). |
 | `docs/RUNSHEET.md` | Minute-by-minute plan and rehearsal timings. |
 
