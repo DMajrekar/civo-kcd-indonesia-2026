@@ -1,6 +1,6 @@
-# The standby's copy of the app: identical to gitops/app, except the load
-# balancer is pinned to a Civo reserved IP (kubernetes.civo.com/ipv4-address),
-# so the QR code in the deck keeps working however often the standby is rebuilt.
+# The standby's copy of the app: identical to gitops/app, except the Service
+# is ClusterIP behind ingress-nginx (which holds the Civo reserved IP), so the
+# QR code in the deck keeps working however often the standby is rebuilt.
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
@@ -8,6 +8,6 @@ resources:
 patches:
   - target: {kind: Service, name: jakarta-votes}
     patch: |
-      - op: add
-        path: /metadata/annotations
-        value: {kubernetes.civo.com/ipv4-address: "49.128.189.194"}
+      - op: replace
+        path: /spec/type
+        value: ClusterIP

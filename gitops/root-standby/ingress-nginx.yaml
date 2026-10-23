@@ -1,0 +1,28 @@
+# ingress-nginx owns the reserved IP on the standby: one public address for
+# the vote app and the slides, with TLS from cert-manager.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ingress-nginx
+  namespace: argocd
+  annotations: {argocd.argoproj.io/sync-wave: "-2"}
+  finalizers: [resources-finalizer.argocd.argoproj.io]
+spec:
+  project: default
+  source:
+    repoURL: https://kubernetes.github.io/ingress-nginx
+    chart: ingress-nginx
+    targetRevision: 4.15.1
+    helm:
+      valuesObject:
+        controller:
+          ingressClassResource: {default: true}
+          service:
+            annotations:
+              kubernetes.civo.com/ipv4-address: "49.128.189.194"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ingress-nginx
+  syncPolicy:
+    automated: {prune: true, selfHeal: true}
+    syncOptions: [CreateNamespace=true]

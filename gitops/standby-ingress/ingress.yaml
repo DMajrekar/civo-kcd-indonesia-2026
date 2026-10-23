@@ -1,0 +1,39 @@
+# sslip.io turns the reserved IP into hostnames with no DNS setup:
+# vote.49-128-189-194.sslip.io and slides.49-128-189-194.sslip.io both resolve to 49.128.189.194.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jakarta-votes
+  namespace: jakarta
+  annotations: {cert-manager.io/cluster-issuer: letsencrypt}
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts: [vote.49-128-189-194.sslip.io]
+      secretName: vote-tls
+  rules:
+    - host: vote.49-128-189-194.sslip.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend: {service: {name: jakarta-votes, port: {number: 80}}}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kcd-slides
+  namespace: slides
+  annotations: {cert-manager.io/cluster-issuer: letsencrypt}
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts: [slides.49-128-189-194.sslip.io]
+      secretName: slides-tls
+  rules:
+    - host: slides.49-128-189-194.sslip.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend: {service: {name: kcd-slides, port: {number: 80}}}
