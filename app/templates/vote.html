@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{.Title}}</title>
+<style>
+  :root { --c: {{.Color}}; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, system-ui, Segoe UI, Roboto, sans-serif; background: #0b1020; color: #e8ecf5; }
+  header { background: var(--c); padding: 20px 16px 16px; }
+  header h1 { margin: 0; font-size: 1.25rem; line-height: 1.3; }
+  header p { margin: 6px 0 0; opacity: .85; font-size: .85rem; }
+  main { padding: 12px 16px 40px; max-width: 560px; margin: 0 auto; }
+  .item { display: flex; align-items: center; gap: 12px; background: #151c33; border-radius: 12px; padding: 12px 14px; margin: 8px 0; }
+  .item .t { flex: 1; font-size: 1rem; }
+  .item .n { min-width: 2.5rem; text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; color: var(--c); filter: brightness(1.6); }
+  .item button { border: 0; background: var(--c); color: #fff; font-size: 1.1rem; width: 44px; height: 44px; border-radius: 10px; }
+  .item button:disabled { background: #2a3350; color: #8a93ad; }
+  form { display: flex; gap: 8px; margin: 18px 0 6px; }
+  form input { flex: 1; font-size: 1rem; padding: 12px; border-radius: 10px; border: 1px solid #2a3350; background: #151c33; color: #e8ecf5; }
+  form button { font-size: 1rem; padding: 0 16px; border-radius: 10px; border: 0; background: var(--c); color: #fff; }
+  footer { font-size: .75rem; color: #8a93ad; margin-top: 22px; line-height: 1.6; }
+  footer code { color: #c3cbe0; }
+</style>
+</head>
+<body>
+<header>
+  <h1>{{.Title}}</h1>
+  <p>Tap ▲ to vote. Add your own idea at the bottom.</p>
+</header>
+<main>
+  <div id="list"></div>
+  <form id="suggest">
+    <input name="text" maxlength="80" placeholder="Something else he should do…" required>
+    <button>Add</button>
+  </form>
+  <footer>
+    Served by pod <code id="pod">{{.Pod}}</code> on node <code id="node">{{.Node}}</code> · v<code id="ver">{{.Version}}</code> · store <code>{{.Store}}</code><br>
+    Running on Civo Kubernetes in Jakarta (JKT1). KCD Indonesia 2026.
+  </footer>
+</main>
+<script>
+  const voted = new Set(JSON.parse(localStorage.getItem('voted') || '[]'));
+  const list = document.getElementById('list');
+  function esc(s) { return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function render(items) {
+    list.innerHTML = items.map(i => `
+      <div class="item">
+        <div class="t">${esc(i.text)}</div>
+        <div class="n">${i.votes}</div>
+        <button data-id="${i.id}" ${voted.has(i.id) ? 'disabled' : ''} aria-label="vote">▲</button>
+      </div>`).join('');
+  }
+  async function refresh() {
+    try {
+      const r = await fetch('/api/items', {cache: 'no-store'});
+      const d = await r.json();
+      render(d.items);
+      pod.textContent = d.pod; node.textContent = d.node; ver.textContent = d.version;
+    } catch (e) {}
+  }
+  list.addEventListener('click', async e => {
+    const b = e.target.closest('button'); if (!b) return;
+    b.disabled = true; voted.add(b.dataset.id);
+    localStorage.setItem('voted', JSON.stringify([...voted]));
+    await fetch('/api/vote?id=' + encodeURIComponent(b.dataset.id), {method: 'POST'});
+    refresh();
+  });
+  document.getElementById('suggest').addEventListener('submit', async e => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const r = await fetch('/api/suggest', {method: 'POST', body: new URLSearchParams(fd)});
+    if (r.ok) { const it = await r.json(); voted.add(it.id); localStorage.setItem('voted', JSON.stringify([...voted])); e.target.reset(); }
+    refresh();
+  });
+  refresh(); setInterval(refresh, 3000);
+</script>
+</body>
+</html>

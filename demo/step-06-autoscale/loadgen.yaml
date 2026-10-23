@@ -1,0 +1,21 @@
+# Load generator: three fortio pods hammering the app Service.
+# Not in gitops/ on purpose -- it is a stage prop, not part of the platform.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loadgen
+  namespace: jakarta
+spec:
+  replicas: 3
+  selector:
+    matchLabels: {app: loadgen}
+  template:
+    metadata:
+      labels: {app: loadgen}
+    spec:
+      containers:
+        - name: fortio
+          image: fortio/fortio:1.69.5
+          args: ["load", "-c", "64", "-qps", "0", "-t", "0", "-quiet", "http://jakarta-votes.jakarta.svc.cluster.local/api/items"]
+          resources:
+            requests: {cpu: 100m, memory: 32Mi}

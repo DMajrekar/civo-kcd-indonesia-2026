@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: jakarta-votes
+  namespace: argocd
+  finalizers: [resources-finalizer.argocd.argoproj.io]
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/dmajrekar/civo-kcd-indonesia-2026
+    targetRevision: main
+    path: gitops/app
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: jakarta
+  syncPolicy:
+    automated:
+      prune: true      # delete from git, it goes from the cluster
+      selfHeal: true   # kubectl edit in prod? Argo puts it back
+    syncOptions:
+      - CreateNamespace=true

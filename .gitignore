@@ -1,0 +1,13 @@
+# Runtime scratch: kubeconfig, rehearsal logs, cluster state.
+.state/
+
+# Credentials
+.env
+.env.local
+*.kubeconfig
+kubeconfig
+
+# Build noise
+*.tgz
+__pycache__/
+.DS_Store

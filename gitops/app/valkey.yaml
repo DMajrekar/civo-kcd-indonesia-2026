@@ -1,0 +1,48 @@
+# Valkey keeps the votes. A StatefulSet with a PersistentVolumeClaim: the
+# volume is a Civo block volume (storage class civo-volume, the default), so
+# the data survives the pod being rescheduled.
+apiVersion: v1
+kind: Service
+metadata:
+  name: valkey
+  namespace: jakarta
+spec:
+  clusterIP: None
+  selector: {app: valkey}
+  ports:
+    - {name: valkey, port: 6379}
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: valkey
+  namespace: jakarta
+spec:
+  serviceName: valkey
+  replicas: 1
+  selector:
+    matchLabels: {app: valkey}
+  template:
+    metadata:
+      labels: {app: valkey}
+    spec:
+      containers:
+        - name: valkey
+          image: valkey/valkey:8.1-alpine
+          args: ["--save", "10", "1", "--appendonly", "yes", "--dir", "/data"]
+          ports:
+            - {name: valkey, containerPort: 6379}
+          volumeMounts:
+            - {name: data, mountPath: /data}
+          resources:
+            requests: {cpu: 50m, memory: 64Mi}
+            limits:   {memory: 256Mi}
+          readinessProbe:
+            exec: {command: ["valkey-cli", "ping"]}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: [ReadWriteOnce]
+        resources:
+          requests: {storage: 1Gi}

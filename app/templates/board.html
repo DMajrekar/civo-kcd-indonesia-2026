@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Board · {{.Title}}</title>
+<style>
+  :root { --c: {{.Color}}; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, system-ui, Segoe UI, Roboto, sans-serif; background: #0b1020; color: #e8ecf5; height: 100vh; display: grid; grid-template-rows: auto 1fr auto; }
+  header { background: var(--c); padding: 22px 36px; display: flex; align-items: center; justify-content: space-between; }
+  header h1 { margin: 0; font-size: 2rem; }
+  header .url { font-size: 1.4rem; font-weight: 600; opacity: .95; }
+  main { display: grid; grid-template-columns: 1fr 360px; gap: 32px; padding: 28px 36px; overflow: hidden; }
+  ol { margin: 0; padding: 0; list-style: none; counter-reset: n; }
+  li { display: grid; grid-template-columns: 2.2rem 1fr auto; align-items: center; gap: 14px; font-size: 1.55rem; padding: 10px 0; border-bottom: 1px solid #1d2642; transition: all .4s; }
+  li::before { counter-increment: n; content: counter(n); color: #8a93ad; font-size: 1.1rem; }
+  li .bar { height: 10px; background: var(--c); border-radius: 5px; margin-top: 6px; transition: width .6s; filter: brightness(1.4); }
+  li .n { font-weight: 800; font-size: 1.9rem; font-variant-numeric: tabular-nums; min-width: 3.5rem; text-align: right; }
+  aside { text-align: center; }
+  aside img { width: 320px; height: 320px; background: #fff; border-radius: 16px; padding: 10px; }
+  aside p { font-size: 1.3rem; margin: 12px 0 0; }
+  footer { padding: 14px 36px; font-size: 1.05rem; color: #8a93ad; display: flex; justify-content: space-between; }
+  footer code { color: #e8ecf5; }
+  .pods { display: flex; gap: 6px; flex-wrap: wrap; }
+  .pods span { background: #151c33; border-radius: 6px; padding: 2px 8px; font-family: ui-monospace, monospace; font-size: .9rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1>{{.Title}}</h1>
+  <div class="url">{{.PublicURL}}</div>
+</header>
+<main>
+  <ol id="list"></ol>
+  <aside>
+    <img src="/qr.png" alt="QR code">
+    <p>Scan to vote</p>
+  </aside>
+</main>
+<footer>
+  <div>total votes <code id="total">0</code> · v<code id="ver">{{.Version}}</code> · store <code>{{.Store}}</code> · Civo JKT1</div>
+  <div class="pods" id="pods"></div>
+</footer>
+<script>
+  const list = document.getElementById('list'), pods = document.getElementById('pods');
+  const seen = new Map(); // pod -> last seen ms
+  function esc(s) { return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  async function refresh() {
+    try {
+      const r = await fetch('/api/items', {cache: 'no-store'});
+      const d = await r.json();
+      const top = d.items.slice(0, 10), max = Math.max(1, ...top.map(i => i.votes));
+      list.innerHTML = top.map(i => `<li><div><div>${esc(i.text)}</div><div class="bar" style="width:${Math.round(100*i.votes/max)}%"></div></div><div class="n">${i.votes}</div></li>`).join('');
+      total.textContent = d.items.reduce((a, i) => a + i.votes, 0);
+      ver.textContent = d.version;
+      seen.set(d.pod, Date.now());
+      const now = Date.now();
+      pods.innerHTML = [...seen].filter(([, t]) => now - t < 20000).map(([p]) => `<span>${esc(p)}</span>`).join('');
+    } catch (e) {}
+  }
+  refresh(); setInterval(refresh, 1500);
+</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+# Build the demo app image and push it to GHCR.
+#   push to main (app/ changed)  -> ghcr.io/<owner>/jakarta-votes:latest + :sha-xxxxxxx
+#   tag v1.2.3                    -> ghcr.io/<owner>/jakarta-votes:v1.2.3 + :1.2
+name: build
+on:
+  push:
+    branches: [main]
+    paths: [app/**, .github/workflows/build.yml]
+    tags: [v*]
+  workflow_dispatch:
+permissions:
+  contents: read
+  packages: write
+jobs:
+  image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with: {go-version-file: app/go.mod, cache-dependency-path: app/go.sum}
+      - run: cd app && go vet ./... && go test ./...
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with: {registry: ghcr.io, username: "${{ github.actor }}", password: "${{ secrets.GITHUB_TOKEN }}"}
+      - id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/jakarta-votes
+          tags: |
+            type=ref,event=tag
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha,prefix=sha-
+            type=raw,value=latest,enable={{is_default_branch}}
+      - uses: docker/build-push-action@v6
+        with:
+          context: app
+          push: true
+          platforms: linux/amd64
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: VERSION=${{ github.ref_name }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

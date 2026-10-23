@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jakarta-votes
+  namespace: jakarta
+  labels: {app: jakarta-votes}
+spec:
+  # No `replicas` here on purpose: the HorizontalPodAutoscaler owns it.
+  selector:
+    matchLabels: {app: jakarta-votes}
+  template:
+    metadata:
+      labels: {app: jakarta-votes}
+    spec:
+      containers:
+        - name: app
+          image: ghcr.io/dmajrekar/jakarta-votes:v1.0.0
+          ports:
+            - {name: http, containerPort: 8080}
+          env:
+            - {name: TITLE,       value: "Dinesh has a free day in Jakarta. What should he do?"}
+            - {name: THEME_COLOR, value: "#1d4ed8"}
+            - {name: REDIS_ADDR,  value: "valkey.jakarta.svc.cluster.local:6379"}
+            - name: POD_NAME
+              valueFrom: {fieldRef: {fieldPath: metadata.name}}
+            - name: NODE_NAME
+              valueFrom: {fieldRef: {fieldPath: spec.nodeName}}
+          resources:
+            requests: {cpu: 250m, memory: 32Mi}
+            limits:   {memory: 128Mi}
+          readinessProbe:
+            httpGet: {path: /readyz, port: http}
+          livenessProbe:
+            httpGet: {path: /healthz, port: http}
