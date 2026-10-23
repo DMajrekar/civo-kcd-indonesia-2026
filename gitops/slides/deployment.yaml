@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kcd-slides
+  namespace: slides
+  labels: {app: kcd-slides}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: kcd-slides}
+  template:
+    metadata:
+      labels: {app: kcd-slides}
+    spec:
+      containers:
+        - name: slides
+          image: ghcr.io/dmajrekar/kcd-slides:latest
+          imagePullPolicy: Always
+          ports:
+            - {name: http, containerPort: 8080}
+          readinessProbe:
+            httpGet: {path: /healthz, port: http}
+            periodSeconds: 5
+          resources:
+            requests: {cpu: 50m, memory: 32Mi}

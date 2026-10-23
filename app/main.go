@@ -5,6 +5,7 @@ package main
 
 import (
 	"context"
+	"crypto/sha256"
 	"embed"
 	"encoding/json"
 	"html/template"
@@ -61,6 +62,7 @@ func main() {
 	mux.HandleFunc("POST /api/vote", a.apiVote)
 	mux.HandleFunc("POST /api/suggest", a.apiSuggest)
 	mux.HandleFunc("GET /api/whoami", a.apiWhoami)
+	mux.HandleFunc("GET /api/burn", a.apiBurn)
 	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, _ *http.Request) { w.Write([]byte("ok")) })
 	mux.HandleFunc("GET /readyz", func(w http.ResponseWriter, _ *http.Request) { w.Write([]byte("ok")) })
 
@@ -181,6 +183,27 @@ func (a *app) apiSuggest(w http.ResponseWriter, r *http.Request) {
 func (a *app) apiWhoami(w http.ResponseWriter, _ *http.Request) {
 	writeJSON(w, map[string]any{"pod": a.pod, "node": a.node, "version": version,
 		"store": a.store.Name(), "uptime": time.Since(a.started).Round(time.Second).String()})
+}
+
+// apiBurn does a few milliseconds of real CPU work per request. The load
+// generator in demo step 6 hits this so the HPA has something to react to;
+// listing a dozen items is too cheap to push a pod past its CPU request.
+func (a *app) apiBurn(w http.ResponseWriter, r *http.Request) {
+	sum := sha256.Sum256([]byte(a.pod))
+	for i := 0; i < 20000; i++ {
+		sum = sha256.Sum256(sum[:])
+	}
+	items, _ := a.store.List(r.Context())
+	writeJSON(w, map[string]any{"pod": a.pod, "items": len(items), "digest": hex(sum[:4])})
+}
+
+func hex(b []byte) string {
+	const d = "0123456789abcdef"
+	out := make([]byte, 0, len(b)*2)
+	for _, c := range b {
+		out = append(out, d[c>>4], d[c&15])
+	}
+	return string(out)
 }
 
 func writeJSON(w http.ResponseWriter, v any) {

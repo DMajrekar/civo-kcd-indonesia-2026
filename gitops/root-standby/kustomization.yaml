@@ -1,0 +1,8 @@
+# The standby cluster's root: everything the live root has, plus the slide deck.
+# gitops/root has no kustomization.yaml and kustomize refuses files outside
+# this directory, so root.yaml is an Application that points at gitops/root.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - root.yaml
+  - slides.yaml

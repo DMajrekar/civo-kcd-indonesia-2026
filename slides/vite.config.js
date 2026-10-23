@@ -23,6 +23,11 @@ function qrPlugin() {
       })
       return `export const repoUrl = ${JSON.stringify(repo)};\nexport const repoQr = ${JSON.stringify(svg)};\n`
     },
+    // React's production build embeds a docs URL in its error messages. It is
+    // never fetched, but the deck must contain no external URL except the repo.
+    renderChunk(code) {
+      return { code: code.replaceAll('https://react.dev/errors/', 'react.dev/errors/'), map: null }
+    },
   }
 }
 

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kcd-slides
+  namespace: slides
+spec:
+  type: LoadBalancer   # Civo provisions a load balancer with a public IP
+  selector: {app: kcd-slides}
+  ports:
+    - {name: http, port: 80, targetPort: http}
