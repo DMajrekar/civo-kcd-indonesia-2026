@@ -11,7 +11,7 @@ make demo
 |------|--------------|-------------------------------|
 | 1 | Terraform plan, apply in the background, cluster in JKT1 | regions, sizes, marketplace apps, `ignore_changes` on node count |
 | 2 | kubeconfig, nodes, `kubectl top` | metrics-server |
-| 3 | Install Argo CD, one root Application; autoscaler reuses Civo's pre-installed API Secret | app-of-apps, secrets stay out of git |
+| 3 | Argo CD is already there (Terraform Helm release); one root Application by hand; autoscaler reuses Civo's pre-installed API Secret | app-of-apps, secrets stay out of git |
 | 4 | App + Valkey + HPA arrive from git; public IP; QR on the projector | Civo load balancer, Civo volume (PVC) |
 | 5 | Hand-edit reverted; release shipped as a commit | selfHeal, rolling update |
 | 6 | Load generator → HPA to 20 pods → Pending → Civo adds nodes | HPA, cluster autoscaler (Civo provider) |
@@ -33,7 +33,7 @@ autoscaling step is visible on the board.
 | `gitops/app/` | The application: Valkey StatefulSet + PVC, Deployment, Service, HPA. |
 | `gitops/cluster-autoscaler/` | Kubernetes cluster-autoscaler with the Civo cloud provider. |
 | `app/` | Go source, Dockerfile. Built by `.github/workflows/build.yml` to `ghcr.io/<owner>/jakarta-votes`. |
-| `terraform/` | Dedicated network + firewall + k3s cluster. One workspace per cluster name. `CLUSTER_TOOL=cli` in `.env` uses the civo CLI instead. |
+| `terraform/` | Dedicated network + firewall + k3s cluster + Argo CD (Helm release). One workspace per cluster name. `CLUSTER_TOOL=cli` in `.env` uses the civo CLI instead. |
 | `slides/` | The React slide deck, served from the standby cluster (`gitops/slides`, `gitops/root-standby`). |
 | `docs/RUNSHEET.md` | Minute-by-minute plan and rehearsal timings. |
 

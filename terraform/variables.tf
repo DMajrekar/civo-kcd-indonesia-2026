@@ -34,3 +34,9 @@ variable "applications" {
 variable "kubeconfig_path" {
   type = string
 }
+
+variable "argocd_chart_version" {
+  description = "argo-cd Helm chart version (10.10.5 ships Argo CD v3.5.5)."
+  type        = string
+  default     = "10.10.5"
+}

@@ -3,6 +3,7 @@ terraform {
   required_providers {
     civo  = { source = "civo/civo", version = "~> 1.3" }
     local = { source = "hashicorp/local", version = "~> 2.5" }
+    helm  = { source = "hashicorp/helm", version = "~> 3.0" }
   }
 }
 

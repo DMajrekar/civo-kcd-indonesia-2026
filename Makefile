@@ -68,7 +68,7 @@ step2: ## Step 2: Connect with kubectl, check nodes and metrics
 step3: ## Step 3: Install Argo CD and point it at git
 	$(call slide,Step 3: Argo CD -- git becomes the source of truth)
 	@echo "$(YELLOW)Key points:$(RESET)"
-	@echo "  - Nothing is kubectl-applied by hand except one root Application"
+	@echo "  - Argo CD came from Terraform (Helm release); the one thing applied by hand is the root Application"
 	@echo "  - No secrets in git: the autoscaler reuses the API Secret Civo pre-installs for its CCM"
 	@echo ""
 	@echo "  ┌──────────────┐   pull    ┌──────────────┐   apply    ┌──────────────────┐"
