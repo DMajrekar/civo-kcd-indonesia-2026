@@ -10,4 +10,4 @@ patches:
     patch: |
       - op: add
         path: /metadata/annotations
-        value: {kubernetes.civo.com/ipv4-address: "null"}
+        value: {kubernetes.civo.com/ipv4-address: "49.128.189.194"}
