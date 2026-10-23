@@ -23,7 +23,7 @@ function qrPlugin() {
       })
       // The voting app runs on the standby cluster behind a Civo reserved IP,
       // so this URL survives rebuilds. Changing it means rebuilding the deck.
-      const votes = 'http://49.128.189.194/'
+      const votes = 'https://vote.49-128-189-194.sslip.io/'
       const votesSvg = await QRCode.toString(votes, {
         type: 'svg',
         margin: 1,

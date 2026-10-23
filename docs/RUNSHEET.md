@@ -20,10 +20,14 @@ board (`http://<ip>/board`) and the Argo CD UI (`https://localhost:8080`).
 ## Voting runs on the standby
 
 The QR code on slide 3 (and small on every slide after it) points at
-`http://49.128.189.194/`, the standby's copy of the app behind the Civo
-reserved IP `kcd-votes` (`gitops/app-standby` pins it with the
-`kubernetes.civo.com/ipv4-address` annotation). Rebuilding the standby keeps
-that address. The board for the projector is `http://49.128.189.194/board`.
+`https://vote.49-128-189-194.sslip.io/`: the standby's copy of the app behind
+ingress-nginx on the Civo reserved IP `kcd-votes` (49.128.189.194, pinned with
+the `kubernetes.civo.com/ipv4-address` annotation). sslip.io resolves the
+hostname to the IP; cert-manager issued the Let's Encrypt certificates on
+23 Oct (valid 90 days). Do not rebuild the standby on the day: a rebuild means
+re-issuing against sslip.io's shared Let's Encrypt rate limit.
+Board for the projector: `https://vote.49-128-189-194.sslip.io/board`.
+Slides: `https://slides.49-128-189-194.sslip.io/`.
 The app built live in step 4 is the same image from the same git path; say so.
 
 ## Fallbacks
