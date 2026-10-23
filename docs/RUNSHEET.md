@@ -29,19 +29,20 @@ board (`http://<ip>/board`) and the Argo CD UI (`https://localhost:8080`).
 
 ## Measured timings
 
-Full `make rehearse` from a deleted cluster, 23 Oct 2026, JKT1, Terraform path.
+Full `make rehearse` from a deleted cluster, 23 Oct 2026, JKT1, Terraform path
+(network, firewall, cluster, Argo CD Helm release).
 
 | step | machine time | slot | notes |
 |------|--------------|------|-------|
-| 1 | 0m05s | 3m | returns as soon as `terraform apply` is running in the background |
-| cluster create | ~3m30s | (covered by talk) | Terraform reports the cluster created after 1m27s; nodes Ready and metrics-server answering about 2 minutes later |
-| 2 | 0m06s | 4m | upper bound is the cluster wait above if you reach it early |
-| 3 | 2m05s | 4m | Argo CD install and first sync |
-| 4 | 0m54s | 4m | Valkey volume, pods, Civo load balancer IP |
-| 5 | 0m28s | 4m | drift reverted, commit pushed, rollout done |
-| 6 | 3m25s | 8m | load on → HPA 16 pods → Unschedulable → Civo node Ready |
+| 1 | 0m07s | 3m | returns once `terraform apply` is running in the background |
+| 2 | 3m08s | 4m | this is the wait for the apply: cluster 1m28s, then Argo CD 1m25s; nodes Ready and metrics-server answering at the end |
+| 3 | 0m14s | 4m | root Application applied, Applications stream in, UI opens |
+| 4 | 0m20s | 4m | Valkey volume, pods, Civo load balancer IP (cold run was 0m54s) |
+| 5 | 0m18s | 4m | drift reverted, commit pushed, rollout done |
+| 6 | 2m44s | 8m | load on → HPA 16 pods → Unschedulable → Civo node Ready |
 | 7 | 0m04s | 2m | |
-| **total** | **7m04s** | 29m | |
+| **total** | **6m55s** | 29m | |
 
-The machine needs about ten minutes of the thirty, including the cluster
-build. The rest is talking, the room voting, and Argo CD's UI on screen.
+The machine needs about seven minutes of the thirty. Step 2 is the one real
+wait; start step 1 within the first two minutes and talk over slides 6 and 7
+(Terraform) while it runs.
