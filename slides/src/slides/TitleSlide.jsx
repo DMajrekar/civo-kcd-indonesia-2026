@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Slide, Logo, fadeUp, ease } from '../ui.jsx'
+import dinesh from '../assets/dinesh.png'
 
 export default function TitleSlide() {
   return (
@@ -52,9 +53,18 @@ export default function TitleSlide() {
         animate="show"
         custom={0.8}
       >
-        <div>
-          <div style={{ color: 'var(--white)', fontWeight: 600 }}>Dinesh Majrekar</div>
-          <div className="muted">Civo</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+          <img
+            src={dinesh}
+            alt="Dinesh Majrekar"
+            width={80}
+            height={80}
+            style={{ width: 80, height: 80, borderRadius: '50%', objectFit: 'cover', border: '3px solid var(--aurora)', display: 'block' }}
+          />
+          <div>
+            <div style={{ color: 'var(--white)', fontWeight: 600 }}>Dinesh Majrekar</div>
+            <div className="muted">Civo</div>
+          </div>
         </div>
         <div style={{ textAlign: 'right' }}>
           <div style={{ color: 'var(--white)' }}>KCD Indonesia 2026</div>

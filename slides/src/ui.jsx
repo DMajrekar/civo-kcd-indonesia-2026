@@ -1,3 +1,4 @@
+import { isValidElement } from 'react'
 import { motion } from 'framer-motion'
 import argoIcon from './assets/argo-icon-color.svg'
 
@@ -87,8 +88,9 @@ export function Bullets({ items, start = 0.5, gap = 0.18, style, size }) {
       style={{ ...(size ? { fontSize: size } : {}), ...style }}
     >
       {items.map((it, i) => {
-        const text = typeof it === 'string' ? it : it.text
-        const sub = typeof it === 'string' ? null : it.sub
+        const plain = typeof it === 'string' || isValidElement(it)
+        const text = plain ? it : it.text
+        const sub = plain ? null : it.sub
         return (
           <motion.li key={i} variants={item}>
             <span className="mark" />

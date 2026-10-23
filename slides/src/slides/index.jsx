@@ -9,7 +9,6 @@ import StepSlide from './StepSlide.jsx'
 import { CreateCluster, Connect, ArgoCd, TheApp, GitOpsInPractice, Autoscaling, WhatWeBuilt } from './illustrations.jsx'
 
 // Key points come from the Makefile stepN targets and the run.sh "say" lines.
-// eslint-disable-next-line react/jsx-key
 const Step1 = () => (
   <StepSlide
     n={1}
@@ -45,7 +44,7 @@ const Step3 = () => (
     points={[
       'Nothing is kubectl-applied by hand except one root Application',
       'App-of-apps: gitops/root holds the other Applications',
-      "Secrets (the autoscaler's Civo API key) never go in git",
+      'No secrets in git, none typed by hand: the autoscaler reuses the API Secret Civo installs for its own cloud controller',
     ]}
     illustration={<ArgoCd />}
   />
@@ -96,7 +95,7 @@ const Step7 = () => (
     title="What we built, and what it costs"
     points={[
       'Under thirty minutes, in a region that is one day old',
-      'Pricing is per hour, the same in Jakarta as in London',
+      'Billed per hour; delete it after and pay nothing',
       'Everything you saw is in the repo',
     ]}
     illustration={<WhatWeBuilt />}

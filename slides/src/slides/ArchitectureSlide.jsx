@@ -38,7 +38,7 @@ export default function ArchitectureSlide() {
       <div style={{ position: 'absolute', inset: 0 }}>
         <svg width={1920} height={1080} style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
           <ArrowDefs />
-          <Arrow from={[360, 390]} to={[640, 390]} label="Terraform (civo provider)" delay={t.cluster} labelOffset={[0, -14]} labelSize={20} />
+          <Arrow from={[360, 390]} to={[640, 390]} label="terraform apply" delay={t.cluster} labelOffset={[0, -14]} labelSize={20} />
           <Arrow from={[360, 545]} to={[700, 545]} label="pull" delay={t.git + 0.4} />
           <Arrow from={[1000, 545]} to={[1080, 560]} label="apply" delay={t.app} labelOffset={[8, -22]} labelSize={22} />
           <Arrow from={[1080, 722]} to={[360, 700]} label="public IP" delay={t.lb + 0.4} color="var(--cloud)" dashed labelOffset={[0, -16]} />

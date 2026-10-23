@@ -14,7 +14,7 @@ export default function RecapSlide() {
             { text: 'One kubectl apply, ever: the root Application', sub: 'everything else arrives from git through Argo CD' },
             { text: 'A release is a commit; drift is reverted', sub: 'selfHeal and prune make the repo the truth' },
             { text: 'Two autoscalers: pods first, then nodes', sub: 'HPA on CPU, cluster autoscaler with the Civo cloud provider' },
-            { text: 'Secrets by hand, everything else in the open', sub: 'the whole demo is in a public repo you can run' },
+            { text: 'No secrets in git, none typed by hand', sub: 'the autoscaler reuses the API Secret Civo installs; the whole demo is a public repo you can run' },
           ]}
         />
       </div>

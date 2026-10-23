@@ -83,8 +83,8 @@ export default function Jkt1Slide() {
         start={2.1}
         size={38}
         items={[
-          'Launched with PT Arupa Cloud Nusantara; operated by Arupa, data stays in Indonesia',
-          'Same platform, same tooling, same prices as every other Civo region',
+          'Launched with PT Arupa Cloud Nusantara, who operate the region',
+          'Same platform and tooling as every other Civo region, data stays in Indonesia',
         ]}
       />
 

@@ -8,9 +8,9 @@ export function CreateCluster() {
     <>
       <svg width={820} height={600} style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
         <ArrowDefs />
-        <Arrow from={[280, 150]} to={[480, 150]} label="terraform apply" delay={1.2} labelSize={22} />
+        <Arrow from={[250, 150]} to={[480, 150]} label="terraform apply" delay={1.2} labelSize={21} />
       </svg>
-      <Box x={0} y={90} w={280} h={120} title="laptop" sub="Terraform, civo provider" delay={0.7} />
+      <Box x={0} y={90} w={250} h={120} title="laptop" sub="Terraform, civo provider" delay={0.7} />
       <Box x={480} y={60} w={340} h={180} title="JKT1" sub="firewall + k3s cluster, 2 x g4s.kube.medium, metrics-server" accent delay={1.5} />
       <Code delay={2.0} style={{ position: 'absolute', left: 0, top: 300, width: 820, fontSize: 23 }}>
         {'resource "civo_kubernetes_cluster" "demo" {\n  pools { size = "g4s.kube.medium"  node_count = 2 }\n  '}
@@ -92,7 +92,7 @@ export function ArgoCd() {
         transition={{ delay: 3.0 }}
       >
         <span style={{ width: 14, height: 14, borderRadius: 3, background: 'var(--private)' }} />
-        Secret civo-api-access: created by hand, never in git
+        Secret civo-api-access: pre-installed by Civo, reused by the autoscaler
       </motion.div>
     </>
   )
@@ -255,8 +255,8 @@ export function WhatWeBuilt() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease, delay: 2.2 }}
       >
-        <div style={{ fontSize: 30, fontWeight: 600 }}>Billed per hour, same price in Jakarta as in London or New York</div>
-        <div className="muted" style={{ fontSize: 25, marginTop: 8 }}>Two nodes, a load balancer, a volume: a few dollars a day. Delete it after, pay nothing.</div>
+        <div style={{ fontSize: 30, fontWeight: 600 }}>Billed per hour at the published JKT1 prices</div>
+        <div className="muted" style={{ fontSize: 25, marginTop: 8 }}>Two nodes, a load balancer, a volume: a few dollars a day.</div>
       </motion.div>
     </>
   )
