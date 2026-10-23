@@ -62,10 +62,6 @@ step1: ## Step 1: Create a Kubernetes cluster in Jakarta (JKT1)
 
 step2: ## Step 2: Connect with kubectl, check nodes and metrics
 	$(call slide,Step 2: Connect)
-	@echo "$(YELLOW)Key points:$(RESET)"
-	@echo "  - Kubeconfig is one command; from here it is only kubectl"
-	@echo "  - metrics-server came from the Civo marketplace (the HPA needs it)"
-	@echo ""
 	@NO_CLEAR=1 bash demo/step-02-connect/run.sh
 
 step3: ## Step 3: Install Argo CD and point it at git
