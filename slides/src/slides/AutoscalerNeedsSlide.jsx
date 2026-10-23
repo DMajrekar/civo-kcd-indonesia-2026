@@ -34,7 +34,7 @@ function Column({ title, unit, rows, delay, x }) {
 export default function AutoscalerNeedsSlide() {
   return (
     <Slide>
-      <Eyebrow>The next 30 minutes, part 2</Eyebrow>
+      <Eyebrow>Architecture</Eyebrow>
       <Title small>What the autoscalers need</Title>
 
       <div style={{ position: 'absolute', inset: 0 }}>

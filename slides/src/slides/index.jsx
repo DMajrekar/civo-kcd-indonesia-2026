@@ -1,5 +1,6 @@
 import TitleSlide from './TitleSlide.jsx'
 import Jkt1Slide from './Jkt1Slide.jsx'
+import FreeDaySlide from './FreeDaySlide.jsx'
 import AppArchitectureSlide from './AppArchitectureSlide.jsx'
 import AutoscalerNeedsSlide from './AutoscalerNeedsSlide.jsx'
 import TerraformSlide from './TerraformSlide.jsx'
@@ -109,6 +110,7 @@ const Step7 = () => (
 export const slides = [
   TitleSlide,
   Jkt1Slide,
+  FreeDaySlide,
   AppArchitectureSlide,
   AutoscalerNeedsSlide,
   WhyGitOpsSlide,

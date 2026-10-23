@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Slide, Eyebrow, Title, Bullets, ArgoLogo, fadeUp } from '../ui.jsx'
+import { Slide, Eyebrow, Title, Bullets, ArgoLogo, FluxLogo, fadeUp } from '../ui.jsx'
 
 export default function WhyGitOpsSlide() {
   return (
@@ -10,14 +10,17 @@ export default function WhyGitOpsSlide() {
           <Title small>The four GitOps principles</Title>
         </div>
         <motion.div
-          style={{ display: 'flex', alignItems: 'center', gap: 16, marginTop: 70, color: 'var(--dim)', fontSize: 24 }}
+          style={{ display: 'flex', alignItems: 'center', gap: 18, marginTop: 70, color: 'var(--cloud)', fontSize: 26 }}
           variants={fadeUp}
           initial="hidden"
           animate="show"
           custom={0.6}
         >
+          <FluxLogo height={56} />
+          <span>Flux</span>
+          <span style={{ color: 'var(--dim)', margin: '0 10px' }}>·</span>
           <ArgoLogo height={56} />
-          <span>Argo CD is how we do it today</span>
+          <span>Argo CD</span>
         </motion.div>
       </div>
       <div style={{ marginTop: 50, maxWidth: 1640 }}>

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Slide, Eyebrow, Title, Box, Arrow, ArrowDefs, Logo, ArgoLogo, ease } from '../ui.jsx'
+import { Slide, Title, Box, Arrow, ArrowDefs, Logo, ArgoLogo, ease } from '../ui.jsx'
 
 const t = { cluster: 0.3, lb: 0.9, app: 1.6, valkey: 2.2, volume: 2.7, argo: 3.3 }
 
@@ -16,8 +16,7 @@ function Pods({ n, delay }) {
 export default function AppArchitectureSlide() {
   return (
     <Slide>
-      <Eyebrow>The next 30 minutes, part 1</Eyebrow>
-      <Title small>What we are going to build</Title>
+      <Title small>Architecture</Title>
 
       <div style={{ position: 'absolute', inset: 0 }}>
         <svg width={1920} height={1080} style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
@@ -35,7 +34,7 @@ export default function AppArchitectureSlide() {
               Civo Kubernetes, JKT1 (Jakarta)
             </div>
           </div>
-          <div className="box-sub">k3s, two g4s.kube.medium nodes to start, all of this in the jakarta namespace</div>
+          <div className="box-sub">k3s, two g4s.kube.medium nodes to start</div>
         </Box>
 
         <Box x={300} y={520} w={340} h={130} title="Load balancer" sub="Service type LoadBalancer, public IP" accent delay={t.lb} />
@@ -66,7 +65,7 @@ export default function AppArchitectureSlide() {
         >
           <ArgoLogo height={56} />
           <div style={{ fontSize: 26, color: 'var(--cloud)', lineHeight: 1.25 }}>
-            <span style={{ color: 'var(--white)', fontWeight: 600 }}>Deployed by Argo CD</span> from gitops/app in the repo. Nobody runs kubectl apply for any of it.
+            <span style={{ color: 'var(--white)', fontWeight: 600 }}>Deployed by Argo CD</span> from gitops/app in the repo.
           </div>
         </motion.div>
       </div>

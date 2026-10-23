@@ -1,6 +1,7 @@
 import { isValidElement } from 'react'
 import { motion } from 'framer-motion'
 import argoIcon from './assets/argo-icon-color.svg'
+import fluxIcon from './assets/flux-icon-color.svg'
 
 // White Civo logo, 88x36 viewBox, inlined so nothing is fetched at runtime.
 export function Logo({ height = 36, color = '#ffffff', style }) {
@@ -27,6 +28,10 @@ export function Logo({ height = 36, color = '#ffffff', style }) {
 // part of the bundle and nothing is fetched at runtime.
 export function ArgoLogo({ height = 40, style }) {
   return <img src={argoIcon} alt="Argo CD" height={height} style={{ display: 'block', width: 'auto', height, ...style }} />
+}
+
+export function FluxLogo({ height = 40, style }) {
+  return <img src={fluxIcon} alt="Flux" height={height} style={{ display: 'block', width: 'auto', height, ...style }} />
 }
 
 export const ease = [0.22, 1, 0.36, 1]
