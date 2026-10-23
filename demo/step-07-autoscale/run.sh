@@ -29,7 +29,8 @@ say "when the first pod is stuck Pending with nowhere to go."
 # The watch stops on "Unschedulable", not on Pending: every pod spends a
 # moment Pending on its way to a node, and the condition must say so.
 watch_until 480 "kubectl -n $APP_NS get hpa $APP -w" \
-  "kubectl -n $APP_NS get pods -l app=$APP -o json | jq -e '[.items[] | select(.status.conditions[]? | select(.type==\"PodScheduled\" and .reason==\"Unschedulable\"))] | length > 0' >/dev/null"
+  "kubectl -n $APP_NS get pods -l app=$APP -o json | jq -e '[.items[] | select(.status.conditions[]? | select(.type==\"PodScheduled\" and .reason==\"Unschedulable\"))] | length > 0' >/dev/null" \
+  20   # linger through one more HPA update so the jump in REPLICAS is on screen
 run "kubectl -n $APP_NS get pods -l app=$APP --no-headers | awk '{print \$3}' | sort | uniq -c"
 run "kubectl -n $APP_NS get pods -l app=$APP --field-selector=status.phase=Pending"
 run "kubectl -n kube-system logs deploy/cluster-autoscaler --since=5m | grep -iE 'scale.?up|unschedulable|expanding' | tail -4 | cut -c1-150 || true"
@@ -37,13 +38,16 @@ run "kubectl -n kube-system logs deploy/cluster-autoscaler --since=5m | grep -iE
 say ""
 say "The cluster autoscaler has asked Civo for more nodes. Same API you used"
 say "in step 1, driven by the cluster itself."
-BEFORE=$(kubectl get nodes --no-headers | wc -l)
-wait_for "Civo to add a node (currently $BEFORE)" 600 \
-  "[[ \$(kubectl get nodes --no-headers | wc -l) -gt $BEFORE ]]"
-run "kubectl get nodes"
+say "Watch the node list: the new node appears NotReady, joins, and goes Ready"
+say "(Civo takes two to three minutes to build it)."
+BEFORE=$(kubectl get nodes --no-headers | grep -c ' Ready ')
+watch_until 600 "kubectl get nodes -w" \
+  "[[ \$(kubectl get nodes --no-headers | grep -c ' Ready ') -gt $BEFORE ]]" 5
 
-wait_for "the new node to be Ready and Pending pods to schedule" 600 \
-  "! kubectl -n $APP_NS get pods -l app=$APP --no-headers | grep -q Pending"
+say ""
+say "And the Pending pods land on it:"
+watch_until 300 "kubectl -n $APP_NS get pods -l app=$APP -o wide -w --field-selector=status.phase!=Succeeded" \
+  "! kubectl -n $APP_NS get pods -l app=$APP --no-headers | grep -q Pending" 5
 run "pods_by_node"
 
 say ""

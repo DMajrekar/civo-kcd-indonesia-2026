@@ -424,14 +424,14 @@ TF_LOG_FILE="$STATE/terraform-apply-$CLUSTER_NAME.log"
 watch_until() {
   # Separate statements: bash expands every word of a `local` line before
   # assigning any of them, so `secs` would still be unset in the arithmetic.
-  local secs="$1" cmd="$2" cond="$3"
+  local secs="$1" cmd="$2" cond="$3" linger="${4:-2}"   # linger: keep watching N s after the condition
   local pid deadline
   deadline=$(( SECONDS + secs ))
   printf '\n%s%s$ %s%s\n\n' "$BOLD" "$GREEN" "$cmd" "$RESET"
   eval "$cmd" &
   pid=$!
   while (( SECONDS < deadline )); do
-    if eval "$cond" >/dev/null 2>&1; then sleep 2; break; fi
+    if eval "$cond" >/dev/null 2>&1; then sleep "$linger"; break; fi
     kill -0 "$pid" 2>/dev/null || break
     sleep 1
   done
