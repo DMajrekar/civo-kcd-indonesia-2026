@@ -24,6 +24,9 @@ say "Now the right way. A release is a commit: new image built by CI, new"
 say "colour, new title. Review it, push it, and Argo rolls it out."
 printf '\n'
 
+say "What is running right now:"
+[[ -n "$IP" ]] && run "curl -s http://$IP/api/whoami | jq -r .version"
+
 if grep -q 'jakarta-votes:v1.1.0' "$DEPLOY"; then
   ok "gitops/app already at v1.1.0 — run 'make reset' before the next rehearsal"
 else
