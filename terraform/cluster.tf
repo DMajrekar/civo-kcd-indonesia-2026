@@ -1,8 +1,16 @@
+# A dedicated private network per cluster, so the demo and the standby never
+# share one. Civo creates a default firewall for the network; the load
+# balancers the app asks for later land in this network too.
+resource "civo_network" "cluster" {
+  label  = "${var.cluster_name}-network"
+  region = var.region
+}
+
 # The same firewall the Civo CLI creates for a cluster: API, HTTP/S in,
-# everything out. The load balancer the app asks for later sits inside the
-# network and reuses this.
+# everything out.
 resource "civo_firewall" "cluster" {
   name                 = "${var.cluster_name}-firewall"
+  network_id           = civo_network.cluster.id
   create_default_rules = false
 
   ingress_rule {
@@ -51,6 +59,7 @@ resource "civo_firewall" "cluster" {
 resource "civo_kubernetes_cluster" "demo" {
   name               = var.cluster_name
   region             = var.region
+  network_id         = civo_network.cluster.id
   firewall_id        = civo_firewall.cluster.id
   cluster_type       = "k3s"
   kubernetes_version = var.kubernetes_version != "" ? var.kubernetes_version : null

@@ -23,13 +23,16 @@ fi
 
 bash "$REPO_ROOT/scripts/argocd-ui.sh" stop >/dev/null 2>&1 || true
 
-# Deleting the Service first releases the Civo load balancer cleanly.
-if [[ -z "${STANDBY-}" ]] && have_kubeconfig; then
+# Release the Civo load balancers before the cluster goes: stop Argo CD so it
+# cannot recreate the Services, delete every LoadBalancer Service, and wait
+# for the cloud controller to remove the load balancers behind them.
+if have_kubeconfig; then
+  kubectl -n argocd scale sts/argocd-application-controller --replicas=0 >/dev/null 2>&1 || true
   kubectl -n "$APP_NS" delete deploy loadgen --ignore-not-found >/dev/null 2>&1 || true
-  kubectl -n argocd patch application "$APP" -p '{"metadata":{"finalizers":null}}' --type=merge >/dev/null 2>&1 || true
-  kubectl -n "$APP_NS" delete svc "$APP" --ignore-not-found --timeout=60s >/dev/null 2>&1 || true
+  kubectl get svc -A -o json 2>/dev/null \
+    | jq -r '.items[] | select(.spec.type=="LoadBalancer") | "\(.metadata.namespace) \(.metadata.name)"' \
+    | while read -r ns name; do run "kubectl -n '$ns' delete svc '$name' --timeout=120s || true"; done
 fi
-
 VOLS=$(civo_cluster_volumes "$CID" "$CIVO_REGION")
 if [[ -d "$TF_DIR/terraform.tfstate.d/$CLUSTER_NAME" ]] && tf_init && tf state list 2>/dev/null | grep -q civo_kubernetes_cluster; then
   run "tf destroy -auto-approve -input=false $(tf_vars)"
