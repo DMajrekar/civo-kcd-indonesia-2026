@@ -144,6 +144,21 @@ run() {
   return 0
 }
 
+# Like run, but without the pause: show the command and execute it at once.
+# For a follow-up that must happen before the cluster moves on (e.g. reading
+# back a value Argo CD is about to revert).
+run_now() {
+  local cmd="$*"
+  printf '\n%s%s$ %s%s\n\n' "$BOLD" "$GREEN" "$cmd" "$RESET"
+  local rc=0
+  eval "$cmd" || rc=$?
+  if (( rc != 0 )); then
+    printf '\n'; fail "command exited $rc"
+    [[ -n "${DEMO_CONTINUE_ON_ERROR-}" ]] || exit $rc
+  fi
+  return 0
+}
+
 # Like run, but the output is noisy/uninteresting -- swallow it unless it fails.
 run_quiet() {
   local cmd="$*"

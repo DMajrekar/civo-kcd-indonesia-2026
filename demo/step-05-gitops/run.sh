@@ -15,7 +15,7 @@ run "kubectl -n $APP_NS get deploy $APP -o jsonpath='{.spec.template.spec.contai
 say ""
 say "Now someone 'fixes' production with kubectl:"
 run "kubectl -n $APP_NS set env deploy/$APP TITLE='edited by hand in prod (oops)'"
-run "kubectl -n $APP_NS get deploy $APP -o jsonpath='{.spec.template.spec.containers[0].env[0]}{\"\\n\"}'"
+run_now "kubectl -n $APP_NS get deploy $APP -o jsonpath='{.spec.template.spec.containers[0].env[0]}{\"\\n\"}'"
 say ""
 say "Argo CD notices the live state no longer matches git, and puts it back."
 say "Watch the Application go OutOfSync, then Synced again:"
