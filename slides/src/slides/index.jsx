@@ -4,6 +4,7 @@ import FreeDaySlide from './FreeDaySlide.jsx'
 import AppArchitectureSlide from './AppArchitectureSlide.jsx'
 import AutoscalerNeedsSlide from './AutoscalerNeedsSlide.jsx'
 import TerraformSlide from './TerraformSlide.jsx'
+import ArgoTerraformSlide from './ArgoTerraformSlide.jsx'
 import WhyGitOpsSlide from './WhyGitOpsSlide.jsx'
 import AutoscalersSlide from './AutoscalersSlide.jsx'
 import RecapSlide from './RecapSlide.jsx'
@@ -117,6 +118,7 @@ export const slides = [
   TerraformSlide,
   Step2,
   Step3,
+  ArgoTerraformSlide,
   Step4,
   Step5,
   AutoscalerNeedsSlide,
