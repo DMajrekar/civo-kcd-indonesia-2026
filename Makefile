@@ -42,7 +42,16 @@ help: ## Show this help
 	@echo ''
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z0-9_-]+:.*?## / {printf "  $(GREEN)%-12s$(RESET) %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
-demo: step1 step2 step3 step4 step5 step6 step7 ## Run the full 30-minute demo
+# Runs the steps in order with an [enter] between them (DEMO_AUTO=1 skips it),
+# so the presenter decides when the next screen clears.
+demo: ## Run the full 30-minute demo
+	@steps=(step1 step2 step3 step4 step5 step6 step7); \
+	for i in $${!steps[@]}; do \
+	  $(MAKE) --no-print-directory $${steps[$$i]} || exit $$?; \
+	  n=$${steps[$$((i+1))]-}; [ -z "$$n" ] && break; \
+	  [ -n "$${DEMO_AUTO-}" ] && continue; \
+	  printf '\n$(DIM)$(CYAN)  [enter] next: make %s$(RESET)' "$$n"; read -r _ < /dev/tty || exit 1; \
+	done
 
 # ------------------------------------------------------------------ steps
 

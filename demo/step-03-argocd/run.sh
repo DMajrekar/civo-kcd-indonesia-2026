@@ -9,9 +9,9 @@ banner "Step 03 — Argo CD"
 
 say "We are not going to kubectl apply the application. Git is going to be the"
 say "source of truth, and Argo CD will make the cluster match it. Argo CD itself"
-say "was the last thing Terraform did: a Helm release, right after the cluster."
+say "was the last thing Terraform did: a Helm release, right after the cluster"
+say "(the HCL is on the slides)."
 printf '\n'
-run "show_file '$TF_DIR/argocd.tf' hcl"
 
 wait_for "Argo CD server to be ready" 600 \
   "kubectl -n argocd rollout status deploy/argocd-server --timeout=5s"
@@ -19,15 +19,9 @@ wait_for "Argo CD repo-server to be ready" 300 \
   "kubectl -n argocd rollout status deploy/argocd-repo-server --timeout=5s"
 run "kubectl -n argocd get pods"
 
-# --------------------------------------------------- autoscaler credentials
-say ""
-say "One thing never goes in git: credentials. The cluster autoscaler needs a"
-say "Civo API key to add nodes. We do not create one -- Civo already put a"
-say "scoped key in the cluster for its own cloud controller and CSI driver,"
-say "and the autoscaler reads the same Secret."
-wait_for "the Civo-managed Secret civo-api-access" 120 "kubectl -n kube-system get secret civo-api-access"
-run "kubectl -n kube-system get secret civo-api-access -o json | jq '{created: .metadata.creationTimestamp, keys: (.data | keys)}'"
-run "kubectl -n kube-system get deploy civo-ccm -o jsonpath='{.spec.template.spec.containers[0].env[*].valueFrom.secretKeyRef.name}{\"\\n\"}' | tr ' ' '\\n' | sort -u"
+# One thing never goes in git: credentials. The cluster autoscaler reuses the
+# civo-api-access Secret Civo pre-installs in kube-system for its CCM and CSI
+# driver; nothing to show here, the point is on the slides.
 
 # ------------------------------------------------------------- root app
 say ""
