@@ -24,16 +24,13 @@ run "kubectl apply -f '$HERE/loadgen.yaml'"
 
 say ""
 say "Watch the HPA. Metrics land every 15-60 seconds; pods double, then double"
-say "again, until 20 x 250m CPU no longer fits on two nodes."
-wait_for "HPA to scale $APP above 2 replicas" 300 \
-  "[[ \$(kubectl -n $APP_NS get hpa $APP -o jsonpath='{.status.desiredReplicas}') -gt 2 ]]"
-run "kubectl -n $APP_NS get hpa $APP"
-run "kubectl -n $APP_NS get pods -l app=$APP --no-headers | awk '{print \$3}' | sort | uniq -c"
-
-# "Pending" here means unschedulable, not the half-second every pod spends
-# Pending on its way to a node: the condition must say so.
-wait_for "pods to be Unschedulable (no room left on two nodes)" 420 \
+say "again, until 20 x 250m CPU no longer fits on two nodes. The watch ends"
+say "when the first pod is stuck Pending with nowhere to go."
+# The watch stops on "Unschedulable", not on Pending: every pod spends a
+# moment Pending on its way to a node, and the condition must say so.
+watch_until 480 "kubectl -n $APP_NS get hpa $APP -w" \
   "kubectl -n $APP_NS get pods -l app=$APP -o json | jq -e '[.items[] | select(.status.conditions[]? | select(.type==\"PodScheduled\" and .reason==\"Unschedulable\"))] | length > 0' >/dev/null"
+run "kubectl -n $APP_NS get pods -l app=$APP --no-headers | awk '{print \$3}' | sort | uniq -c"
 run "kubectl -n $APP_NS get pods -l app=$APP --field-selector=status.phase=Pending"
 run "kubectl -n kube-system logs deploy/cluster-autoscaler --since=5m | grep -iE 'scale.?up|unschedulable|expanding' | tail -4 | cut -c1-150 || true"
 
