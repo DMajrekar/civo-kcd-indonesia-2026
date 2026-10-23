@@ -30,9 +30,6 @@ export default function Jkt1Slide() {
           background: 'linear-gradient(to bottom, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.75) 55%, rgba(0,0,0,0) 100%)',
         }}
       >
-        <motion.div className="eyebrow" variants={fadeUp} initial="hidden" animate="show" custom={0.3}>
-          Yesterday, 23 October 2026
-        </motion.div>
         <motion.h1 className="title small" variants={fadeUp} initial="hidden" animate="show" custom={0.45}>
           Civo's Indonesia region, <span className="accent">JKT1</span>, is live
         </motion.h1>
