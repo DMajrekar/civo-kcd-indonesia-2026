@@ -6,7 +6,7 @@ have_kubeconfig || { fail "no working kubeconfig — run 'make step2' first"; ex
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 pods_by_node() { kubectl -n "$APP_NS" get pods -l app="$APP" -o wide --no-headers | awk '{print $7}' | sort | uniq -c; }
 
-banner "Step 06 — autoscaling"
+banner "Step 07 — autoscaling"
 
 say "Two autoscalers, both installed from git. The HPA scales pods on CPU. The"
 say "cluster autoscaler, in kube-system with a Civo API key, adds nodes when"
@@ -56,4 +56,4 @@ run "kubectl delete -f '$HERE/loadgen.yaml' --ignore-not-found"
 
 printf '\n'
 ok "Pods and nodes scaled up on demand, and nothing was applied by hand."
-note "next:  make step7"
+note "next:  make step8"

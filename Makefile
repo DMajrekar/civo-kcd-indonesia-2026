@@ -2,7 +2,7 @@
 # Run `make demo` for the 30-minute walkthrough. `make help` lists targets.
 
 .PHONY: help demo prep rehearse reset doctor set-repo standby argocd-ui clean clean-all \
-        step1 step2 step3 step4 step5 step6 step7
+        step1 step2 step3 step4 step5 step6 step7 step8
 
 -include .env
 export
@@ -45,7 +45,7 @@ help: ## Show this help
 # Runs the steps in order with an [enter] between them (DEMO_AUTO=1 skips it),
 # so the presenter decides when the next screen clears.
 demo: ## Run the full 30-minute demo
-	@steps=(step1 step2 step3 step4 step5 step6 step7); \
+	@steps=(step1 step2 step3 step4 step5 step6 step7 step8); \
 	for i in $${!steps[@]}; do \
 	  $(MAKE) --no-print-directory $${steps[$$i]} || exit $$?; \
 	  n=$${steps[$$((i+1))]-}; [ -z "$$n" ] && break; \
@@ -71,17 +71,21 @@ step4: ## Step 4: The application arrives from git, with a Civo load balancer
 	$(call slide,Step 4: The application)
 	@NO_CLEAR=1 bash demo/step-04-app/run.sh
 
-step5: ## Step 5: Ship a release as a commit; watch drift get reverted
-	$(call slide,Step 5: GitOps in practice)
+step5: ## Step 5: Hand edit in prod, reverted by Argo CD
+	$(call slide,Step 5: GitOps in practice -- drift)
 	@NO_CLEAR=1 bash demo/step-05-gitops/run.sh
 
-step6: ## Step 6: Traffic spike -- HPA adds pods, Civo autoscaler adds nodes
-	$(call slide,Step 6: Autoscaling)
-	@NO_CLEAR=1 bash demo/step-06-autoscale/run.sh
+step6: ## Step 6: Ship a release as a commit
+	$(call slide,Step 6: Ship a release)
+	@NO_CLEAR=1 bash demo/step-06-release/run.sh
 
-step7: ## Step 7: Summary and cost
-	$(call slide,Step 7: What we built)
-	@NO_CLEAR=1 bash demo/step-07-wrap/run.sh
+step7: ## Step 7: Traffic spike -- HPA adds pods, Civo autoscaler adds nodes
+	$(call slide,Step 7: Autoscaling)
+	@NO_CLEAR=1 bash demo/step-07-autoscale/run.sh
+
+step8: ## Step 8: Summary and cost
+	$(call slide,Step 8: What we built)
+	@NO_CLEAR=1 bash demo/step-08-wrap/run.sh
 
 # -------------------------------------------------------------- operations
 
@@ -97,7 +101,7 @@ standby: ## Create (or reuse) the standby cluster in the fallback region
 rehearse: ## Run every step with no pauses, timed per step
 	@scripts/rehearse.sh
 
-reset: ## Reset gitops/ to v1 and push, so step5 has a change to ship
+reset: ## Reset gitops/ to v1 and push, so step6 has a change to ship
 	@scripts/reset-gitops.sh
 
 set-repo: ## Rewrite every repoURL under gitops/ to GITOPS_REPO_URL

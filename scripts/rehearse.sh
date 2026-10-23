@@ -6,8 +6,8 @@
 #   scripts/rehearse.sh 5 6        just these
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 export DEMO_AUTO=1 NO_CLEAR=1
-STEPS=("$@"); [[ ${#STEPS[@]} -eq 0 ]] && STEPS=(1 2 3 4 5 6 7)
-budget() { case "$1" in 1) echo 3;; 2) echo 4;; 3) echo 4;; 4) echo 4;; 5) echo 4;; 6) echo 8;; 7) echo 2;; *) echo 0;; esac; }
+STEPS=("$@"); [[ ${#STEPS[@]} -eq 0 ]] && STEPS=(1 2 3 4 5 6 7 8)
+budget() { case "$1" in 1) echo 3;; 2) echo 4;; 3) echo 4;; 4) echo 4;; 5) echo 2;; 6) echo 3;; 7) echo 8;; 8) echo 2;; *) echo 0;; esac; }
 LOGDIR="$STATE/rehearsal"; mkdir -p "$LOGDIR"
 TOTAL=0; FAILED=0; RESULTS=()
 banner "Rehearsal — timed, no pauses"
@@ -23,6 +23,6 @@ done
 printf '\n  %-6s %8s %8s\n' step actual budget
 for r in "${RESULTS[@]}"; do IFS='|' read -r s e b rc <<< "$r"; printf '  step%-2s %5dm%02ds %6dm   %s\n' "$s" $((e/60)) $((e%60)) "$b" "$([[ $rc == 0 ]] && echo ok || echo FAIL)"; done
 printf '  %-6s %5dm%02ds\n\n' total $((TOTAL/60)) $((TOTAL%60))
-note "remember: make reset   (step 5 moved gitops/ to v1.1.0)"
+note "remember: make reset   (step 6 moved gitops/ to v1.1.0)"
 (( FAILED )) && exit 1
 ok "all steps passed — logs in $LOGDIR"

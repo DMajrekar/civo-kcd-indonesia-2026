@@ -112,7 +112,7 @@ export function TheApp() {
   )
 }
 
-export function GitOpsInPractice() {
+export function Drift() {
   return (
     <>
       <motion.div
@@ -136,26 +136,33 @@ export function GitOpsInPractice() {
         </motion.div>
       </motion.div>
 
+    </>
+  )
+}
+
+export function Release() {
+  return (
+    <>
       <motion.div
         className="panel"
-        style={{ position: 'absolute', left: 0, top: 260, width: 820, padding: '28px 36px' }}
+        style={{ position: 'absolute', left: 0, top: 10, width: 820, padding: '28px 36px' }}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease, delay: 2.0 }}
+        transition={{ duration: 0.5, ease, delay: 0.6 }}
       >
         <div className="muted" style={{ fontSize: 24, marginBottom: 14 }}>Release</div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 28, fontFamily: 'var(--mono)', fontSize: 40 }}>
-          <motion.span style={{ color: 'var(--dim)' }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.3 }}>
+          <motion.span style={{ color: 'var(--dim)' }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.0 }}>
             v1.0.0
           </motion.span>
-          <motion.span className="accent" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 2.7 }}>
+          <motion.span className="accent" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.3 }}>
             &rarr;
           </motion.span>
-          <motion.span style={{ color: 'var(--white)', fontWeight: 700 }} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 3.0 }}>
+          <motion.span style={{ color: 'var(--white)', fontWeight: 700 }} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.6 }}>
             v1.1.0
           </motion.span>
         </div>
-        <motion.div style={{ marginTop: 18, fontSize: 26, color: 'var(--cloud)' }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 3.4 }}>
+        <motion.div style={{ marginTop: 18, fontSize: 26, color: 'var(--cloud)' }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.0 }}>
           git commit, git push, Argo CD rolls it out. Zero downtime, votes survive.
         </motion.div>
       </motion.div>

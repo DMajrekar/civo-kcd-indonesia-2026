@@ -22,7 +22,7 @@ if grep -rq "repoURL: $GITOPS_REPO_URL" "$REPO_ROOT/gitops/root"; then ok "$GITO
 printf '  %-10s ' "push"
 if git -C "$REPO_ROOT" ls-remote --exit-code origin "$GITOPS_BRANCH" >/dev/null 2>&1; then ok "origin/$GITOPS_BRANCH reachable"; else fail "cannot read origin/$GITOPS_BRANCH"; FAILED=1; fi
 printf '  %-10s ' "clean tree"
-if git -C "$REPO_ROOT" diff --quiet && git -C "$REPO_ROOT" diff --cached --quiet; then ok "nothing uncommitted"; else warn "uncommitted changes — step 5 commits with -a"; fi
+if git -C "$REPO_ROOT" diff --quiet && git -C "$REPO_ROOT" diff --cached --quiet; then ok "nothing uncommitted"; else warn "uncommitted changes — step 6 commits with -a"; fi
 printf '  %-10s ' "image"
 IMG="$(grep -oE 'ghcr.io/[^ ]+' "$REPO_ROOT/gitops/app/deployment.yaml")"; repo="${IMG#ghcr.io/}"; repo="${repo%%:*}"; tag="${IMG##*:}"
 tok="$(curl -fsSL "https://ghcr.io/token?scope=repository:$repo:pull" 2>/dev/null | jq -r .token)"

@@ -4,7 +4,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/../../scripts/lib.sh"
 civo_auth; need_cluster
 have_kubeconfig || { fail "no working kubeconfig — run 'make step2' first"; exit 1; }
 
-banner "Step 07 — wrap"
+banner "Step 08 — wrap"
 
 say "In under thirty minutes, in a region that is one day old:"
 say "  - a Kubernetes cluster, one command"

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Put gitops/app back to "v1" so step 5 has a change to make, and push.
+# Put gitops/app back to "v1" so step 6 has a change to make, and push.
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 D="$REPO_ROOT/gitops/app/deployment.yaml"
 sed -i \

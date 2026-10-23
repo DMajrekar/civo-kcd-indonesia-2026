@@ -7,7 +7,7 @@ printf '\n'
 say "Initialising Terraform (provider download), so step 1 does not do it on stage."
 export CIVO_TOKEN="$CIVO_API_KEY"; terraform -chdir="$TF_DIR" init -input=false -upgrade >/dev/null && ok "terraform init"
 printf '\n'
-say "Resetting gitops/ to v1 and pushing, so step 5 has something to ship."
+say "Resetting gitops/ to v1 and pushing, so step 6 has something to ship."
 bash "$REPO_ROOT/scripts/reset-gitops.sh"
 printf '\n'
 say "Pre-pulling nothing: the cluster is created live. But the images must"

@@ -11,7 +11,7 @@ import AutoscalersSlide from './AutoscalersSlide.jsx'
 import RecapSlide from './RecapSlide.jsx'
 import ThanksSlide from './ThanksSlide.jsx'
 import StepSlide from './StepSlide.jsx'
-import { CreateCluster, Connect, ArgoCd, TheApp, GitOpsInPractice, Autoscaling, WhatWeBuilt } from './illustrations.jsx'
+import { CreateCluster, Connect, ArgoCd, TheApp, Drift, Release, Autoscaling, WhatWeBuilt } from './illustrations.jsx'
 
 // Key points come from the Makefile stepN targets and the run.sh "say" lines.
 const Step1 = () => (
@@ -73,19 +73,32 @@ const Step4 = () => (
 const Step5 = () => (
   <StepSlide
     n={5}
-    title="GitOps in practice"
+    title="GitOps in practice: drift"
     points={[
-      'kubectl edit in prod? Argo CD self-heals it back to git',
-      'A release is a diff: bump the image, commit, push, rolled out',
-      'v1.0.0 to v1.1.0 with zero downtime; the votes survive',
+      'Someone fixes production with kubectl',
+      'Argo CD sees live state that does not match git',
+      'selfHeal puts it back; nobody had to notice',
     ]}
-    illustration={<GitOpsInPractice />}
+    illustration={<Drift />}
   />
 )
 
 const Step6 = () => (
   <StepSlide
     n={6}
+    title="Ship a release"
+    points={[
+      'A release is a diff: bump the image, commit, push',
+      'Argo CD picks up the commit and rolls it out',
+      'v1.0.0 to v1.1.0 with zero downtime; the votes survive',
+    ]}
+    illustration={<Release />}
+  />
+)
+
+const Step7 = () => (
+  <StepSlide
+    n={7}
     title="Autoscaling"
     points={[
       'HPA: CPU above 50% means more pods, up to 20',
@@ -96,9 +109,9 @@ const Step6 = () => (
   />
 )
 
-const Step7 = () => (
+const Step8 = () => (
   <StepSlide
-    n={7}
+    n={8}
     title="What we built, and what it costs"
     points={[
       'Under thirty minutes, in a region that is one day old',
@@ -122,11 +135,12 @@ export const slides = [
   ArgoTerraformSlide,
   Step4,
   Step5,
+  Step6,
   WhyAutoscaleSlide,
   AutoscalerNeedsSlide,
   AutoscalersSlide,
-  Step6,
   Step7,
+  Step8,
   RecapSlide,
   ThanksSlide,
 ]

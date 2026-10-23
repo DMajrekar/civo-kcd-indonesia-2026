@@ -13,9 +13,10 @@ make demo
 | 2 | kubeconfig, nodes, `kubectl top` | metrics-server |
 | 3 | Argo CD is already there (Terraform Helm release); one root Application by hand; autoscaler reuses Civo's pre-installed API Secret | app-of-apps, secrets stay out of git |
 | 4 | App + Valkey + HPA arrive from git; public IP; QR on the projector | Civo load balancer, Civo volume (PVC) |
-| 5 | Hand-edit reverted; release shipped as a commit | selfHeal, rolling update |
-| 6 | Load generator → HPA to 20 pods → Pending → Civo adds nodes | HPA, cluster autoscaler (Civo provider) |
-| 7 | Recap and cost | |
+| 5 | Hand edit in prod reverted by Argo CD | selfHeal |
+| 6 | Release shipped as a commit: v1.0.0 to v1.1.0 | rolling update, zero downtime |
+| 7 | Load generator → HPA to 20 pods → Pending → Civo adds nodes | HPA, cluster autoscaler (Civo provider) |
+| 8 | Recap and cost | |
 
 The app is **jakarta-votes** (`app/`): the audience scans a QR code and votes
 on what Dinesh should do on his free day in Jakarta. Votes live in Valkey on a
