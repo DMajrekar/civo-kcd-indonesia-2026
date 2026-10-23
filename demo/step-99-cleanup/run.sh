@@ -31,7 +31,13 @@ if [[ -z "${STANDBY-}" ]] && have_kubeconfig; then
 fi
 
 VOLS=$(civo_cluster_volumes "$CID" "$CIVO_REGION")
-run "civo kubernetes remove '$CID' --region '$CIVO_REGION' --yes"
+if [[ -d "$TF_DIR/terraform.tfstate.d/$CLUSTER_NAME" ]] && tf_init && tf state list 2>/dev/null | grep -q civo_kubernetes_cluster; then
+  run "tf destroy -auto-approve -input=false $(tf_vars)"
+  tf workspace select default >/dev/null 2>&1 && tf workspace delete "$CLUSTER_NAME" >/dev/null 2>&1 || true
+else
+  run "civo kubernetes remove '$CID' --region '$CIVO_REGION' --yes"
+fi
+rm -f "$TF_LOG_FILE"
 for v in $VOLS; do run "civo volume remove '$v' --region '$CIVO_REGION' --yes || true"; done
 
 # Load balancers can outlive a deleted cluster. Remove any left over.

@@ -4,7 +4,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 banner "Doctor"
 FAILED=0
 t() { printf '  %-10s ' "$1"; if command -v "$1" >/dev/null; then ok "$($1 ${2:---version} 2>&1 | grep -oE '[0-9]+\.[0-9]+(\.[0-9]+)?' | head -1)"; else fail "missing"; FAILED=1; fi; }
-t civo version; t kubectl "version --client"; t helm "version --short"; t jq; t git; t bat; t curl
+t civo version; t kubectl "version --client"; t helm "version --short"; t terraform version; t jq; t git; t bat; t curl
 printf '\n'
 civo_auth
 printf '  %-10s ' "civo key"; ok "${CIVO_API_KEY:0:6}…"

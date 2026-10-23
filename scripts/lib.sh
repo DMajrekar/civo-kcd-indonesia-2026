@@ -369,3 +369,22 @@ show_file() {
     cat "$f"
   fi
 }
+
+# ------------------------------------------------------------- terraform
+#
+# One Terraform workspace per cluster name, so the standby and the live
+# cluster have separate state. CIVO_TOKEN is what the civo provider reads.
+TF_DIR="$REPO_ROOT/terraform"
+tf() {
+  export CIVO_TOKEN="${CIVO_API_KEY}"
+  terraform -chdir="$TF_DIR" "$@"
+}
+tf_init() {
+  [[ -d "$TF_DIR/.terraform/providers" ]] || terraform -chdir="$TF_DIR" init -input=false >/dev/null
+  terraform -chdir="$TF_DIR" workspace select -or-create "$CLUSTER_NAME" >/dev/null 2>&1
+}
+tf_vars() {
+  printf -- "-var cluster_name=%s -var region=%s -var node_size=%s -var node_count=%s -var kubernetes_version=%s -var kubeconfig_path=%s" \
+    "$CLUSTER_NAME" "$CIVO_REGION" "$CIVO_NODE_SIZE" "$CIVO_NODE_COUNT" "$CIVO_K8S_VERSION" "$KUBECONFIG"
+}
+TF_LOG_FILE="$STATE/terraform-apply-$CLUSTER_NAME.log"

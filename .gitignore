@@ -11,3 +11,9 @@ kubeconfig
 *.tgz
 __pycache__/
 .DS_Store
+
+# Terraform
+terraform/.terraform/
+terraform/.terraform.lock.hcl
+terraform/*.tfstate*
+terraform/terraform.tfstate.d/
