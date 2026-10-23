@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { slides } from './slides/index.jsx'
 import { Logo, ease } from './ui.jsx'
+import { votesQr, votesUrl } from 'virtual:qr'
 
 const W = 1920
 const H = 1080
@@ -147,6 +148,12 @@ export default function Deck() {
           <div className="chrome-logo">
             <Logo height={30} />
             <span>KCD Indonesia 2026</span>
+          </div>
+        )}
+        {index >= 3 && (
+          <div className="chrome-qr" title={votesUrl}>
+            <div className="chrome-qr-code" dangerouslySetInnerHTML={{ __html: votesQr }} />
+            <div className="chrome-qr-label">vote</div>
           </div>
         )}
         <div className="counter">

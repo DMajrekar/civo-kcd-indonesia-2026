@@ -17,6 +17,15 @@ board (`http://<ip>/board`) and the Argo CD UI (`https://localhost:8080`).
 | 00:27 | `step7` | recap, `civo kubernetes show` | Cost, repo link, winner of the vote. Terima kasih. |
 | 00:29 | — | Q&A | `make clean` after, not on stage. |
 
+## Voting runs on the standby
+
+The QR code on slide 3 (and small on every slide after it) points at
+`http://49.128.189.194/`, the standby's copy of the app behind the Civo
+reserved IP `kcd-votes` (`gitops/app-standby` pins it with the
+`kubernetes.civo.com/ipv4-address` annotation). Rebuilding the standby keeps
+that address. The board for the projector is `http://49.128.189.194/board`.
+The app built live in step 4 is the same image from the same git path; say so.
+
 ## Fallbacks
 
 - **Step 1 stalls** (region busy): keep talking, re-run `make step2` once; after 5 min switch to the standby: `CLUSTER_NAME=kcd-jakarta-standby make step4`. Standby app is already up, so continue from step 5 there.

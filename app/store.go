@@ -193,3 +193,64 @@ func (m *memStore) Add(_ context.Context, text string) (Item, error) {
 	m.items[it.ID] = it
 	return *it, nil
 }
+
+// ------------------------------------------------------------- lazy store
+//
+// Valkey is often not ready when the first app pod starts (Argo creates both
+// at the same time). Instead of settling for the in-memory store for the life
+// of the pod, keep trying in the background and switch over when it answers.
+
+type lazyStore struct {
+	addr string
+	seed []string
+	mu   sync.RWMutex
+	cur  Store
+}
+
+func newLazyStore(addr string) Store {
+	first := newStore(addr)
+	l := &lazyStore{addr: addr, cur: first}
+	if _, mem := first.(*memStore); mem && addr != "" {
+		go l.retry()
+	}
+	return l
+}
+
+func (l *lazyStore) retry() {
+	for {
+		time.Sleep(5 * time.Second)
+		c := redis.NewClient(&redis.Options{Addr: l.addr, DialTimeout: 2 * time.Second, ReadTimeout: 2 * time.Second})
+		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+		err := c.Ping(ctx).Err()
+		cancel()
+		if err != nil {
+			c.Close()
+			continue
+		}
+		rs := &redisStore{c: c}
+		l.mu.RLock()
+		seed := l.seed
+		l.mu.RUnlock()
+		rs.Seed(seed)
+		l.mu.Lock()
+		l.cur = rs
+		l.mu.Unlock()
+		log.Printf("valkey at %s is up: switched from the in-memory store", l.addr)
+		return
+	}
+}
+
+func (l *lazyStore) get() Store { l.mu.RLock(); defer l.mu.RUnlock(); return l.cur }
+
+func (l *lazyStore) Name() string { return l.get().Name() }
+func (l *lazyStore) Seed(items []string) {
+	l.mu.Lock()
+	l.seed = items
+	l.mu.Unlock()
+	l.get().Seed(items)
+}
+func (l *lazyStore) List(ctx context.Context) ([]Item, error)           { return l.get().List(ctx) }
+func (l *lazyStore) Vote(ctx context.Context, id string) (int64, error) { return l.get().Vote(ctx, id) }
+func (l *lazyStore) Add(ctx context.Context, text string) (Item, error) {
+	return l.get().Add(ctx, text)
+}

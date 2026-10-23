@@ -36,6 +36,7 @@ run "curl -s http://$IP/api/whoami | jq ."
 printf '\n'
 ok "Live at http://$IP   — put http://$IP/board on the projector"
 say ""
-say "Everyone: scan the QR code. Vote on what I should do in Jakarta tomorrow."
+say "The QR code on the slides points at this same app on the standby cluster,"
+say "where the votes have been collecting since slide 3. Same image, same git."
 open_url "http://$IP/board"
 note "next:  make step5"

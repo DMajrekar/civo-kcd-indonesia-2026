@@ -30,7 +30,8 @@ autoscaling step is visible on the board.
 | `demo/step-NN-*/run.sh` | The commands for each step: shown, paused, run, waited on. Idempotent. |
 | `scripts/lib.sh` | Presentation runner: `run`, `pause`, `wait_for`, `banner`. |
 | `gitops/root/` | Argo CD Applications (app-of-apps). |
-| `gitops/app/` | The application: Valkey StatefulSet + PVC, Deployment, Service, HPA. |
+| `gitops/app/` | The application: Valkey StatefulSet + PVC, Deployment, Service, HPA (kustomize base). |
+| `gitops/app-standby/` | Overlay for the standby: pins the load balancer to the reserved IP the deck's QR code points at. |
 | `gitops/cluster-autoscaler/` | Kubernetes cluster-autoscaler with the Civo cloud provider. |
 | `app/` | Go source, Dockerfile. Built by `.github/workflows/build.yml` to `ghcr.io/<owner>/jakarta-votes`. |
 | `terraform/` | Dedicated network + firewall + k3s cluster + Argo CD (Helm release). One workspace per cluster name. `CLUSTER_TOOL=cli` in `.env` uses the civo CLI instead. |

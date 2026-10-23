@@ -51,7 +51,7 @@ func main() {
 		started: time.Now(),
 	}
 	a.tmpl = template.Must(template.ParseFS(templates, "templates/*.html"))
-	a.store = newStore(os.Getenv("REDIS_ADDR"))
+	a.store = newLazyStore(os.Getenv("REDIS_ADDR"))
 	a.store.Seed(defaultItems)
 
 	mux := http.NewServeMux()

@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { Slide, Eyebrow, Title, Bullets, fadeUp, ease } from '../ui.jsx'
 import phone from '../assets/votes-phone.png'
+import { votesQr, votesUrl } from 'virtual:qr'
 
 // Slide 3: the problem we are solving today. Phone screenshot of the voting
 // app on the right (bundled image), the ask on the left.
@@ -18,13 +19,23 @@ export default function FreeDaySlide() {
             start={0.6}
             size={38}
             items={[
-              'You decide. Scan the QR code when it comes up, vote, add your own ideas',
+              'You decide: scan, vote, add your own ideas',
               'The app we build in the next 30 minutes is the one that counts the votes',
               'It runs on the cluster we create live, in Jakarta',
             ]}
           />
-          <motion.div className="muted" style={{ marginTop: 44, fontSize: 24 }} variants={fadeUp} initial="hidden" animate="show" custom={1.6}>
-            Votes live in Valkey on a Civo volume, served through a Civo load balancer.
+          <motion.div
+            style={{ display: 'flex', alignItems: 'center', gap: 36, marginTop: 40 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease, delay: 1.5 }}
+          >
+            <div style={{ width: 300, height: 300, padding: 14, background: 'var(--white)', borderRadius: 20 }} dangerouslySetInnerHTML={{ __html: votesQr }} />
+            <div>
+              <div style={{ fontSize: 34, fontWeight: 600 }}>Scan to vote</div>
+              <div style={{ fontFamily: 'var(--mono)', fontSize: 26, color: 'var(--aurora)', marginTop: 8 }}>{votesUrl}</div>
+              <div className="muted" style={{ fontSize: 22, marginTop: 10, maxWidth: 520 }}>Running on Civo in Jakarta: Valkey on a Civo volume behind a Civo load balancer.</div>
+            </div>
           </motion.div>
         </div>
 
