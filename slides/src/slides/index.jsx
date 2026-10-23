@@ -6,6 +6,7 @@ import AutoscalerNeedsSlide from './AutoscalerNeedsSlide.jsx'
 import WhyAutoscaleSlide from './WhyAutoscaleSlide.jsx'
 import TerraformSlide from './TerraformSlide.jsx'
 import ArgoTerraformSlide from './ArgoTerraformSlide.jsx'
+import GitOpsRepoSlide from './GitOpsRepoSlide.jsx'
 import WhyGitOpsSlide from './WhyGitOpsSlide.jsx'
 import AutoscalersSlide from './AutoscalersSlide.jsx'
 import RecapSlide from './RecapSlide.jsx'
@@ -132,6 +133,7 @@ export const slides = [
   TerraformSlide,
   Step2,
   Step3,
+  GitOpsRepoSlide,
   ArgoTerraformSlide,
   Step4,
   Step5,
