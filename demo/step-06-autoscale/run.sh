@@ -27,10 +27,12 @@ wait_for "HPA to scale $APP above 2 replicas" 300 \
 run "kubectl -n $APP_NS get hpa $APP"
 run "kubectl -n $APP_NS get pods -l app=$APP --no-headers | awk '{print \$3}' | sort | uniq -c"
 
-wait_for "pods to go Pending (no room left on two nodes)" 300 \
-  "kubectl -n $APP_NS get pods -l app=$APP --no-headers | grep -q Pending"
+# "Pending" here means unschedulable, not the half-second every pod spends
+# Pending on its way to a node: the condition must say so.
+wait_for "pods to be Unschedulable (no room left on two nodes)" 420 \
+  "kubectl -n $APP_NS get pods -l app=$APP -o json | jq -e '[.items[] | select(.status.conditions[]? | select(.type==\"PodScheduled\" and .reason==\"Unschedulable\"))] | length > 0' >/dev/null"
 run "kubectl -n $APP_NS get pods -l app=$APP --field-selector=status.phase=Pending"
-run "kubectl -n kube-system logs deploy/cluster-autoscaler --tail=40 | grep -iE 'scale.?up|unschedulable|node' | tail -4 | cut -c1-150"
+run "kubectl -n kube-system logs deploy/cluster-autoscaler --since=5m | grep -iE 'scale.?up|unschedulable|expanding' | tail -4 | cut -c1-150 || true"
 
 say ""
 say "The cluster autoscaler has asked Civo for more nodes. Same API you used"

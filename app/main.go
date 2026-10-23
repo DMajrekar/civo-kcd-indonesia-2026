@@ -194,10 +194,10 @@ func (a *app) apiBurn(w http.ResponseWriter, r *http.Request) {
 		sum = sha256.Sum256(sum[:])
 	}
 	items, _ := a.store.List(r.Context())
-	writeJSON(w, map[string]any{"pod": a.pod, "items": len(items), "digest": hex(sum[:4])})
+	writeJSON(w, map[string]any{"pod": a.pod, "items": len(items), "digest": hexStr(sum[:4])})
 }
 
-func hex(b []byte) string {
+func hexStr(b []byte) string {
 	const d = "0123456789abcdef"
 	out := make([]byte, 0, len(b)*2)
 	for _, c := range b {
