@@ -11,12 +11,10 @@ say "We are not going to kubectl apply the application. Git is going to be the"
 say "source of truth, and Argo CD will make the cluster match it."
 printf '\n'
 
-if kubectl -n argocd get deploy argocd-server >/dev/null 2>&1; then
-  ok "Argo CD already installed"
-else
-  run "kubectl create namespace argocd --dry-run=client -o yaml | kubectl apply -f -"
-  run "kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/$ARGOCD_VERSION/manifests/install.yaml"
-fi
+run "kubectl create namespace argocd --dry-run=client -o yaml | kubectl apply -f -"
+# Server-side apply: the install manifest's CRDs are too large for the
+# client-side last-applied annotation, and it is idempotent on re-runs.
+run "kubectl apply -n argocd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/$ARGOCD_VERSION/manifests/install.yaml"
 wait_for "Argo CD server to be ready" 600 \
   "kubectl -n argocd rollout status deploy/argocd-server --timeout=5s"
 wait_for "Argo CD repo-server to be ready" 300 \
