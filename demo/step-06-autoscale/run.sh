@@ -41,7 +41,6 @@ BEFORE=$(kubectl get nodes --no-headers | wc -l)
 wait_for "Civo to add a node (currently $BEFORE)" 600 \
   "[[ \$(kubectl get nodes --no-headers | wc -l) -gt $BEFORE ]]"
 run "kubectl get nodes"
-run "civo kubernetes show '$CLUSTER_NAME' --region '$CIVO_REGION' | grep -iE 'Nodes|Name|Status' | head -4"
 
 wait_for "the new node to be Ready and Pending pods to schedule" 600 \
   "! kubectl -n $APP_NS get pods -l app=$APP --no-headers | grep -q Pending"
