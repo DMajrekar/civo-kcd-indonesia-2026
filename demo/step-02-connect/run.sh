@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # title: Connect to the cluster
 source "$(dirname "${BASH_SOURCE[0]}")/../../scripts/lib.sh"
-civo_auth; need_cluster
+civo_auth
 
 banner "Step 02 — connect"
 
@@ -10,8 +10,8 @@ if [[ -f "$TF_LOG_FILE" ]] && ! grep -q '^exit ' "$TF_LOG_FILE"; then
   wait_for "terraform apply to finish" 900 "grep -q '^exit ' '$TF_LOG_FILE'"
   if ! grep -q '^exit 0' "$TF_LOG_FILE"; then tail -20 "$TF_LOG_FILE"; fail "terraform apply failed — see $TF_LOG_FILE"; exit 1; fi
   grep -E 'Apply complete|Creation complete' "$TF_LOG_FILE" | sed 's/^/  /'
-  need_cluster
 fi
+need_cluster
 
 wait_for "cluster '$CLUSTER_NAME' to be ACTIVE" 900 \
   "[[ \"\$(civo_cluster_field '$CID' '$CIVO_REGION' Status)\" == 'ACTIVE' ]]"

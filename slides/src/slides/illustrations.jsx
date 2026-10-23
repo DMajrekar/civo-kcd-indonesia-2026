@@ -63,12 +63,12 @@ export function ArgoCd() {
     <>
       <svg width={820} height={600} style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
         <ArrowDefs />
-        <Arrow from={[240, 150]} to={[300, 150]} label="pull" delay={1.4} labelOffset={[0, -14]} />
-        <Arrow from={[540, 150]} to={[600, 150]} label="apply" delay={1.8} labelOffset={[0, -14]} />
+        <Arrow from={[210, 150]} to={[305, 150]} label="pull" delay={1.4} labelOffset={[0, -16]} />
+        <Arrow from={[515, 150]} to={[610, 150]} label="apply" delay={1.8} labelOffset={[0, -16]} />
       </svg>
-      <Box x={0} y={90} w={240} h={120} title="GitHub" sub="gitops/" delay={0.6} />
-      <Box x={300} y={90} w={240} h={120} title="Argo CD" sub="in the cluster" accent delay={1.0} />
-      <Box x={600} y={60} w={220} h={180} title="cluster" sub="app, Valkey, autoscaler" delay={1.4} />
+      <Box x={0} y={90} w={210} h={120} title="GitHub" sub="gitops/" delay={0.6} />
+      <Box x={305} y={90} w={210} h={120} title="Argo CD" sub="in the cluster" accent delay={1.0} />
+      <Box x={610} y={60} w={210} h={180} title="cluster" sub="app, Valkey, autoscaler" delay={1.4} />
       <Chip block delay={2.2} style={{ position: 'absolute', left: 0, top: 300, width: 820, fontSize: 25 }}>
         kubectl apply -f root-app.yaml
       </Chip>
@@ -166,31 +166,31 @@ export function Autoscaling() {
   const steps = ['load', 'pods x2', 'x4', 'x8', 'Pending', '+ node']
   return (
     <>
-      <div style={{ position: 'absolute', left: 0, top: 30, width: 820, display: 'flex', flexWrap: 'wrap', gap: 14, alignItems: 'center' }}>
+      <div style={{ position: 'absolute', left: 0, top: 30, width: 820, display: 'flex', flexWrap: 'nowrap', gap: 10, alignItems: 'center' }}>
         {steps.map((s, i) => (
-          <motion.div key={s} style={{ display: 'flex', alignItems: 'center', gap: 14 }} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6 + i * 0.25 }}>
+          <motion.div key={s} style={{ display: 'flex', alignItems: 'center', gap: 10 }} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6 + i * 0.25 }}>
             <span
               style={{
                 fontFamily: 'var(--mono)',
-                fontSize: 27,
-                padding: '10px 18px',
-                borderRadius: 12,
+                fontSize: 23,
+                padding: '8px 14px',
+                borderRadius: 10,
                 border: `2px solid ${s === 'Pending' ? 'var(--private)' : s === '+ node' ? 'var(--aurora)' : 'var(--line)'}`,
                 color: s === 'Pending' ? 'var(--private)' : s === '+ node' ? 'var(--aurora)' : 'var(--cloud)',
               }}
             >
               {s}
             </span>
-            {i < steps.length - 1 && <span className="muted" style={{ fontSize: 26 }}>&rarr;</span>}
+            {i < steps.length - 1 && <span className="muted" style={{ fontSize: 22 }}>&rarr;</span>}
           </motion.div>
         ))}
       </div>
 
-      <Stat x={0} y={180} big="50%" label="CPU target per pod" delay={2.2} />
-      <Stat x={280} y={180} big="20" label="pods, HPA max" delay={2.5} />
-      <Stat x={560} y={180} big="5" label="nodes, autoscaler max" delay={2.8} />
+      <Stat x={0} y={160} big="50%" label="CPU per pod, HPA target" delay={2.2} />
+      <Stat x={300} y={160} big="20" label="pods, HPA max" delay={2.5} />
+      <Stat x={580} y={160} big="5" label="nodes, autoscaler max" delay={2.8} />
 
-      <motion.div className="muted" style={{ position: 'absolute', left: 0, top: 440, fontSize: 26, lineHeight: 1.4 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 3.2 }}>
+      <motion.div className="muted" style={{ position: 'absolute', left: 0, top: 410, fontSize: 26, lineHeight: 1.4 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 3.2 }}>
         Three load generators push as many requests as they can. Metrics land every 15 to 60 seconds; 20 x 250m CPU does not fit on two nodes, so pods go Pending and Civo adds a node (2 to 3 minutes).
       </motion.div>
     </>
@@ -200,13 +200,13 @@ export function Autoscaling() {
 function Stat({ x, y, big, label, delay }) {
   return (
     <motion.div
-      style={{ position: 'absolute', left: x, top: y, width: 250 }}
+      style={{ position: 'absolute', left: x, top: y, width: 240 }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease, delay }}
     >
       <div style={{ fontSize: 110, fontWeight: 700, letterSpacing: '-0.03em', color: 'var(--aurora)', lineHeight: 1 }}>{big}</div>
-      <div className="muted" style={{ fontSize: 26, marginTop: 8 }}>{label}</div>
+      <div className="muted" style={{ fontSize: 24, marginTop: 8 }}>{label}</div>
     </motion.div>
   )
 }

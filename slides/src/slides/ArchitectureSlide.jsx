@@ -38,16 +38,16 @@ export default function ArchitectureSlide() {
       <div style={{ position: 'absolute', inset: 0 }}>
         <svg width={1920} height={1080} style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
           <ArrowDefs />
-          <Arrow from={[400, 390]} to={[640, 390]} label="civo kubernetes create" delay={t.cluster} labelOffset={[0, -18]} />
-          <Arrow from={[400, 700]} to={[700, 700]} label="pull" delay={t.git + 0.4} />
-          <Arrow from={[850, 640]} to={[1070, 480]} label="apply" delay={t.app} labelOffset={[-50, -10]} />
-          <Arrow from={[1080, 560]} to={[400, 545]} label="public IP" delay={t.lb + 0.4} color="var(--cloud)" dashed labelOffset={[0, -14]} />
+          <Arrow from={[360, 390]} to={[640, 390]} label="civo kubernetes create" delay={t.cluster} labelOffset={[0, -14]} labelSize={20} />
+          <Arrow from={[360, 545]} to={[700, 545]} label="pull" delay={t.git + 0.4} />
+          <Arrow from={[1000, 545]} to={[1080, 560]} label="apply" delay={t.app} labelOffset={[8, -22]} labelSize={22} />
+          <Arrow from={[1080, 722]} to={[360, 700]} label="public IP" delay={t.lb + 0.4} color="var(--cloud)" dashed labelOffset={[0, -16]} />
         </svg>
 
         {/* Left column: the outside world */}
-        <Box x={120} y={330} w={280} h={120} title="Your laptop" sub="civo CLI, kubectl, git" delay={t.laptop} />
-        <Box x={120} y={485} w={280} h={120} title="The room" sub="phones, one QR code" delay={t.lb + 0.6} />
-        <Box x={120} y={640} w={280} h={120} title="GitHub repo" sub="gitops/ is the source of truth" delay={t.git} />
+        <Box x={120} y={330} w={240} h={120} title="Laptop" sub="civo CLI, kubectl, git" subStyle={{ fontSize: 20 }} delay={t.laptop} />
+        <Box x={120} y={485} w={240} h={120} title="GitHub" sub="the repo, gitops/" subStyle={{ fontSize: 20 }} delay={t.git} />
+        <Box x={120} y={640} w={240} h={120} title="The room" sub="phones, one QR code" subStyle={{ fontSize: 20 }} delay={t.lb + 0.6} />
 
         {/* The cluster */}
         <Box x={640} y={300} w={1160} h={660} accent ghost delay={t.cluster} style={{ justifyContent: 'flex-start', borderWidth: 2 }}>
@@ -57,24 +57,23 @@ export default function ArchitectureSlide() {
           <div className="box-sub">k3s, two g4s.kube.medium nodes to start</div>
         </Box>
 
-        <Box x={700} y={640} w={300} h={120} title="Argo CD" sub="one root Application, app-of-apps" delay={t.git + 0.7} />
+        <Box x={700} y={485} w={300} h={120} title="Argo CD" sub="one root Application, app-of-apps" delay={t.git + 0.7} />
 
-        <Box x={1080} y={430} w={320} h={150} title="jakarta-votes" sub="Deployment" delay={t.app + 0.3}>
-          <Pods n={2} delay={t.app + 0.5} />
-        </Box>
-        <Box x={1450} y={430} w={310} h={150} title="Valkey" sub="StatefulSet" delay={t.app + 0.5} />
-        <Box x={1450} y={600} w={310} h={90} title="Civo volume" sub="PersistentVolumeClaim" delay={t.app + 0.7} />
-
-        <Box x={1080} y={600} w={320} h={90} title="Civo load balancer" sub="Service type LoadBalancer" delay={t.lb} />
-
-        <Box x={1080} y={345} w={680} h={70} dashed delay={t.scale} style={{ flexDirection: 'row', alignItems: 'center', gap: 20, padding: '0 24px' }}>
+        <Box x={1080} y={420} w={680} h={64} dashed delay={t.scale} style={{ flexDirection: 'row', alignItems: 'center', gap: 20, padding: '0 24px' }}>
           <span className="box-title" style={{ fontSize: 26 }}>HPA</span>
           <span className="box-sub" style={{ fontSize: 24 }}>CPU above 50%: more pods, up to 20</span>
         </Box>
 
+        <Box x={1080} y={505} w={340} h={150} title="jakarta-votes" sub="Deployment" delay={t.app + 0.3}>
+          <Pods n={2} delay={t.app + 0.5} />
+        </Box>
+        <Box x={1440} y={505} w={320} h={150} title="Valkey" sub="StatefulSet" delay={t.app + 0.5} />
+        <Box x={1080} y={675} w={340} h={95} title="Load balancer" sub="Service type LoadBalancer" subStyle={{ fontSize: 21, whiteSpace: 'nowrap' }} delay={t.lb} />
+        <Box x={1440} y={675} w={320} h={95} title="Civo volume" sub="PersistentVolumeClaim" delay={t.app + 0.7} />
+
         {/* Nodes */}
         <motion.div
-          style={{ position: 'absolute', left: 700, top: 790, fontSize: 24, color: 'var(--dim)' }}
+          style={{ position: 'absolute', left: 700, top: 800, fontSize: 24, color: 'var(--dim)' }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: t.cluster + 0.3 }}
@@ -85,24 +84,28 @@ export default function ArchitectureSlide() {
           <Box
             key={i}
             x={700 + i * 212}
-            y={830}
-            w={190}
+            y={840}
+            w={200}
             h={100}
             dashed={i >= 2}
             ghost={i >= 2}
             delay={i < 2 ? t.cluster + 0.4 + i * 0.15 : t.scale + 0.3 + (i - 2) * 0.15}
             title={`node ${i + 1}`}
-            sub={i < 2 ? 'g4s.kube.medium' : 'added by autoscaler'}
+            sub={i < 2 ? 'g4s.kube.medium' : 'autoscaler'}
             titleStyle={{ fontSize: 26 }}
+            subStyle={{ fontSize: 20, whiteSpace: 'nowrap' }}
+            style={{ padding: '14px 14px' }}
           />
         ))}
         <motion.div
-          style={{ position: 'absolute', left: 1130, top: 790, fontSize: 24, color: 'var(--cloud)' }}
+          style={{ position: 'absolute', left: 1124, top: 780, fontSize: 22, lineHeight: 1.2, color: 'var(--cloud)', whiteSpace: 'nowrap' }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: t.scale + 0.5 }}
         >
-          Cluster autoscaler (Civo cloud provider): Pending pods, then a new node, up to 5
+          Cluster autoscaler (Civo cloud provider)
+          <br />
+          <span className="muted">Pending pods, then a new node, up to 5</span>
         </motion.div>
       </div>
     </Slide>

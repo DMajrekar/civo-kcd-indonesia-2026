@@ -4,7 +4,7 @@ import { Slide, Eyebrow, Title, Bullets, fadeUp, ease } from '../ui.jsx'
 // Civo regions placed by longitude on a single strip. Honest and simple.
 const regions = [
   { id: 'nyc1', city: 'New York', lon: -74.0 },
-  { id: 'lon1', city: 'London', lon: -0.1 },
+  { id: 'lon1', city: 'London', lon: -0.1, above: true },
   { id: 'fra1', city: 'Frankfurt', lon: 8.7 },
   { id: 'mum1', city: 'Mumbai', lon: 72.9 },
   { id: 'jkt1', city: 'Jakarta', lon: 106.8, isNew: true },
@@ -19,11 +19,11 @@ export default function Jkt1Slide() {
   return (
     <Slide>
       <Eyebrow>Yesterday, 23 October 2026</Eyebrow>
-      <Title>
-        Civo's Indonesia region <span className="accent">JKT1</span> is live
+      <Title small>
+        Civo's Indonesia region, <span className="accent">JKT1</span>, is live
       </Title>
 
-      <div style={{ position: 'relative', height: 300, margin: '90px 40px 50px' }}>
+      <div style={{ position: 'relative', height: 300, margin: '70px 40px 40px' }}>
         <motion.div
           style={{ position: 'absolute', left: 0, right: 0, top: 150, height: 2, background: 'var(--line)', transformOrigin: 'left' }}
           initial={{ scaleX: 0 }}
@@ -64,10 +64,10 @@ export default function Jkt1Slide() {
                   left: -120,
                   width: 240,
                   textAlign: 'center',
-                  top: r.isNew ? 40 : 190,
+                  top: r.isNew || r.above ? 40 : 190,
                   color: r.isNew ? 'var(--aurora)' : 'var(--cloud)',
                 }}
-                initial={{ opacity: 0, y: r.isNew ? -10 : 10 }}
+                initial={{ opacity: 0, y: r.isNew || r.above ? -10 : 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.45, ease, delay: delay + 0.15 }}
               >
@@ -90,7 +90,7 @@ export default function Jkt1Slide() {
 
       <motion.div
         className="muted"
-        style={{ position: 'absolute', right: 120, bottom: 110, fontSize: 24 }}
+        style={{ marginTop: 44, fontSize: 24 }}
         variants={fadeUp}
         initial="hidden"
         animate="show"

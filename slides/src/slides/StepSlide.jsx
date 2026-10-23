@@ -6,7 +6,7 @@ export default function StepSlide({ n, title, points, illustration, wideRight = 
   return (
     <Slide>
       <Eyebrow>Step {n} of 7</Eyebrow>
-      <Title>{title}</Title>
+      <Title small>{title}</Title>
       <div className={`two-col ${wideRight ? 'wide-right' : ''}`} style={{ marginTop: 40 }}>
         <div className="col">
           <Bullets items={points} size={40} />

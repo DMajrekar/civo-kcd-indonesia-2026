@@ -113,7 +113,7 @@ export function Chip({ children, delay = 0.8, block = false, style }) {
 }
 
 // Absolutely positioned diagram box inside a relative canvas.
-export function Box({ x, y, w, h, title, sub, delay = 0, accent, dashed, ghost, children, style, titleStyle }) {
+export function Box({ x, y, w, h, title, sub, delay = 0, accent, dashed, ghost, children, style, titleStyle, subStyle }) {
   return (
     <motion.div
       className={`box ${accent ? 'accent' : ''} ${dashed ? 'dashed' : ''} ${ghost ? 'ghost' : ''}`}
@@ -123,14 +123,14 @@ export function Box({ x, y, w, h, title, sub, delay = 0, accent, dashed, ghost, 
       transition={{ duration: 0.5, ease, delay }}
     >
       {title && <div className="box-title" style={titleStyle}>{title}</div>}
-      {sub && <div className="box-sub">{sub}</div>}
+      {sub && <div className="box-sub" style={subStyle}>{sub}</div>}
       {children}
     </motion.div>
   )
 }
 
 // An animated arrow drawn in an SVG overlay. Points are in canvas pixels.
-export function Arrow({ from, to, label, delay = 0, color = 'var(--aurora)', dashed = false, labelOffset = [0, -16] }) {
+export function Arrow({ from, to, label, delay = 0, color = 'var(--aurora)', dashed = false, labelOffset = [0, -16], labelSize = 24 }) {
   const [x1, y1] = from
   const [x2, y2] = to
   const mx = (x1 + x2) / 2 + labelOffset[0]
@@ -156,7 +156,7 @@ export function Arrow({ from, to, label, delay = 0, color = 'var(--aurora)', das
           x={mx}
           y={my}
           fill="var(--cloud)"
-          fontSize={24}
+          fontSize={labelSize}
           fontFamily="var(--mono)"
           textAnchor="middle"
           initial={{ opacity: 0 }}

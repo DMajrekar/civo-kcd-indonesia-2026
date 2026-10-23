@@ -38,7 +38,7 @@ const Step2 = () => (
 const Step3 = () => (
   <StepSlide
     n={3}
-    title="Argo CD: git becomes the source of truth"
+    title="Argo CD: git as the source of truth"
     points={[
       'Nothing is kubectl-applied by hand except one root Application',
       'App-of-apps: gitops/root holds the other Applications',

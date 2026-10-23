@@ -19,30 +19,22 @@ const NODE_H = 300
 const NODE_GAP = 40
 const POD = 56
 const POD_GAP = 16
-const PER_NODE = 8
 const nodeX = (i) => i * (NODE_W + NODE_GAP)
 const nodeY = 120
 
 
-// Place pods 4 per node row-wise: indices 0-3 node 1, 4-7 node 2, 8-11 pending/node 3.
+// Pods 0-7 alternate between node 1 and node 2 (so x2 is one per node, x8
+// fills both); pods 8-11 wait as Pending until node 3 exists.
 function place(i, stage) {
   if (i >= stage.pods) return null
-  const n = Math.floor(i / 4)
-  const slot = i % 4
+  const n = i < 8 ? i % 2 : 2
+  const slot = i < 8 ? Math.floor(i / 2) : i - 8
   const col = slot % 2
   const row = Math.floor(slot / 2)
-  if (n < stage.nodes) {
-    return {
-      x: nodeX(n) + 40 + col * (POD + POD_GAP) + (POD + POD_GAP) / 2,
-      y: nodeY + 90 + row * (POD + POD_GAP),
-      pending: false,
-    }
-  }
-  // Pending: parked above the empty third node slot.
   return {
-    x: nodeX(2) + 40 + col * (POD + POD_GAP) + (POD + POD_GAP) / 2,
+    x: nodeX(n) + 40 + col * (POD + POD_GAP) + (POD + POD_GAP) / 2,
     y: nodeY + 90 + row * (POD + POD_GAP),
-    pending: true,
+    pending: n >= stage.nodes,
   }
 }
 
@@ -108,7 +100,7 @@ export default function AutoscalersSlide() {
             style={{ position: 'absolute', left: 0, top: 70, fontSize: 24, color: 'var(--cloud)', display: 'flex', gap: 10 }}
             animate={{ opacity: s >= 1 ? 1 : 0.35 }}
           >
-            <motion.span animate={{ x: s >= 1 ? [0, 14, 0] : 0 }} transition={{ repeat: Infinity, duration: 0.8 }}>
+            <motion.span style={{ marginRight: 8 }} animate={{ x: s >= 1 ? [0, 14, 0] : 0 }} transition={{ repeat: Infinity, duration: 0.8 }}>
               &rarr;
             </motion.span>
             traffic
@@ -191,8 +183,8 @@ function Explain({ title, body, unit, active, delay }) {
       transition={{ duration: 0.5, ease, delay }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 16 }}>
-        <div style={{ fontSize: 34, fontWeight: 600 }}>{title}</div>
-        <motion.div className="accent" style={{ fontSize: 24, fontFamily: 'var(--mono)' }} animate={{ opacity: active ? 1 : 0.35 }}>
+        <div style={{ fontSize: 32, fontWeight: 600 }}>{title}</div>
+        <motion.div className="accent" style={{ fontSize: 22, fontFamily: 'var(--mono)', whiteSpace: 'nowrap', flexShrink: 0 }} animate={{ opacity: active ? 1 : 0.35 }}>
           {unit}
         </motion.div>
       </div>

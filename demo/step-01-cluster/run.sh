@@ -35,10 +35,10 @@ elif [[ "$TOOL" == terraform ]]; then
   say ""
   say "Plan, then apply. Apply waits for the cluster to come up, so it runs in"
   say "the background and step 2 picks up the result."
-  run "tf plan -input=false $(tf_vars) | grep -E '^(Plan|  #|Terraform will)' "
+  run "tf plan -input=false -no-color $(tf_vars) | grep -E '^(Plan|  #|Terraform will)'"
   : > "$TF_LOG_FILE"
   printf '\n%s%s$ terraform apply -auto-approve  (in the background, log: %s)%s\n' "$BOLD" "$GREEN" "${TF_LOG_FILE#$REPO_ROOT/}" "$RESET"
-  ( tf apply -auto-approve -input=false $(tf_vars) >> "$TF_LOG_FILE" 2>&1; echo "exit $?" >> "$TF_LOG_FILE" ) &
+  ( tf apply -auto-approve -input=false -no-color $(tf_vars) >> "$TF_LOG_FILE" 2>&1; echo "exit $?" >> "$TF_LOG_FILE" ) &
   disown
   sleep 3
   wait_for "Terraform to start creating" 120 "grep -qE 'Creating\.\.\.|exit ' '$TF_LOG_FILE'"
