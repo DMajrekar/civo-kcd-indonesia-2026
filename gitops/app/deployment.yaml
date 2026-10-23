@@ -14,13 +14,13 @@ spec:
     spec:
       containers:
         - name: app
-          image: ghcr.io/dmajrekar/jakarta-votes:v1.1.0
+          image: ghcr.io/dmajrekar/jakarta-votes:v1.0.0
           imagePullPolicy: Always
           ports:
             - {name: http, containerPort: 8080}
           env:
-            - {name: TITLE,       value: "Halo Bandung! Shipped from git to JKT1 — keep voting"}
-            - {name: THEME_COLOR, value: "#FF4D4D"}
+            - {name: TITLE,       value: "Dinesh has a free day in Jakarta. What should he do?"}
+            - {name: THEME_COLOR, value: "#00FF6F"}
             - {name: REDIS_ADDR,  value: "valkey.jakarta.svc.cluster.local:6379"}
             - name: POD_NAME
               valueFrom: {fieldRef: {fieldPath: metadata.name}}
