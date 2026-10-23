@@ -4,7 +4,7 @@
 # STANDBY=1 deletes the standby cluster instead (see scripts/standby.sh).
 source "$(dirname "${BASH_SOURCE[0]}")/../../scripts/lib.sh"
 civo_auth
-[[ -n "${STANDBY-}" ]] && CLUSTER_NAME="${CLUSTER_NAME}-standby"
+[[ -n "${STANDBY-}" ]] && { CLUSTER_NAME="${CLUSTER_NAME}-standby"; export KUBECONFIG="$STATE/kubeconfig-$CLUSTER_NAME"; }
 
 banner "Cleanup — delete '$CLUSTER_NAME'"
 

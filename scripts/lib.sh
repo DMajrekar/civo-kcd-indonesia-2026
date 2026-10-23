@@ -329,7 +329,8 @@ GITOPS_REPO_URL="${GITOPS_REPO_URL:-https://github.com/dmajrekar/civo-kcd-indone
 GITOPS_BRANCH="${GITOPS_BRANCH:-main}"
 ARGOCD_VERSION="${ARGOCD_VERSION:-v3.5.6}"
 STATE="$REPO_ROOT/.state"
-export KUBECONFIG="$STATE/kubeconfig"
+# One kubeconfig per cluster, so the standby and the live cluster never mix.
+export KUBECONFIG="$STATE/kubeconfig-$CLUSTER_NAME"
 
 # Resolve the cluster ID once per step, or fail with the step to run.
 need_cluster() {
