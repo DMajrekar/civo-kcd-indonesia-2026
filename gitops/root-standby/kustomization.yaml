@@ -6,3 +6,10 @@ kind: Kustomization
 resources:
   - ../root
   - slides.yaml
+patches:
+  # Same Application name, so no prune; only the source path differs.
+  - target: {kind: Application, name: jakarta-votes}
+    patch: |
+      - op: replace
+        path: /spec/source/path
+        value: gitops/app-standby
