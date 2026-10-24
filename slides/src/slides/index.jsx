@@ -7,6 +7,22 @@ import WhyAutoscaleSlide from './WhyAutoscaleSlide.jsx'
 import TerraformSlide from './TerraformSlide.jsx'
 import ArgoTerraformSlide from './ArgoTerraformSlide.jsx'
 import GitOpsRepoSlide from './GitOpsRepoSlide.jsx'
+import DemoSlide, { prefetchDemos } from './DemoSlide.jsx'
+import demo1 from '../assets/demo-step1.gif'
+import demo2 from '../assets/demo-step2.gif'
+import demo3 from '../assets/demo-step3.gif'
+import demo4 from '../assets/demo-step4.gif'
+import demo5 from '../assets/demo-step5.gif'
+import demo6 from '../assets/demo-step6.gif'
+import demo7 from '../assets/demo-step7.gif'
+prefetchDemos([demo1, demo2, demo3, demo4, demo5, demo6, demo7])
+const Demo1 = () => <DemoSlide n={1} title="A cluster in Jakarta" gif={demo1} />
+const Demo2 = () => <DemoSlide n={2} title="Connect" gif={demo2} />
+const Demo3 = () => <DemoSlide n={3} title="Argo CD and the root Application" gif={demo3} />
+const Demo4 = () => <DemoSlide n={4} title="The application" gif={demo4} />
+const Demo5 = () => <DemoSlide n={5} title="Drift, reverted" gif={demo5} />
+const Demo6 = () => <DemoSlide n={6} title="Ship a release" gif={demo6} />
+const Demo7 = () => <DemoSlide n={7} title="Autoscaling" gif={demo7} />
 import WhyGitOpsSlide from './WhyGitOpsSlide.jsx'
 import AutoscalersSlide from './AutoscalersSlide.jsx'
 import RecapSlide from './RecapSlide.jsx'
@@ -105,16 +121,23 @@ export const slides = [
   WhyGitOpsSlide,
   Step1,
   TerraformSlide,
+  Demo1,
   Step2,
+  Demo2,
   Step3,
+  Demo3,
   GitOpsRepoSlide,
   ArgoTerraformSlide,
   Step4,
+  Demo4,
   Step5,
+  Demo5,
   Step6,
+  Demo6,
   WhyAutoscaleSlide,
   AutoscalerNeedsSlide,
   AutoscalersSlide,
+  Demo7,
   RecapSlide,
   ThanksSlide,
 ]
