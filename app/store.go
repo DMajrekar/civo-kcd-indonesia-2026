@@ -31,18 +31,16 @@ type Store interface {
 const maxItems = 60
 
 var defaultItems = []string{
-	"Kota Tua (old town) and a coffee at Café Batavia",
+	"Grand Indonesia Mall",
+	"Jakarta Aquarium & Safari",
+	"Istiqlal Mosque",
+	"Kota Tua, the old town of Batavia",
 	"Monas, the National Monument",
-	"Istiqlal Mosque and the Cathedral across the road",
-	"Street food crawl: sate, nasi goreng, martabak",
-	"Boat to the Thousand Islands (Pulau Seribu)",
-	"Jalan Surabaya antique market",
+	"National Museum (check it has reopened)",
+	"Thousand Islands day trip",
 	"Taman Mini Indonesia Indah",
-	"Ancol beach and Dufan",
-	"Indonesian coffee crawl: kopi tubruk, kopi susu",
-	"Museum Nasional",
-	"Bogor Botanical Gardens day trip",
-	"Sunset at a rooftop bar in SCBD",
+	"Ancol Dreamland and Dunia Fantasi",
+	"Jakarta Cathedral",
 }
 
 func newID() string {
