@@ -25,7 +25,7 @@ export default function DemoSlide({ n, title, gif }) {
   return (
     <Slide style={{ padding: '72px 120px 110px' }}>
       <Eyebrow>
-        Step {n} <span className="muted">· {title} · recorded this morning on JKT1</span>
+        Step {n} <span className="muted">· {title}</span>
       </Eyebrow>
       <motion.div
         style={{ flex: 1, minHeight: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 16 }}

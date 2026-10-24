@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Slide, Eyebrow, Title, Bullets, fadeUp, ease } from '../ui.jsx'
+import { Slide, Title, Bullets, ease } from '../ui.jsx'
 import phone from '../assets/votes-phone.png'
 import { votesQr, votesUrl } from 'virtual:qr'
 
@@ -8,7 +8,6 @@ import { votesQr, votesUrl } from 'virtual:qr'
 export default function FreeDaySlide() {
   return (
     <Slide>
-      <Eyebrow>Tomorrow</Eyebrow>
       <Title small>
         I have a free day in Jakarta. <span className="accent">What should I do?</span>
       </Title>
@@ -20,8 +19,7 @@ export default function FreeDaySlide() {
             size={38}
             items={[
               'You decide: scan, vote, add your own ideas',
-              'The app we build in the next 30 minutes is the one that counts the votes',
-              'It runs on the cluster we create live, in Jakarta',
+              'Resilient and auto scaling application deployed in Jakarta',
             ]}
           />
           <motion.div
@@ -34,7 +32,6 @@ export default function FreeDaySlide() {
             <div>
               <div style={{ fontSize: 34, fontWeight: 600 }}>Scan to vote</div>
               <div style={{ fontFamily: 'var(--mono)', fontSize: 26, color: 'var(--aurora)', marginTop: 8 }}>{votesUrl}</div>
-              <div className="muted" style={{ fontSize: 22, marginTop: 10, maxWidth: 520 }}>Running on Civo in Jakarta: Valkey on a Civo volume behind a Civo load balancer.</div>
             </div>
           </motion.div>
         </div>

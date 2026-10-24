@@ -2,8 +2,8 @@ import { motion } from 'framer-motion'
 import { Slide, Eyebrow, Title, ease } from '../ui.jsx'
 import { CodeColumn } from './TerraformSlide.jsx'
 
-// What the root Application (the one kubectl apply in step 3) points at.
-// Left: the gitops/ tree as it is in the repo. Right: gitops/root/app.yaml.
+// What the root Application (applied by hand in step 3) points at, as two
+// slides: first the gitops/ tree as it is in the repo, then gitops/root/app.yaml.
 const tree = [
   ['gitops/', ''],
   ['├── root/', 'the root Application points here'],
@@ -44,9 +44,9 @@ const appYaml = [
 ]
 const appHighlight = new Set([10, 16, 17])
 
-function Tree({ start = 0.4 }) {
+function Tree({ start = 0.4, fontSize = 24 }) {
   return (
-    <pre className="hcl" style={{ fontSize: 24 }}>
+    <pre className="hcl" style={{ fontSize }}>
       {tree.map(([path, note], i) => (
         <motion.span
           key={i}
@@ -63,7 +63,7 @@ function Tree({ start = 0.4 }) {
   )
 }
 
-export default function GitOpsRepoSlide() {
+export function GitOpsRepoTreeSlide() {
   return (
     <Slide>
       <Eyebrow>
@@ -72,13 +72,32 @@ export default function GitOpsRepoSlide() {
       <Title small>What we just installed, as it is in git</Title>
       <motion.div
         className="panel"
-        style={{ marginTop: 24, padding: '24px 40px', display: 'grid', gridTemplateColumns: '1.15fr 0.85fr', gap: 48, flex: 1, minHeight: 0 }}
+        style={{ marginTop: 24, padding: '32px 48px', flex: 1, minHeight: 0 }}
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease, delay: 0.2 }}
       >
-        <Tree start={0.5} />
-        <CodeColumn lines={appYaml} highlight={appHighlight} start={1.2} />
+        <Tree start={0.5} fontSize={30} />
+      </motion.div>
+    </Slide>
+  )
+}
+
+export function GitOpsRepoAppSlide() {
+  return (
+    <Slide>
+      <Eyebrow>
+        gitops/root/app.yaml <span className="muted">(condensed)</span>
+      </Eyebrow>
+      <Title small>The Application that installs the app</Title>
+      <motion.div
+        className="panel"
+        style={{ marginTop: 24, padding: '32px 48px', flex: 1, minHeight: 0 }}
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease, delay: 0.2 }}
+      >
+        <CodeColumn lines={appYaml} highlight={appHighlight} start={0.5} />
       </motion.div>
     </Slide>
   )

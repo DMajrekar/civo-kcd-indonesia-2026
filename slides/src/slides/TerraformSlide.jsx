@@ -83,9 +83,7 @@ export function CodeColumn({ lines, highlight = new Set(), start = 0.4 }) {
 export default function TerraformSlide() {
   return (
     <Slide>
-      <Eyebrow>
-        terraform/cluster.tf <span className="muted">(condensed here: the firewall has five more rules)</span>
-      </Eyebrow>
+      <Eyebrow>terraform/cluster.tf</Eyebrow>
       <Title small>The whole cluster is 88 lines of HCL</Title>
       <motion.div
         className="panel"

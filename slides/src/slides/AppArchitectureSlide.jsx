@@ -34,7 +34,7 @@ export default function AppArchitectureSlide() {
               Civo Kubernetes, JKT1 (Jakarta)
             </div>
           </div>
-          <div className="box-sub">k3s, two g4s.kube.large nodes to start</div>
+          <div className="box-sub">k3s, two g4s.kube.large nodes</div>
         </Box>
 
         <Box x={300} y={520} w={340} h={130} title="Load balancer" sub="Service type LoadBalancer, public IP" accent delay={t.lb} />

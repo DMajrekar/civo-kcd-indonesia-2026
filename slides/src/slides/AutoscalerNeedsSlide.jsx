@@ -44,7 +44,7 @@ export default function AutoscalerNeedsSlide() {
           unit="more pods"
           delay={0.4}
           rows={[
-            ['Metrics', 'metrics-server, from the Civo marketplace'],
+            ['Metrics', 'metrics-server'],
             ['CPU request per pod', '500m'],
             ['Target', '50% average CPU'],
             ['Replicas', 'min 2, max 20'],

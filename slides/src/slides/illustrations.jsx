@@ -53,9 +53,6 @@ export function Connect() {
           </motion.div>
         ))}
       </div>
-      <Chip delay={2.3} style={{ position: 'absolute', left: 0, top: 490, fontSize: 25 }}>
-        kubectl top nodes
-      </Chip>
     </>
   )
 }
@@ -82,9 +79,6 @@ export function ArgoCd() {
       <Chip block delay={2.2} style={{ position: 'absolute', left: 0, top: 300, width: 820, fontSize: 25 }}>
         kubectl apply -f root-app.yaml
       </Chip>
-      <motion.div className="muted" style={{ position: 'absolute', left: 0, top: 400, fontSize: 26 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.6 }}>
-        The one manifest applied by hand. gitops/root holds more Applications, so one apply bootstraps everything.
-      </motion.div>
     </>
   )
 }
@@ -107,7 +101,6 @@ export function TheApp() {
       </Box>
       <Box x={470} y={220} w={300} h={140} title="Valkey" sub="StatefulSet, 1 replica" delay={1.6} />
       <Box x={470} y={440} w={300} h={100} title="Civo volume" sub="PersistentVolumeClaim" delay={2.1} />
-      <Box x={0} y={440} w={300} h={100} title="HPA" sub="CPU 50%, 2 to 20 pods" dashed ghost delay={2.4} />
     </>
   )
 }
@@ -162,9 +155,6 @@ export function Release() {
             v2.1
           </motion.span>
         </div>
-        <motion.div style={{ marginTop: 18, fontSize: 26, color: 'var(--cloud)' }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.0 }}>
-          git commit, git push, Argo CD rolls it out. Zero downtime, votes survive.
-        </motion.div>
       </motion.div>
     </>
   )

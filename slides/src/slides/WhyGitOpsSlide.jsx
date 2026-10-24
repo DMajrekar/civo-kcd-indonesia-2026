@@ -23,7 +23,7 @@ export default function WhyGitOpsSlide() {
           <span>Argo CD</span>
         </motion.div>
       </div>
-      <div style={{ marginTop: 50, maxWidth: 1640 }}>
+      <div style={{ marginTop: 50, maxWidth: 1540 }}>
         <Bullets
           size={40}
           gap={0.3}
@@ -37,7 +37,7 @@ export default function WhyGitOpsSlide() {
           ]}
         />
       </div>
-      <motion.div className="muted" style={{ position: 'absolute', right: 120, bottom: 100, fontSize: 22 }} variants={fadeUp} initial="hidden" animate="show" custom={2.2}>
+      <motion.div className="muted" style={{ position: 'absolute', left: 120, bottom: 100, fontSize: 22 }} variants={fadeUp} initial="hidden" animate="show" custom={2.2}>
         OpenGitOps, opengitops.dev
       </motion.div>
     </Slide>
