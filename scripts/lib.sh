@@ -94,7 +94,15 @@ banner() {
 }
 
 # A narration paragraph -- what you say while the slide is up.
-say()  { printf '%s\n' "$*" | fold -s -w "$(_width)"; }
+# say "" is the section separator in the step scripts. When recording
+# (DEMO_CLEAR_SECTIONS=1) it pauses so the previous output can be read, then
+# clears the screen, so each section of a step is its own frame.
+say() {
+  if [[ -z "$*" && -n "${DEMO_CLEAR_SECTIONS-}" ]]; then
+    sleep "${DEMO_PACE:-0}"; sleep "${DEMO_PACE:-0}"; clear; return 0
+  fi
+  printf '%s\n' "$*" | fold -s -w "$(_width)"
+}
 note() { printf '%s%s  %s%s\n' "$DIM" "$CYAN" "$*" "$RESET"; }
 warn() { printf '%s%s!! %s%s\n' "$BOLD" "$YELLOW" "$*" "$RESET"; }
 ok()   { printf '%s%s✓ %s%s\n' "$BOLD" "$GREEN" "$*" "$RESET"; }
@@ -106,7 +114,8 @@ fail() { printf '%s%s✗ %s%s\n' "$BOLD" "$RED" "$*" "$RESET"; }
 # this ABORTS rather than racing through every pause (a piped or scripted
 # `make step1` once created a cluster this way).
 wait_enter() {
-  if [[ -n "${DEMO_AUTO-}" ]]; then printf '\n'; return 0; fi
+  # DEMO_PACE (seconds) gives a recording time to read the command first.
+  if [[ -n "${DEMO_AUTO-}" ]]; then sleep "${DEMO_PACE:-0}"; printf '\n'; return 0; fi
   if { : < /dev/tty; } 2>/dev/null; then
     read -r _ < /dev/tty || true
     printf '\n'
