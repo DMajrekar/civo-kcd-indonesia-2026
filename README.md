@@ -14,7 +14,7 @@ make demo
 | 3 | Argo CD is already there (Terraform Helm release); one root Application by hand; autoscaler reuses Civo's pre-installed API Secret | app-of-apps, secrets stay out of git |
 | 4 | App + Valkey + HPA arrive from git; public IP; QR on the projector | Civo load balancer, Civo volume (PVC) |
 | 5 | Hand edit in prod reverted by Argo CD | selfHeal |
-| 6 | Release shipped as a commit: v1.0.0 to v1.1.0 | rolling update, zero downtime |
+| 6 | Release shipped as a commit: v2.0 to v2.1 | rolling update, zero downtime |
 | 7 | Load generator → HPA to 20 pods → Pending → Civo adds nodes | HPA, cluster autoscaler (Civo provider) |
 
 The app is **jakarta-votes** (`app/`): the audience scans a QR code and votes
@@ -50,7 +50,7 @@ make rehearse                # full run, no pauses, timed      (then: make reset
 make standby                 # optional: a warm cluster in case the live create stalls
 ```
 
-Images: push tags `v1.0.0` and `v1.1.0` so both exist in GHCR, and make the
+Images: push tags `v2.0` and `v2.1` so both exist in GHCR, and make the
 package public once (GitHub → Packages → jakarta-votes → settings).
 
 ## On the day

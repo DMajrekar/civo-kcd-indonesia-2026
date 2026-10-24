@@ -13,7 +13,7 @@ board (`http://<ip>/board`) and the Argo CD UI (`https://localhost:8080`).
 | 00:09 | `step3` | Argo CD install, root app | "One kubectl apply, ever." The autoscaler reuses the `civo-api-access` Secret Civo installs for its CCM. Open Argo UI. |
 | 00:13 | `step4` | app, PVC, LB IP, **board + QR** | Everyone scans. Let it run 60s: votes climb, pod names rotate in the footer. |
 | 00:17 | `step5` | TITLE before, hand edit, Application OutOfSync then Synced, TITLE after | "Someone fixed prod." Argo CD puts it back within seconds. |
-| 00:19 | `step6` | whoami v1.0.0, diff, push, rollout, whoami v1.1.0 | Board turns red, title changes, votes survive. |
+| 00:19 | `step6` | whoami v2.0, diff, push, rollout, whoami v2.1 | Board turns red, title changes, votes survive. |
 | 00:22 | `step7` | HPA, Pending, new node | Longest wait is Civo adding a node (~2-3 min). Talk through the autoscaler logs. |
 | 00:27 | — | Recap + Thanks slides | Repo link, winner of the vote. Terima kasih. |
 | 00:29 | — | Q&A | `make clean` after, not on stage. |

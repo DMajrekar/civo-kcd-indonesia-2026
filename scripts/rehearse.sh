@@ -23,6 +23,6 @@ done
 printf '\n  %-6s %8s %8s\n' step actual budget
 for r in "${RESULTS[@]}"; do IFS='|' read -r s e b rc <<< "$r"; printf '  step%-2s %5dm%02ds %6dm   %s\n' "$s" $((e/60)) $((e%60)) "$b" "$([[ $rc == 0 ]] && echo ok || echo FAIL)"; done
 printf '  %-6s %5dm%02ds\n\n' total $((TOTAL/60)) $((TOTAL%60))
-note "remember: make reset   (step 6 moved gitops/ to v1.1.0)"
+note "remember: make reset   (step 6 moved gitops/ to v2.1)"
 (( FAILED )) && exit 1
 ok "all steps passed — logs in $LOGDIR"

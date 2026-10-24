@@ -3,7 +3,7 @@
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 D="$REPO_ROOT/gitops/app/deployment.yaml"
 sed -i \
-  -e 's#jakarta-votes:v1\.[0-9]*\.[0-9]*#jakarta-votes:v1.0.0#' \
+  -e 's#jakarta-votes:v2\.[0-9]*#jakarta-votes:v2.0#' \
   -e 's#value: "\#[0-9a-fA-F]\{6\}"#value: "\#00FF6F"#' \
   -e 's#name: TITLE, *value: "[^"]*"#name: TITLE,       value: "Dinesh has a free day in Jakarta. What should he do?"#' \
   "$D"

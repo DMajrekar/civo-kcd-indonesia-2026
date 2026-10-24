@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: ghcr.io/dmajrekar/jakarta-votes:v1.0.0
+          image: ghcr.io/dmajrekar/jakarta-votes:v2.0
           imagePullPolicy: Always
           ports:
             - {name: http, containerPort: 8080}

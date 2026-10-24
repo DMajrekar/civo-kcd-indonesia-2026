@@ -153,13 +153,13 @@ export function Release() {
         <div className="muted" style={{ fontSize: 24, marginBottom: 14 }}>Release</div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 28, fontFamily: 'var(--mono)', fontSize: 40 }}>
           <motion.span style={{ color: 'var(--dim)' }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.0 }}>
-            v1.0.0
+            v2.0
           </motion.span>
           <motion.span className="accent" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.3 }}>
             &rarr;
           </motion.span>
           <motion.span style={{ color: 'var(--white)', fontWeight: 700 }} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.6 }}>
-            v1.1.0
+            v2.1
           </motion.span>
         </div>
         <motion.div style={{ marginTop: 18, fontSize: 26, color: 'var(--cloud)' }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.0 }}>

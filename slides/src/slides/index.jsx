@@ -91,7 +91,7 @@ const Step6 = () => (
     points={[
       'A release is a diff: bump the image, commit, push',
       'Argo CD picks up the commit and rolls it out',
-      'v1.0.0 to v1.1.0 with zero downtime; the votes survive',
+      'v2.0 to v2.1 with zero downtime; the votes survive',
     ]}
     illustration={<Release />}
   />
